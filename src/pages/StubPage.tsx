@@ -1,7 +1,10 @@
+import { Button } from 'antd';
+
 export function StubPage() {
   return (
     <main>
-      <h1>Study template</h1>
+      <h1 className="text-3xl mt-8">Study template</h1>
+      <Button type="primary">Primary Button</Button>
       <p>
         This branch contains a minimal Vite + React + TypeScript starter with a single route and a
         json-server backend.
