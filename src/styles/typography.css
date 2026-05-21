@@ -1,0 +1,11 @@
+main {
+  @apply h-screen w-full flex justify-center;
+}
+
+.welcome-layout {
+  @apply bg-[url(/public/background.webp)] bg-no-repeat bg-center bg-cover;
+}
+
+a {
+  @apply text-blue-600;
+}

@@ -2,9 +2,10 @@ import { createBrowserRouter } from 'react-router-dom'
 
 import { StubPage } from '../pages/StubPage'
 import { ROUTES } from '../types/route'
+import { MainPage } from '../pages/MainPage'
 
 export const router = createBrowserRouter([
-  { path: ROUTES.MAIN, element: <StubPage /> },
+  { path: ROUTES.MAIN, element: <MainPage /> },
   { path: ROUTES.REGISTER, element: <StubPage /> },
   { path: ROUTES.FORGOT_PASSWORD, element: <StubPage /> },
   { path: ROUTES.RESET_PASSWORD, element: <StubPage /> },
