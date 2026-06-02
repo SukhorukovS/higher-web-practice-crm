@@ -2,6 +2,7 @@ import { Col, Layout, Row, Typography } from "antd";
 import logo from "/logo.png";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../types/route";
+import { LoginForm } from "../components/forms/LoginForm";
 
 const { Text, Paragraph } = Typography;
 
@@ -23,7 +24,7 @@ export function MainPage() {
             <Link to={ROUTES.REGISTER}>Зарегистрироваться</Link>
           </Col>
           <Col span={12}>
-            
+            <LoginForm />
           </Col>
         </Row>
       </main>

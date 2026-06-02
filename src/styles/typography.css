@@ -3,7 +3,7 @@ main {
 }
 
 .welcome-layout {
-  @apply bg-[url(/public/background.webp)] bg-no-repeat bg-center bg-cover;
+  @apply bg-[url(/background.webp)] bg-no-repeat bg-center bg-cover;
 }
 
 a {
