@@ -2,11 +2,11 @@ import { Col, Layout, Row, Typography } from "antd";
 import logo from "/logo.png";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../types/route";
-import { LoginForm } from "../components/forms/LoginForm";
+import { RegisterForm } from "../components/forms/RegisterForm";
 
 const { Text, Paragraph } = Typography;
 
-export function MainPage() {
+export function RegisterPage() {
   return (
     <Layout>
       <main className="welcome-layout">
@@ -19,12 +19,12 @@ export function MainPage() {
               и&nbsp;выстраивайте продуктивные отношения с&nbsp;клиентами.
             </Paragraph>
             <Text type="secondary" className="block">
-              У&nbsp;вас&nbsp;ещё нет&nbsp;аккаунта?
+              Уже зарегистрированы?
             </Text>
-            <Link to={ROUTES.REGISTER}>Зарегистрироваться</Link>
+            <Link to={ROUTES.MAIN}>Войти в аккаунт</Link>
           </Col>
           <Col span={12}>
-            <LoginForm />
+            <RegisterForm />
           </Col>
         </Row>
       </main>

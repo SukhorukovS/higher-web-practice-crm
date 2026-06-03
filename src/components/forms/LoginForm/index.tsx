@@ -1,6 +1,9 @@
 import { Button, Form, Input } from 'antd';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../../types/route';
+import { Typography } from 'antd';
+
+const { Title } = Typography;
 
 type FieldType = {
   username?: string;
@@ -13,6 +16,7 @@ export const LoginForm = () => {
     <Form
       layout="vertical"
     >
+      <Title level={1} className="text-2xl mb-6">Вход в аккаунт</Title>
       <Form.Item<FieldType>
         label="Email или логин"
         name="username"
