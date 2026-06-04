@@ -22,10 +22,10 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <DashboardPage /> },
       { path: ROUTES.CLIENTS, element: <ClientsPage /> },
+      { path: ROUTES.DEALS, element: <StubPage /> },
+      { path: ROUTES.REPORTS, element: <StubPage /> },
+      { path: ROUTES.TASKS, element: <StubPage /> },
     ],
   },
-  { path: ROUTES.DEALS, element: <StubPage /> },
-  { path: ROUTES.REPORTS, element: <StubPage /> },
-  { path: ROUTES.TASKS, element: <StubPage /> },
 ])
 
