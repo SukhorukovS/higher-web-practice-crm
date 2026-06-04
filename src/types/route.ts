@@ -6,7 +6,7 @@ export const ROUTES = {
   EMAIL_CONFIRM: "/email-confirm",
   PROFILE: "/profile",
   DASHBOARD: "/dashboard",
-  CLIENTS: "/clients",
+  CLIENTS: "/dashboard/clients",
   DEALS: "/deals",
   REPORTS: "/reports",
   TASKS: "/tasks",
