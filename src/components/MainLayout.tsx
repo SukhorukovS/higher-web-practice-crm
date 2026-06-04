@@ -9,7 +9,7 @@ export const MainLayout = () => {
 
   return (
     <Layout>
-      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)} theme="light">
         <div className="demo-logo-vertical" />
         МЕНЮ
       </Sider>

@@ -12,6 +12,12 @@ createRoot(document.getElementById('root')!).render(
       <ConfigProvider
         theme={{
           token: antdThemeTokens,
+          components: {
+            Layout: {
+              lightSiderBg: '#F9FAFB',
+              lightTriggerBg: '#F9FAFB',
+            }
+          }
         }}
       >
         <App />

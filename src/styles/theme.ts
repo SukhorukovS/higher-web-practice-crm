@@ -15,7 +15,7 @@ export const antdThemeTokens = {
   colorTextDisabled: '#9CA3AF',
   
   // Фоны
-  colorBgLayout: '#F3F4F6',
+  colorBgLayout: '#F9FAFB',
   
   // Границы
   colorBorder: '#D1D5DB',
