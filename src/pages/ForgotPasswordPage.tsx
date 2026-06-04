@@ -1,0 +1,14 @@
+import { AuthLayout } from "../components/AuthLayout";
+import { ROUTES } from "../types/route";
+import { ForgotPasswordForm } from "../components/forms/ForgotPassword";
+
+export function ForgotPasswordPage() {
+  return (
+    <AuthLayout
+      formComponent={<ForgotPasswordForm />}
+      secondaryText="Уже зарегистрированы?"
+      linkTo={ROUTES.MAIN}
+      linkText="Войти в аккаунт"
+    />
+  );
+}
