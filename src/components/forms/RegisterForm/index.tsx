@@ -24,7 +24,7 @@ export const RegisterForm = () => {
         labelCol={{ style: { paddingBottom: '2px' } }}
         className="mb-4"
       >
-        <Input />
+        <Input placeholder="Ярополк" />
       </Form.Item>
       <Form.Item<FieldType>
         label="Фамилия"
@@ -32,7 +32,7 @@ export const RegisterForm = () => {
         labelCol={{ style: { paddingBottom: '2px' } }}
         className="mb-4"
       >
-        <Input />
+        <Input placeholder="Иванов" />
       </Form.Item>
       <Form.Item<FieldType>
         label="Email"
@@ -40,7 +40,7 @@ export const RegisterForm = () => {
         labelCol={{ style: { paddingBottom: '2px' } }}
         className="mb-4"
       >
-        <Input />
+        <Input placeholder="ivanov@yandex.ru" />
       </Form.Item>
       <Form.Item<FieldType>
         label="Имя аккаунта"
@@ -48,7 +48,7 @@ export const RegisterForm = () => {
         labelCol={{ style: { paddingBottom: '2px' } }}
         className="mb-4"
       >
-        <Input />
+        <Input placeholder="Yaropolk" />
       </Form.Item>
       <Form.Item<FieldType>
         label="Придумайте пароль"
@@ -56,7 +56,7 @@ export const RegisterForm = () => {
         labelCol={{ style: { paddingBottom: '2px' } }}
         className="mb-4"
       >
-        <Input.Password />
+        <Input.Password placeholder="******" />
       </Form.Item>
       <Form.Item<FieldType>
         label="Повторите пароль"
@@ -64,7 +64,7 @@ export const RegisterForm = () => {
         labelCol={{ style: { paddingBottom: '2px' } }}
         className="mb-10"
       >
-        <Input.Password />
+        <Input.Password placeholder="******" />
       </Form.Item>
       <Button type="primary" className="w-full h-10">Зарегистрироваться</Button>
     </Form>

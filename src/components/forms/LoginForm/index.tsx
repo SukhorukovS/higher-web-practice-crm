@@ -23,7 +23,7 @@ export const LoginForm = () => {
         labelCol={{ style: { paddingBottom: '2px' } }}
         className="mb-4"
       >
-        <Input />
+        <Input placeholder="ivanov@yandex.ru" />
       </Form.Item>
       <Form.Item<FieldType>
         label="Пароль"
@@ -31,7 +31,7 @@ export const LoginForm = () => {
         labelCol={{ style: { paddingBottom: '2px' } }}
         className="mb-1"
       >
-        <Input.Password />
+        <Input.Password placeholder="******" />
       </Form.Item>
       <div className="text-right">
         <Link to={ROUTES.FORGOT_PASSWORD} className="text-gray-500! text-base">Забыли пароль?</Link>

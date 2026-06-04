@@ -4,11 +4,12 @@ import { StubPage } from '../pages/StubPage'
 import { ROUTES } from '../types/route'
 import { MainPage } from '../pages/MainPage'
 import { RegisterPage } from '../pages/RegisterPage'
+import { ForgotPasswordPage } from '../pages/ForgotPasswordPage'
 
 export const router = createBrowserRouter([
   { path: ROUTES.MAIN, element: <MainPage /> },
   { path: ROUTES.REGISTER, element: <RegisterPage /> },
-  { path: ROUTES.FORGOT_PASSWORD, element: <StubPage /> },
+  { path: ROUTES.FORGOT_PASSWORD, element: <ForgotPasswordPage /> },
   { path: ROUTES.RESET_PASSWORD, element: <StubPage /> },
   { path: ROUTES.EMAIL_CONFIRM, element: <StubPage /> },
   { path: ROUTES.PROFILE, element: <StubPage /> },
