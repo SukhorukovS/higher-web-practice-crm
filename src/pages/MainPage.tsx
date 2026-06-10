@@ -1,5 +1,5 @@
 import { LoginForm } from "../components/forms/LoginForm";
-import { AuthLayout } from "../components/AuthLayout";
+import { AuthLayout } from "../components/layouts/AuthLayout";
 import { ROUTES } from "../types/route";
 
 export function MainPage() {

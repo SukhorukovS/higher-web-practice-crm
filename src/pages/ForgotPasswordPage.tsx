@@ -1,4 +1,4 @@
-import { AuthLayout } from "../components/AuthLayout";
+import { AuthLayout } from "../components/layouts/AuthLayout";
 import { ROUTES } from "../types/route";
 import { ForgotPasswordForm } from "../components/forms/ForgotPassword";
 

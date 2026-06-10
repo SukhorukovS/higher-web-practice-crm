@@ -1,13 +1,13 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter } from "react-router-dom";
 
-import { StubPage } from '../pages/StubPage'
-import { ROUTES } from '../types/route'
-import { MainPage } from '../pages/MainPage'
-import { RegisterPage } from '../pages/RegisterPage'
-import { ForgotPasswordPage } from '../pages/ForgotPasswordPage'
-import { MainLayout } from '../components/MainLayout'
-import { DashboardPage } from '../pages/DashboardPage'
-import { ClientsPage } from '../pages/ClientsPage'
+import { StubPage } from "../pages/StubPage";
+import { ROUTES } from "../types/route";
+import { MainPage } from "../pages/MainPage";
+import { RegisterPage } from "../pages/RegisterPage";
+import { ForgotPasswordPage } from "../pages/ForgotPasswordPage";
+import { MainLayout } from "../components/layouts/MainLayout";
+import { DashboardPage } from "../pages/DashboardPage";
+import { ClientsPage } from "../pages/ClientsPage";
 
 export const router = createBrowserRouter([
   { path: ROUTES.MAIN, element: <MainPage /> },
@@ -27,5 +27,4 @@ export const router = createBrowserRouter([
       { path: ROUTES.TASKS, element: <StubPage /> },
     ],
   },
-])
-
+]);

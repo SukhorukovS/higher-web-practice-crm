@@ -1,5 +1,5 @@
 import { RegisterForm } from "../components/forms/RegisterForm";
-import { AuthLayout } from "../components/AuthLayout";
+import { AuthLayout } from "../components/layouts/AuthLayout";
 import { ROUTES } from "../types/route";
 
 export function RegisterPage() {
