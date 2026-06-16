@@ -1,6 +1,6 @@
 import { Layout, Menu } from "antd";
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { SidebarHeader } from "./SidebarHeader";
 import { MainIcon } from "../../icons/MainIcon";
@@ -9,11 +9,14 @@ import { DealsIcon } from "../../icons/DealsIcon";
 import { ReportsIcon } from "../../icons/ReportsIcon";
 import { TasksIcon } from "../../icons/TasksIcon";
 import { SidebarFooter } from "./SidebarFooter";
+import { ROUTES } from "../../types/route";
 
 const { Sider } = Layout;
 
 export const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
@@ -35,39 +38,42 @@ export const MainLayout = () => {
           <Menu
             theme="light"
             mode="inline"
-            defaultSelectedKeys={["1"]}
+            selectedKeys={[location.pathname]}
+            onClick={({ key }) => navigate(key)}
             style={{ background: 'transparent', border: 'none' }}
             classNames={{
               item: `pl-0! flex shrink-0 m-0 ${collapsed ? 'gap-0' :'gap-2'} border-b border-gray-300 last:border-b-0 rounded-none py-4 h-auto text-base`,
             }}
             items={[
               {
-                key: "1",
+                key: ROUTES.DASHBOARD,
                 icon: <MainIcon />,
                 label: "Главная",
               },
               {
-                key: "2",
+                key: ROUTES.CLIENTS,
                 icon: <ClientsIcon />,
                 label: "Клиенты",
               },
               {
-                key: "3",
+                key: ROUTES.DEALS,
                 icon: <DealsIcon />,
                 label: "Сделки",
-              },            {
-                key: "4",
+              },
+              {
+                key: ROUTES.REPORTS,
                 icon: <ReportsIcon />,
                 label: "Отчеты",
-              },            {
-                key: "5",
+              },
+              {
+                key: ROUTES.TASKS,
                 icon: <TasksIcon />,
                 label: "Задачи",
               },
             ]}
           />
           <div className="mt-auto">
-            <SidebarFooter collapsed={collapsed} onClick={() => {}} />
+            <SidebarFooter collapsed={collapsed} isActive={location.pathname === ROUTES.PROFILE} />
           </div>
         </div>
       </Sider>

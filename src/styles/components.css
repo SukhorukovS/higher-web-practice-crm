@@ -5,3 +5,7 @@ form {
 label {
   @apply text-gray-500 text-xs;
 }
+
+.ant-menu-item-selected {
+  @apply text-blue-500;
+}

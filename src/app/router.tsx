@@ -15,12 +15,12 @@ export const router = createBrowserRouter([
   { path: ROUTES.FORGOT_PASSWORD, element: <ForgotPasswordPage /> },
   { path: ROUTES.RESET_PASSWORD, element: <StubPage /> },
   { path: ROUTES.EMAIL_CONFIRM, element: <StubPage /> },
-  { path: ROUTES.PROFILE, element: <StubPage /> },
   {
     path: ROUTES.DASHBOARD,
     element: <MainLayout />,
     children: [
       { index: true, element: <DashboardPage /> },
+      { path: ROUTES.PROFILE, element: <StubPage /> },
       { path: ROUTES.CLIENTS, element: <ClientsPage /> },
       { path: ROUTES.DEALS, element: <StubPage /> },
       { path: ROUTES.REPORTS, element: <StubPage /> },
