@@ -16,6 +16,10 @@ createRoot(document.getElementById('root')!).render(
             Layout: {
               lightSiderBg: '#F9FAFB',
               lightTriggerBg: '#F9FAFB',
+            },
+            Menu: {
+              itemSelectedBg: 'transparent',
+              collapsedIconSize: 24,
             }
           }
         }}
