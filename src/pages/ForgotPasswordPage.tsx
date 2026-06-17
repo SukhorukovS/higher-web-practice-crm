@@ -1,6 +1,6 @@
-import { ForgotPasswordForm } from '../components/forms/ForgotPassword'
-import { AuthLayout } from '../components/layouts/AuthLayout'
-import { ROUTES } from '../types/route'
+import { ForgotPasswordForm } from '@/components/forms/ForgotPassword'
+import { AuthLayout } from '@/components/layouts/AuthLayout'
+import { ROUTES } from '@/types/route'
 
 export function ForgotPasswordPage() {
   return (

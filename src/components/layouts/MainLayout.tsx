@@ -2,14 +2,14 @@ import { Layout, Menu } from 'antd'
 import { useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
-import { ClientsIcon } from '../../icons/ClientsIcon'
-import { DealsIcon } from '../../icons/DealsIcon'
-import { MainIcon } from '../../icons/MainIcon'
-import { ReportsIcon } from '../../icons/ReportsIcon'
-import { TasksIcon } from '../../icons/TasksIcon'
-import { ROUTES } from '../../types/route'
-import { SidebarFooter } from './SidebarFooter'
-import { SidebarHeader } from './SidebarHeader'
+import { SidebarFooter } from '@/components/layouts/SidebarFooter'
+import { SidebarHeader } from '@/components/layouts/SidebarHeader'
+import { ClientsIcon } from '@/icons/ClientsIcon'
+import { DealsIcon } from '@/icons/DealsIcon'
+import { MainIcon } from '@/icons/MainIcon'
+import { ReportsIcon } from '@/icons/ReportsIcon'
+import { TasksIcon } from '@/icons/TasksIcon'
+import { ROUTES } from '@/types/route'
 
 const { Sider } = Layout
 

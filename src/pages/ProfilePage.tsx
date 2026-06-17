@@ -1,9 +1,8 @@
 import { Button, Typography } from 'antd'
 
 import user from '/user.png'
-
-import { Section } from '../components/ui/Section'
-import { PhotoIcon } from '../icons/PhotoIcon'
+import { Section } from '@/components/ui/Section'
+import { PhotoIcon } from '@/icons/PhotoIcon'
 
 const { Title } = Typography
 

@@ -3,8 +3,7 @@ import type { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import user from '/user.png'
-
-import { ROUTES } from '../../types/route'
+import { ROUTES } from '@/types/route'
 
 type Props = {
   collapsed?: boolean

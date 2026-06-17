@@ -1,6 +1,6 @@
-import type { Client } from './client'
-import type { Deal } from './deal'
-import type { Task } from './task'
+import type { Client } from '@/types/client'
+import type { Deal } from '@/types/deal'
+import type { Task } from '@/types/task'
 
 export type DashboardStats = {
   clients: {

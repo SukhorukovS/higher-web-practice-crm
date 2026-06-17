@@ -1,5 +1,5 @@
-import type { DealStatus } from './deal'
-import type { TaskStatus } from './task'
+import type { DealStatus } from '@/types/deal'
+import type { TaskStatus } from '@/types/task'
 
 export type ReportPeriod = 'week' | 'month' | 'quarter'
 

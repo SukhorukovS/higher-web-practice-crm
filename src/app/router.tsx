@@ -1,14 +1,14 @@
 import { createBrowserRouter } from 'react-router-dom'
 
-import { MainLayout } from '../components/layouts/MainLayout'
-import { ClientsPage } from '../pages/ClientsPage'
-import { DashboardPage } from '../pages/DashboardPage'
-import { ForgotPasswordPage } from '../pages/ForgotPasswordPage'
-import { MainPage } from '../pages/MainPage'
-import { ProfilePage } from '../pages/ProfilePage'
-import { RegisterPage } from '../pages/RegisterPage'
-import { StubPage } from '../pages/StubPage'
-import { ROUTES } from '../types/route'
+import { MainLayout } from '@/components/layouts/MainLayout'
+import { ClientsPage } from '@/pages/ClientsPage'
+import { DashboardPage } from '@/pages/DashboardPage'
+import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage'
+import { MainPage } from '@/pages/MainPage'
+import { ProfilePage } from '@/pages/ProfilePage'
+import { RegisterPage } from '@/pages/RegisterPage'
+import { StubPage } from '@/pages/StubPage'
+import { ROUTES } from '@/types/route'
 
 export const router = createBrowserRouter([
   { path: ROUTES.MAIN, element: <MainPage /> },

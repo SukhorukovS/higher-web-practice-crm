@@ -1,9 +1,8 @@
 import type { FC } from 'react'
 
 import logo from '/logo.png'
-
-import { SidebarCollapseIcon } from '../../icons/SidebarCollapseIcon'
-import { SidebarExpandIcon } from '../../icons/SidebarExpandIcon'
+import { SidebarCollapseIcon } from '@/icons/SidebarCollapseIcon'
+import { SidebarExpandIcon } from '@/icons/SidebarExpandIcon'
 
 type Props = {
   onClick: () => void

@@ -1,6 +1,6 @@
-import { RegisterForm } from '../components/forms/RegisterForm'
-import { AuthLayout } from '../components/layouts/AuthLayout'
-import { ROUTES } from '../types/route'
+import { RegisterForm } from '@/components/forms/RegisterForm'
+import { AuthLayout } from '@/components/layouts/AuthLayout'
+import { ROUTES } from '@/types/route'
 
 export function RegisterPage() {
   return (

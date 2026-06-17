@@ -2,7 +2,7 @@ import { Button, Form, Input } from 'antd'
 import { Typography } from 'antd'
 import { Link } from 'react-router-dom'
 
-import { ROUTES } from '../../../types/route'
+import { ROUTES } from '@/types/route'
 
 const { Title } = Typography
 
