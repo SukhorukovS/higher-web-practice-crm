@@ -77,7 +77,9 @@ export const MainLayout = () => {
           </div>
         </div>
       </Sider>
-      <Outlet />
+      <div className="flex-1">
+        <Outlet />
+      </div>
     </Layout>
   )
 }

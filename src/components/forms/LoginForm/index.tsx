@@ -14,7 +14,13 @@ type FieldType = {
 
 export const LoginForm = () => {
   return (
-    <Form layout="vertical">
+    <Form
+      layout="vertical"
+      className="auth-form"
+      classNames={{
+        label: 'auth-label',
+      }}
+    >
       <Title level={1} className="text-2xl mb-6">
         Вход в аккаунт
       </Title>
