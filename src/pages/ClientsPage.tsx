@@ -1,9 +1,7 @@
-import { Typography } from 'antd';
+import { Typography } from 'antd'
 
-const { Title } = Typography;
+const { Title } = Typography
 
 export const ClientsPage = () => {
-  return (
-    <Title level={1}>Клиенты</Title>
-  )
+  return <Title level={1}>Клиенты</Title>
 }

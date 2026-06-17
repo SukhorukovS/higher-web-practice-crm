@@ -1,6 +1,6 @@
-import { LoginForm } from "../components/forms/LoginForm";
-import { AuthLayout } from "../components/layouts/AuthLayout";
-import { ROUTES } from "../types/route";
+import { LoginForm } from '../components/forms/LoginForm'
+import { AuthLayout } from '../components/layouts/AuthLayout'
+import { ROUTES } from '../types/route'
 
 export function MainPage() {
   return (
@@ -10,5 +10,5 @@ export function MainPage() {
       linkTo={ROUTES.REGISTER}
       linkText="Зарегистрироваться"
     />
-  );
+  )
 }

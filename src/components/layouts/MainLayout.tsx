@@ -1,26 +1,26 @@
-import { Layout, Menu } from "antd";
-import { useState } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Layout, Menu } from 'antd'
+import { useState } from 'react'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
-import { SidebarHeader } from "./SidebarHeader";
-import { MainIcon } from "../../icons/MainIcon";
-import { ClientsIcon } from "../../icons/ClientsIcon";
-import { DealsIcon } from "../../icons/DealsIcon";
-import { ReportsIcon } from "../../icons/ReportsIcon";
-import { TasksIcon } from "../../icons/TasksIcon";
-import { SidebarFooter } from "./SidebarFooter";
-import { ROUTES } from "../../types/route";
+import { ClientsIcon } from '../../icons/ClientsIcon'
+import { DealsIcon } from '../../icons/DealsIcon'
+import { MainIcon } from '../../icons/MainIcon'
+import { ReportsIcon } from '../../icons/ReportsIcon'
+import { TasksIcon } from '../../icons/TasksIcon'
+import { ROUTES } from '../../types/route'
+import { SidebarFooter } from './SidebarFooter'
+import { SidebarHeader } from './SidebarHeader'
 
-const { Sider } = Layout;
+const { Sider } = Layout
 
 export const MainLayout = () => {
-  const [collapsed, setCollapsed] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [collapsed, setCollapsed] = useState(false)
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
-  };
+    setCollapsed(!collapsed)
+  }
 
   return (
     <Layout className="h-screen">
@@ -42,33 +42,33 @@ export const MainLayout = () => {
             onClick={({ key }) => navigate(key)}
             style={{ background: 'transparent', border: 'none' }}
             classNames={{
-              item: `pl-0! flex shrink-0 m-0 ${collapsed ? 'gap-0' :'gap-2'} border-b border-gray-300 last:border-b-0 rounded-none py-4 h-auto text-base`,
+              item: `pl-0! flex shrink-0 m-0 ${collapsed ? 'gap-0' : 'gap-2'} border-b border-gray-300 last:border-b-0 rounded-none py-4 h-auto text-base`,
             }}
             items={[
               {
                 key: ROUTES.DASHBOARD,
                 icon: <MainIcon />,
-                label: "Главная",
+                label: 'Главная',
               },
               {
                 key: ROUTES.CLIENTS,
                 icon: <ClientsIcon />,
-                label: "Клиенты",
+                label: 'Клиенты',
               },
               {
                 key: ROUTES.DEALS,
                 icon: <DealsIcon />,
-                label: "Сделки",
+                label: 'Сделки',
               },
               {
                 key: ROUTES.REPORTS,
                 icon: <ReportsIcon />,
-                label: "Отчеты",
+                label: 'Отчеты',
               },
               {
                 key: ROUTES.TASKS,
                 icon: <TasksIcon />,
-                label: "Задачи",
+                label: 'Задачи',
               },
             ]}
           />
@@ -79,5 +79,5 @@ export const MainLayout = () => {
       </Sider>
       <Outlet />
     </Layout>
-  );
-};
+  )
+}

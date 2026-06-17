@@ -1,9 +1,7 @@
-import { Typography } from 'antd';
+import { Typography } from 'antd'
 
-const { Title } = Typography;
+const { Title } = Typography
 
 export const DashboardPage = () => {
-  return (
-    <Title level={1}>Welcome to Dashboard</Title>
-  )
+  return <Title level={1}>Welcome to Dashboard</Title>
 }

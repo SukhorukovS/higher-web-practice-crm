@@ -1,6 +1,6 @@
-import { AuthLayout } from "../components/layouts/AuthLayout";
-import { ROUTES } from "../types/route";
-import { ForgotPasswordForm } from "../components/forms/ForgotPassword";
+import { ForgotPasswordForm } from '../components/forms/ForgotPassword'
+import { AuthLayout } from '../components/layouts/AuthLayout'
+import { ROUTES } from '../types/route'
 
 export function ForgotPasswordPage() {
   return (
@@ -10,5 +10,5 @@ export function ForgotPasswordPage() {
       linkTo={ROUTES.MAIN}
       linkText="Войти в аккаунт"
     />
-  );
+  )
 }

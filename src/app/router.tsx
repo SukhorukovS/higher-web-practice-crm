@@ -1,13 +1,14 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter } from 'react-router-dom'
 
-import { StubPage } from "../pages/StubPage";
-import { ROUTES } from "../types/route";
-import { MainPage } from "../pages/MainPage";
-import { RegisterPage } from "../pages/RegisterPage";
-import { ForgotPasswordPage } from "../pages/ForgotPasswordPage";
-import { MainLayout } from "../components/layouts/MainLayout";
-import { DashboardPage } from "../pages/DashboardPage";
-import { ClientsPage } from "../pages/ClientsPage";
+import { MainLayout } from '../components/layouts/MainLayout'
+import { ClientsPage } from '../pages/ClientsPage'
+import { DashboardPage } from '../pages/DashboardPage'
+import { ForgotPasswordPage } from '../pages/ForgotPasswordPage'
+import { MainPage } from '../pages/MainPage'
+import { ProfilePage } from '../pages/ProfilePage'
+import { RegisterPage } from '../pages/RegisterPage'
+import { StubPage } from '../pages/StubPage'
+import { ROUTES } from '../types/route'
 
 export const router = createBrowserRouter([
   { path: ROUTES.MAIN, element: <MainPage /> },
@@ -20,11 +21,11 @@ export const router = createBrowserRouter([
     element: <MainLayout />,
     children: [
       { index: true, element: <DashboardPage /> },
-      { path: ROUTES.PROFILE, element: <StubPage /> },
+      { path: ROUTES.PROFILE, element: <ProfilePage /> },
       { path: ROUTES.CLIENTS, element: <ClientsPage /> },
       { path: ROUTES.DEALS, element: <StubPage /> },
       { path: ROUTES.REPORTS, element: <StubPage /> },
       { path: ROUTES.TASKS, element: <StubPage /> },
     ],
   },
-]);
+])

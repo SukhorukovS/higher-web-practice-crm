@@ -1,20 +1,21 @@
-import { Button, Form, Input } from 'antd';
-import { Typography } from 'antd';
+import { Button, Form, Input } from 'antd'
+import { Typography } from 'antd'
 
-const { Title, Paragraph } = Typography;
+const { Title, Paragraph } = Typography
 
 type FieldType = {
-  email?: string;
-};
+  email?: string
+}
 
 export const ForgotPasswordForm = () => {
   return (
-    <Form
-      layout="vertical"
-    >
-      <Title level={1} className="text-2xl mb-6">Восстановление пароля</Title>
+    <Form layout="vertical">
+      <Title level={1} className="text-2xl mb-6">
+        Восстановление пароля
+      </Title>
       <Paragraph className="mb-6 text-base">
-        Укажите почту, на&nbsp;которую вы регистрировали аккаунт, и&nbsp;мы&nbsp;отправим вам инструкцию по&nbsp;восстановлению пароля.
+        Укажите почту, на&nbsp;которую вы регистрировали аккаунт, и&nbsp;мы&nbsp;отправим вам
+        инструкцию по&nbsp;восстановлению пароля.
       </Paragraph>
       <Form.Item<FieldType>
         label="Email"
@@ -24,7 +25,9 @@ export const ForgotPasswordForm = () => {
       >
         <Input placeholder="ivanov@yandex.ru" />
       </Form.Item>
-      <Button type="primary" className="w-full mt-10 h-10">Восстановить</Button>
+      <Button type="primary" className="w-full mt-10 h-10">
+        Восстановить
+      </Button>
     </Form>
   )
 }

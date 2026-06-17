@@ -1,4 +1,4 @@
-import { Button } from 'antd';
+import { Button } from 'antd'
 
 export function StubPage() {
   return (
@@ -13,4 +13,3 @@ export function StubPage() {
     </main>
   )
 }
-
