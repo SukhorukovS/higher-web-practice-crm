@@ -1,11 +1,9 @@
-import { Card, Col, Row, theme, Typography } from 'antd'
+import { Card, Col, Row, Typography } from 'antd'
 import clsx from 'clsx'
 
 const { Text } = Typography
 
 export const SummaryBoard = () => {
-  const { token } = theme.useToken()
-
   const rows = [
     { label: 'Клиенты', values: [150, 5, 15, 40, 132] },
     { label: 'Активные сделки', values: [25, 3, 8, 20, 62] },
