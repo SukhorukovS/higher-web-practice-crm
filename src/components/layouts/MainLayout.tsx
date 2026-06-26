@@ -77,7 +77,7 @@ export const MainLayout = () => {
           </div>
         </div>
       </Sider>
-      <div className="flex-1 flex flex-col h-full p-5">
+      <div className="flex-1 flex flex-col h-full p-5 overflow-y-auto">
         <Outlet />
       </div>
     </Layout>

@@ -2,6 +2,7 @@ import { Typography } from 'antd'
 
 import { SummaryBoard } from '@/components/SummaryBoard'
 import { TopClients } from '@/components/TopClients'
+import { ActiveDealsTable } from '@/components/TopDeals'
 
 const { Title, Paragraph } = Typography
 
@@ -18,6 +19,7 @@ export const DashboardPage = () => {
       </div>
       <SummaryBoard />
       <TopClients />
+      <ActiveDealsTable />
     </div>
   )
 }
