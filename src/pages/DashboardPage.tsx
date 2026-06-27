@@ -1,5 +1,6 @@
 import { Typography } from 'antd'
 
+import { LastTasks } from '@/components/LastTasks'
 import { SummaryBoard } from '@/components/SummaryBoard'
 import { TopClients } from '@/components/TopClients'
 import { ActiveDealsTable } from '@/components/TopDeals'
@@ -20,6 +21,7 @@ export const DashboardPage = () => {
       <SummaryBoard />
       <TopClients />
       <ActiveDealsTable />
+      <LastTasks />
     </div>
   )
 }
