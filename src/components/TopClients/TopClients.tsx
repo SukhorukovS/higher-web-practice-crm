@@ -57,16 +57,16 @@ const clients = [
 
 export const TopClients = () => {
   return (
-    <div className="flex flex-col">
-      <Title level={5} className="mb-2 font-bold">
+    <div className="dashboard-section">
+      <Title level={5} className="dashboard-title">
         топ 10 активных клиентов
       </Title>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-2 mb-3">
+      <div className="dashboard-grid">
         {clients.map((client, index) => (
           <Card
             key={index}
-            className="shadow-md flex flex-col"
-            classNames={{ body: 'px-4 py-3 h-full flex flex-col' }}
+            className="dashboard-card-col"
+            classNames={{ body: 'dashboard-card-col-body' }}
           >
             <div className="grow">
               <Text className="font-bold text-sm block mb-[2px]">{client.name}</Text>

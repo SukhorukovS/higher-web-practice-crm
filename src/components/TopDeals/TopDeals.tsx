@@ -1,6 +1,8 @@
-import { Button, Card, Col, Row } from 'antd'
+import { Button, Card, Col, Row, Typography } from 'antd'
 import clsx from 'clsx'
 import React from 'react'
+
+import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
 
 interface Deal {
   key: string
@@ -10,6 +12,8 @@ interface Deal {
   status: 'in_progress' | 'new'
   date: string
 }
+
+const { Title } = Typography
 
 const dealsData: Deal[] = [
   {
@@ -94,58 +98,41 @@ const dealsData: Deal[] = [
   },
 ]
 
-const statusMap = {
-  in_progress: 'В работе',
-  new: 'Новая',
-}
-
-const statusBgMap = {
-  new: 'bg-blue-100',
-  in_progress: 'bg-white',
-  completed: 'bg-green-100',
-}
-
-const statusColorMap = {
-  new: 'text-gray-800',
-  in_progress: 'text-blue-500',
-  completed: 'text-green-500',
-}
-
 export const ActiveDealsTable: React.FC = () => {
   return (
-    <div>
-      <div className="mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold">Топ 10 активных сделок</h2>
-        </div>
-        {dealsData.map((deal) => (
-          <Card
-            key={deal.key}
-            className={clsx('mb-[2px] shadow-md px-6 py-2 text-sm', statusBgMap[deal.status])}
-            classNames={{ body: 'p-0' }}
-          >
-            <Row gutter={8}>
-              <Col span={10}>{deal.name}</Col>
-              <Col span={6} className="text-gray-500">
-                {deal.person}
-              </Col>
-              <Col span={3} className="font-bold">
-                {deal.amount}
-              </Col>
-              <Col span={2} className={clsx(statusColorMap[deal.status])}>
-                {statusMap[deal.status]}
-              </Col>
-              <Col span={3} className="text-gray-500">
-                {deal.date}
-              </Col>
-            </Row>
-          </Card>
-        ))}
-        <div className="mt-6">
-          <Button type="primary" size="large">
-            Новая сделка
-          </Button>
-        </div>
+    <div className="dashboard-section">
+      <div className="flex justify-between items-center">
+        <Title level={5} className="dashboard-title">
+          Топ 10 активных сделок
+        </Title>
+      </div>
+      {dealsData.map((deal) => (
+        <Card
+          key={deal.key}
+          className={clsx('dashboard-card-row text-sm', statusBgMap[deal.status])}
+          classNames={{ body: 'p-0' }}
+        >
+          <Row gutter={8}>
+            <Col span={10}>{deal.name}</Col>
+            <Col span={6} className="text-gray-500">
+              {deal.person}
+            </Col>
+            <Col span={3} className="font-bold">
+              {deal.amount}
+            </Col>
+            <Col span={2} className={clsx(statusColorMap[deal.status])}>
+              {statusMap[deal.status]}
+            </Col>
+            <Col span={3} className="text-gray-500">
+              {deal.date}
+            </Col>
+          </Row>
+        </Card>
+      ))}
+      <div className="mt-3">
+        <Button type="primary" size="large">
+          Новая сделка
+        </Button>
       </div>
     </div>
   )

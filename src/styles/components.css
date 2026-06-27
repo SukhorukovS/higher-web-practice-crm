@@ -13,3 +13,27 @@ input {
 .ant-menu-item-selected {
   @apply text-blue-500;
 }
+
+.dashboard-section {
+  @apply flex flex-col;
+}
+
+.dashboard-title {
+  @apply mb-2 font-bold;
+}
+
+.dashboard-grid {
+  @apply grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-2 mb-3;
+}
+
+.dashboard-card-col {
+  @apply shadow-md flex flex-col;
+}
+
+.dashboard-card-col-body {
+  @apply px-4 py-3 h-full flex flex-col;
+}
+
+.dashboard-card-row {
+  @apply mb-[2px] shadow-md px-6 py-2;
+}

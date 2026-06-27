@@ -24,7 +24,7 @@ export const SummaryBoard = () => {
       </Row>
 
       {rows.map((row) => (
-        <Card key={row.label} className="mb-[2px] shadow-md px-6 py-2" classNames={{ body: 'p-0' }}>
+        <Card key={row.label} className="dashboard-card-row" classNames={{ body: 'p-0' }}>
           <Row gutter={16}>
             <Col span={4} className="flex items-center">
               <Text className="text-sm font-bold">{row.label}</Text>

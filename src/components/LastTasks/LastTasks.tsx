@@ -1,6 +1,7 @@
 import { Button, Card, Typography } from 'antd'
 import clsx from 'clsx'
 
+import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
 import type { Task } from '@/types/task'
 
 const { Title, Text, Paragraph } = Typography
@@ -41,36 +42,18 @@ const tasks: Task[] = [
   },
 ]
 
-const statusMap = {
-  in_progress: 'В работе',
-  new: 'Новая',
-  completed: 'Завершена',
-}
-
-const statusBgMap = {
-  new: 'bg-blue-100',
-  in_progress: 'bg-white',
-  completed: 'bg-green-100',
-}
-
-const statusColorMap = {
-  new: 'text-gray-800',
-  in_progress: 'text-blue-500',
-  completed: 'text-green-500',
-}
-
 export const LastTasks = () => {
   return (
-    <div className="flex flex-col">
-      <Title level={5} className="mb-2 font-bold">
+    <div className="dashboard-section">
+      <Title level={5} className="dashboard-title">
         топ 10 активных клиентов
       </Title>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-2 mb-3">
+      <div className="dashboard-grid">
         {tasks.map((task) => (
           <Card
             key={task.id}
-            className={clsx('shadow-md flex flex-col', statusBgMap[task.status])}
-            classNames={{ body: 'px-4 py-3 h-full flex flex-col' }}
+            className={clsx('dashboard-card-col', statusBgMap[task.status])}
+            classNames={{ body: 'dashboard-card-col-body' }}
           >
             <div className="grow">
               <Paragraph className="font-bold text-sm block mb-[2px]">{task.title}</Paragraph>
