@@ -1,6 +1,6 @@
 import { DownOutlined } from '@ant-design/icons'
-import { Button, Input, Table, Typography } from 'antd'
-import type { ColumnsType } from 'antd/es/table'
+import { Button, Card, Col, Input, Row, Typography } from 'antd'
+import clsx from 'clsx'
 import { useState } from 'react'
 
 import { SearchIcon } from '@/icons/SearchIcon'
@@ -19,82 +19,17 @@ interface ClientData {
   disabled?: boolean
 }
 
-const SortButton = () => (
-  <Button type="text" size="small" className="!p-0 !h-auto !min-w-0">
-    <DownOutlined className="text-xs text-gray-400" />
-  </Button>
-)
+type SortField = keyof ClientData
+type SortOrder = 'asc' | 'desc'
 
-const columns: ColumnsType<ClientData> = [
-  {
-    title: 'Имя',
-    dataIndex: 'name',
-    key: 'name',
-    sorter: (a, b) => a.name.localeCompare(b.name),
-    sortIcon: () => <SortButton />,
-    render: (text) => <span className="font-medium text-gray-900">{text}</span>,
-  },
-  {
-    title: 'Телефон',
-    dataIndex: 'phone',
-    key: 'phone',
-    sorter: (a, b) => a.phone.localeCompare(b.phone),
-    sortIcon: () => <SortButton />,
-    render: (text) => <span className="text-gray-700">{text}</span>,
-  },
-  {
-    title: 'Email',
-    dataIndex: 'email',
-    key: 'email',
-    sorter: (a, b) => a.email.localeCompare(b.email),
-    sortIcon: () => <SortButton />,
-    render: (text) => (
-      <a href={`mailto:${text}`} className="text-blue-600 hover:text-blue-800">
-        {text}
-      </a>
-    ),
-  },
-  {
-    title: 'Название компании',
-    dataIndex: 'company',
-    key: 'company',
-    sorter: (a, b) => a.company.localeCompare(b.company),
-    sortIcon: () => <SortButton />,
-    render: (text) => <span className="text-gray-700">{text}</span>,
-  },
-  {
-    title: 'Сайт',
-    dataIndex: 'website',
-    key: 'website',
-    sorter: (a, b) => a.website.localeCompare(b.website),
-    sortIcon: () => <SortButton />,
-    render: (text) => (
-      <a
-        href={`https://${text}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-gray-700 hover:text-blue-600"
-      >
-        {text}
-      </a>
-    ),
-  },
-  {
-    title: 'Комментарий',
-    dataIndex: 'comment',
-    key: 'comment',
-    sorter: (a, b) => a.comment.localeCompare(b.comment),
-    sortIcon: () => <SortButton />,
-    render: (text) => <span className="text-gray-600">{text}</span>,
-  },
-  {
-    title: 'Добавлен',
-    dataIndex: 'added',
-    key: 'added',
-    sorter: (a, b) => new Date(a.added).getTime() - new Date(b.added).getTime(),
-    sortIcon: () => <SortButton />,
-    render: (text) => <span className="text-gray-700">{text}</span>,
-  },
+const columns: { key: SortField; title: string; span: number }[] = [
+  { key: 'name', title: 'Имя', span: 3 },
+  { key: 'phone', title: 'Телефон', span: 3 },
+  { key: 'email', title: 'Email', span: 3 },
+  { key: 'company', title: 'Название компании', span: 3 },
+  { key: 'website', title: 'Сайт', span: 3 },
+  { key: 'comment', title: 'Комментарий', span: 5 },
+  { key: 'added', title: 'Добавлен', span: 4 },
 ]
 
 const data: ClientData[] = [
@@ -201,8 +136,65 @@ const data: ClientData[] = [
   },
 ]
 
+const renderCellValue = (client: ClientData, key: SortField) => {
+  const value = client[key]
+  if (key === 'email') {
+    return (
+      <a href={`mailto:${value}`} className="text-xs">
+        {String(value)}
+      </a>
+    )
+  }
+  if (key === 'website') {
+    return (
+      <a href={`https://${value}`} target="_blank" rel="noopener noreferrer" className="text-xs">
+        {String(value)}
+      </a>
+    )
+  }
+  if (key === 'name') {
+    return <span className="text-sm">{String(value)}</span>
+  }
+  if (key === 'comment') {
+    return <span className="text-xs text-gray-500">{String(value)}</span>
+  }
+  return <span className="text-xs">{String(value)}</span>
+}
+
 export const ClientsPage = () => {
   const [searchText, setSearchText] = useState('')
+  const [sortField, setSortField] = useState<SortField | null>(null)
+  const [sortOrder, setSortOrder] = useState<SortOrder>('asc')
+
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'))
+    } else {
+      setSortField(field)
+      setSortOrder('asc')
+    }
+  }
+
+  const filteredData = data.filter(
+    (item) =>
+      !searchText ||
+      item.name.toLowerCase().includes(searchText.toLowerCase()) ||
+      item.email.toLowerCase().includes(searchText.toLowerCase()) ||
+      item.company.toLowerCase().includes(searchText.toLowerCase()),
+  )
+
+  const sortedData = [...filteredData].sort((a, b) => {
+    if (!sortField) return 0
+    const valA = a[sortField]
+    const valB = b[sortField]
+    if (sortField === 'added') {
+      const dateA = new Date(valA as string).getTime()
+      const dateB = new Date(valB as string).getTime()
+      return sortOrder === 'asc' ? dateA - dateB : dateB - dateA
+    }
+    const compare = String(valA).localeCompare(String(valB))
+    return sortOrder === 'asc' ? compare : -compare
+  })
 
   return (
     <div className="flex flex-col gap-8">
@@ -226,25 +218,56 @@ export const ClientsPage = () => {
             />
           </div>
         </div>
-        <Table
-          columns={columns}
-          dataSource={data.filter(
-            (item) =>
-              !searchText ||
-              item.name.toLowerCase().includes(searchText.toLowerCase()) ||
-              item.email.toLowerCase().includes(searchText.toLowerCase()) ||
-              item.company.toLowerCase().includes(searchText.toLowerCase()),
+
+        <div>
+          <Row gutter={8} className="mb-1 mr-0! ml-6!">
+            {columns.map((col) => (
+              <Col key={col.key} span={col.span} className="flex last:justify-end">
+                <Button
+                  type="text"
+                  size="small"
+                  className="!p-0 !h-auto flex items-center gap-1 text-xs text-gray-500 tracking-wide"
+                  onClick={() => handleSort(col.key)}
+                >
+                  {col.title}
+                  {
+                    <DownOutlined
+                      className={clsx(
+                        'text-xs transition-transform',
+                        {
+                          'rotate-180': sortOrder === 'desc',
+                        },
+                        sortField === col.key && 'text-blue-500',
+                      )}
+                    />
+                  }
+                </Button>
+              </Col>
+            ))}
+          </Row>
+
+          {sortedData.length === 0 ? (
+            <div className="text-center py-8 text-gray-500">Нет данных</div>
+          ) : (
+            sortedData.map((client) => (
+              <Card
+                key={client.key}
+                className={clsx('dashboard-card-row', {
+                  'opacity-40 bg-red-100 hover:bg-red-100': client.disabled,
+                })}
+                classNames={{ body: 'p-0' }}
+              >
+                <Row gutter={8}>
+                  {columns.map((col) => (
+                    <Col key={col.key} span={col.span} className="flex last:justify-end">
+                      {renderCellValue(client, col.key)}
+                    </Col>
+                  ))}
+                </Row>
+              </Card>
+            ))
           )}
-          pagination={false}
-          rowClassName={(record) =>
-            record.disabled
-              ? 'opacity-40 bg-red-100 hover:bg-red-100'
-              : 'shadow mb-[2px] rounded-lg'
-          }
-          locale={{
-            emptyText: 'Нет данных',
-          }}
-        />
+        </div>
       </div>
     </div>
   )
