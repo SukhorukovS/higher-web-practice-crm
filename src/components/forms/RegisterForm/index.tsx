@@ -72,7 +72,7 @@ export const RegisterForm = () => {
       >
         <Input.Password placeholder="******" />
       </Form.Item>
-      <Button type="primary" className="w-full h-10">
+      <Button type="primary" size="large" className="w-full">
         Зарегистрироваться
       </Button>
     </Form>

@@ -45,7 +45,7 @@ export const LoginForm = () => {
           Забыли пароль?
         </Link>
       </div>
-      <Button type="primary" className="w-full mt-14 h-10">
+      <Button type="primary" size="large" className="w-full mt-14">
         Войти
       </Button>
     </Form>

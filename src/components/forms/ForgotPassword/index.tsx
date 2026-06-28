@@ -31,7 +31,7 @@ export const ForgotPasswordForm = () => {
       >
         <Input placeholder="ivanov@yandex.ru" />
       </Form.Item>
-      <Button type="primary" className="w-full mt-10 h-10">
+      <Button type="primary" size="large" className="w-full mt-10">
         Восстановить
       </Button>
     </Form>
