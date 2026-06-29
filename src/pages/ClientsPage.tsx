@@ -15,7 +15,7 @@ interface ClientData {
   company: string
   website: string
   comment: string
-  added: string
+  createdAt: string
   disabled?: boolean
 }
 
@@ -29,7 +29,7 @@ const columns: { key: SortField; title: string; span: number }[] = [
   { key: 'company', title: 'Название компании', span: 3 },
   { key: 'website', title: 'Сайт', span: 3 },
   { key: 'comment', title: 'Комментарий', span: 5 },
-  { key: 'added', title: 'Добавлен', span: 4 },
+  { key: 'createdAt', title: 'Добавлен', span: 4 },
 ]
 
 const data: ClientData[] = [
@@ -41,7 +41,7 @@ const data: ClientData[] = [
     company: 'Сварог Инжиниринг',
     website: 'www.svarog-eng.com',
     comment: 'На стадии переговоров.',
-    added: '5 ноября 2024',
+    createdAt: '5 ноября 2024',
   },
   {
     key: '2',
@@ -51,7 +51,7 @@ const data: ClientData[] = [
     company: 'Радуга',
     website: 'www.radu.ga',
     comment: 'Ведёт сложные проекты.',
-    added: '20 октября 2024',
+    createdAt: '20 октября 2024',
   },
   {
     key: '3',
@@ -61,7 +61,7 @@ const data: ClientData[] = [
     company: 'Доброград',
     website: 'www.dobrograd.ru',
     comment: 'Прогнозируется рост активности.',
-    added: '17 октября 2024',
+    createdAt: '17 октября 2024',
   },
   {
     key: '4',
@@ -71,7 +71,7 @@ const data: ClientData[] = [
     company: 'Светлояр',
     website: 'www.svetloyar.com',
     comment: 'Рекомендует новые проекты.',
-    added: '1 октября 2024',
+    createdAt: '1 октября 2024',
   },
   {
     key: '5',
@@ -81,7 +81,7 @@ const data: ClientData[] = [
     company: 'Миролюб',
     website: 'www.miro ljub.ru',
     comment: 'Вовлечена в проектную деятельность.',
-    added: '24 сентября 2024',
+    createdAt: '24 сентября 2024',
   },
   {
     key: '6',
@@ -91,7 +91,7 @@ const data: ClientData[] = [
     company: 'Вятичи',
     website: 'www.vyatichi.com',
     comment: 'Постоянный клиент, особое внимание к срокам.',
-    added: '15 сентября 2024',
+    createdAt: '15 сентября 2024',
   },
   {
     key: '7',
@@ -101,7 +101,7 @@ const data: ClientData[] = [
     company: 'Ясновид',
     website: 'www.yasnovid.ru',
     comment: 'Работает над уникальными задачами.',
-    added: '12 сентября 2024',
+    createdAt: '12 сентября 2024',
   },
   {
     key: '8',
@@ -111,7 +111,7 @@ const data: ClientData[] = [
     company: 'Миловид',
     website: 'www.milovid.ru',
     comment: 'Быстро реагирует на предложения.',
-    added: '11 сентября 2024',
+    createdAt: '11 сентября 2024',
   },
   {
     key: '9',
@@ -121,7 +121,7 @@ const data: ClientData[] = [
     company: 'Ладомир',
     website: 'www.ladomir.com',
     comment: 'Долгосрочное сотрудничество.',
-    added: '8 августа 2024',
+    createdAt: '8 августа 2024',
   },
   {
     key: '10',
@@ -131,7 +131,7 @@ const data: ClientData[] = [
     company: 'БоярДев',
     website: 'www.boyardev.ru',
     comment: 'Специализируется на IT-разработках.',
-    added: '30 октября 2024',
+    createdAt: '30 октября 2024',
     disabled: true,
   },
 ]
@@ -187,7 +187,7 @@ export const ClientsPage = () => {
     if (!sortField) return 0
     const valA = a[sortField]
     const valB = b[sortField]
-    if (sortField === 'added') {
+    if (sortField === 'createdAt') {
       const dateA = new Date(valA as string).getTime()
       const dateB = new Date(valB as string).getTime()
       return sortOrder === 'asc' ? dateA - dateB : dateB - dateA
@@ -202,7 +202,7 @@ export const ClientsPage = () => {
         Клиенты
       </Title>
       <div className="flex flex-col gap-4">
-        <div className="flex gap-4">
+        <div className="flex gap-2">
           <Button type="primary" size="large">
             Новый клиент
           </Button>
