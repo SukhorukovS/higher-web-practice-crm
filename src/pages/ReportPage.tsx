@@ -1,13 +1,15 @@
 import type { TabsProps } from 'antd'
 import { Tabs, Typography } from 'antd'
 
+import { DealsReport } from '@/components/DealsReport'
+
 const { Title } = Typography
 
 const items: TabsProps['items'] = [
   {
     key: '1',
     label: 'Отчёты по продажам',
-    children: 'Content of Tab Pane 1',
+    children: <DealsReport />,
   },
   {
     key: '2',
