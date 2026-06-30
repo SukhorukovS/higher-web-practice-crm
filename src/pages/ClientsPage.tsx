@@ -220,7 +220,7 @@ export const ClientsPage = () => {
         </div>
 
         <div>
-          <Row gutter={8} className="mb-1 mr-0! ml-6!">
+          <Row gutter={8} className="mb-1 mx-6!">
             {columns.map((col) => (
               <Col key={col.key} span={col.span} className="flex last:justify-end">
                 <Button
