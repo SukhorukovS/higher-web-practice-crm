@@ -8,7 +8,7 @@ import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage'
 import { MainPage } from '@/pages/MainPage'
 import { ProfilePage } from '@/pages/ProfilePage'
 import { RegisterPage } from '@/pages/RegisterPage'
-import { StubPage } from '@/pages/StubPage'
+import { ReportPage } from '@/pages/ReportPage'
 import { TasksPage } from '@/pages/TasksPage'
 import { ROUTES } from '@/types/route'
 
@@ -24,7 +24,7 @@ export const router = createBrowserRouter([
       { path: ROUTES.PROFILE, element: <ProfilePage /> },
       { path: ROUTES.CLIENTS, element: <ClientsPage /> },
       { path: ROUTES.DEALS, element: <DealsPage /> },
-      { path: ROUTES.REPORTS, element: <StubPage /> },
+      { path: ROUTES.REPORTS, element: <ReportPage /> },
       { path: ROUTES.TASKS, element: <TasksPage /> },
     ],
   },
