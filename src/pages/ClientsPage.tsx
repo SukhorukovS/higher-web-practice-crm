@@ -1,8 +1,7 @@
-import { DownOutlined } from '@ant-design/icons'
-import { Button, Card, Col, Input, Row, Typography } from 'antd'
-import clsx from 'clsx'
+import { Button, Input, Typography } from 'antd'
 import { useState } from 'react'
 
+import { Table } from '@/components/Table'
 import { SearchIcon } from '@/icons/SearchIcon'
 
 const { Title } = Typography
@@ -17,12 +16,10 @@ interface ClientData {
   comment: string
   createdAt: string
   disabled?: boolean
+  className?: string
 }
 
-type SortField = keyof ClientData
-type SortOrder = 'asc' | 'desc'
-
-const columns: { key: SortField; title: string; span: number }[] = [
+const columns: { key: keyof ClientData & string; title: string; span: number }[] = [
   { key: 'name', title: 'Имя', span: 3 },
   { key: 'phone', title: 'Телефон', span: 3 },
   { key: 'email', title: 'Email', span: 3 },
@@ -136,7 +133,7 @@ const data: ClientData[] = [
   },
 ]
 
-const renderCellValue = (client: ClientData, key: SortField) => {
+const renderCellValue = (client: ClientData, key: keyof ClientData & string) => {
   const value = client[key]
   if (key === 'email') {
     return (
@@ -163,38 +160,19 @@ const renderCellValue = (client: ClientData, key: SortField) => {
 
 export const ClientsPage = () => {
   const [searchText, setSearchText] = useState('')
-  const [sortField, setSortField] = useState<SortField | null>(null)
-  const [sortOrder, setSortOrder] = useState<SortOrder>('asc')
 
-  const handleSort = (field: SortField) => {
-    if (sortField === field) {
-      setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'))
-    } else {
-      setSortField(field)
-      setSortOrder('asc')
-    }
-  }
-
-  const filteredData = data.filter(
-    (item) =>
-      !searchText ||
-      item.name.toLowerCase().includes(searchText.toLowerCase()) ||
-      item.email.toLowerCase().includes(searchText.toLowerCase()) ||
-      item.company.toLowerCase().includes(searchText.toLowerCase()),
-  )
-
-  const sortedData = [...filteredData].sort((a, b) => {
-    if (!sortField) return 0
-    const valA = a[sortField]
-    const valB = b[sortField]
-    if (sortField === 'createdAt') {
-      const dateA = new Date(valA as string).getTime()
-      const dateB = new Date(valB as string).getTime()
-      return sortOrder === 'asc' ? dateA - dateB : dateB - dateA
-    }
-    const compare = String(valA).localeCompare(String(valB))
-    return sortOrder === 'asc' ? compare : -compare
-  })
+  const filteredData = data
+    .filter(
+      (item) =>
+        !searchText ||
+        item.name.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.email.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.company.toLowerCase().includes(searchText.toLowerCase()),
+    )
+    .map((item) => ({
+      ...item,
+      className: item.disabled ? 'opacity-40 bg-red-100 hover:bg-red-100' : undefined,
+    }))
 
   return (
     <div className="flex flex-col gap-8">
@@ -219,55 +197,7 @@ export const ClientsPage = () => {
           </div>
         </div>
 
-        <div>
-          <Row gutter={8} className="mb-1 mx-6!">
-            {columns.map((col) => (
-              <Col key={col.key} span={col.span} className="flex last:justify-end">
-                <Button
-                  type="text"
-                  size="small"
-                  className="!p-0 !h-auto flex items-center gap-1 text-xs text-gray-500 tracking-wide"
-                  onClick={() => handleSort(col.key)}
-                >
-                  {col.title}
-                  {
-                    <DownOutlined
-                      className={clsx(
-                        'text-xs transition-transform',
-                        {
-                          'rotate-180': sortOrder === 'desc',
-                        },
-                        sortField === col.key && 'text-blue-500',
-                      )}
-                    />
-                  }
-                </Button>
-              </Col>
-            ))}
-          </Row>
-
-          {sortedData.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">Нет данных</div>
-          ) : (
-            sortedData.map((client) => (
-              <Card
-                key={client.key}
-                className={clsx('dashboard-card-row', {
-                  'opacity-40 bg-red-100 hover:bg-red-100': client.disabled,
-                })}
-                classNames={{ body: 'p-0' }}
-              >
-                <Row gutter={8}>
-                  {columns.map((col) => (
-                    <Col key={col.key} span={col.span} className="flex last:justify-end">
-                      {renderCellValue(client, col.key)}
-                    </Col>
-                  ))}
-                </Row>
-              </Card>
-            ))
-          )}
-        </div>
+        <Table columns={columns} data={filteredData} renderCell={renderCellValue} />
       </div>
     </div>
   )
