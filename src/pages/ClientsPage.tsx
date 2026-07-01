@@ -1,7 +1,7 @@
 import { Button, Input, Typography } from 'antd'
-import { useState } from 'react'
 
 import { Table } from '@/components/Table'
+import { useSearchFilter } from '@/hooks/useSearchFilter'
 import { SearchIcon } from '@/icons/SearchIcon'
 
 const { Title } = Typography
@@ -159,20 +159,14 @@ const renderCellValue = (client: ClientData, key: keyof ClientData & string) => 
 }
 
 export const ClientsPage = () => {
-  const [searchText, setSearchText] = useState('')
-
-  const filteredData = data
-    .filter(
-      (item) =>
-        !searchText ||
-        item.name.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.email.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.company.toLowerCase().includes(searchText.toLowerCase()),
-    )
-    .map((item) => ({
+  const { searchText, setSearchText, filteredData } = useSearchFilter(
+    data,
+    ['name', 'email', 'company'],
+    (item) => ({
       ...item,
       className: item.disabled ? 'opacity-40 bg-red-100 hover:bg-red-100' : undefined,
-    }))
+    }),
+  )
 
   return (
     <div className="flex flex-col gap-8">

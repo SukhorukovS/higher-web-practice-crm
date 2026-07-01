@@ -1,9 +1,9 @@
 import { Button, Input, Typography } from 'antd'
 import clsx from 'clsx'
-import { useState } from 'react'
 
 import { Table } from '@/components/Table/Table'
 import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
+import { useSearchFilter } from '@/hooks/useSearchFilter'
 import { SearchIcon } from '@/icons/SearchIcon'
 import type { Task, TaskStatus } from '@/types/task'
 
@@ -79,20 +79,15 @@ const renderCellValue = (task: TaskRow, key: keyof TaskRow & string) => {
 }
 
 export const TasksPage = () => {
-  const [searchText, setSearchText] = useState('')
-
-  const filteredData: TaskRow[] = taskData
-    .filter(
-      (item) =>
-        !searchText ||
-        item.title.toLowerCase().includes(searchText.toLowerCase()) ||
-        (item.description && item.description.toLowerCase().includes(searchText.toLowerCase())),
-    )
-    .map((item) => ({
+  const { searchText, setSearchText, filteredData } = useSearchFilter<Task, TaskRow>(
+    taskData,
+    ['title', 'description'],
+    (item) => ({
       ...item,
       key: item.id,
       className: statusBgMap[item.status],
-    }))
+    }),
+  )
 
   return (
     <div className="flex flex-col gap-8">
