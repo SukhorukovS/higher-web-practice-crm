@@ -1,25 +1,27 @@
-import { DownOutlined } from '@ant-design/icons'
-import { Button, Card, Col, Input, Row, Typography } from 'antd'
+import { Button, Input, Typography } from 'antd'
 import clsx from 'clsx'
 import { useState } from 'react'
 
+import { Table } from '@/components/Table/Table'
 import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
 import { SearchIcon } from '@/icons/SearchIcon'
 import type { Task, TaskStatus } from '@/types/task'
 
 const { Title } = Typography
 
-type SortField = keyof Task
-type SortOrder = 'asc' | 'desc'
+interface TaskRow extends Task {
+  key: string
+  className?: string
+}
 
-const columns: { key: SortField; label: string; span: number }[] = [
-  { key: 'title', label: 'Название', span: 3 },
-  { key: 'dealId', label: 'Сделка', span: 3 },
-  { key: 'description', label: 'Описание', span: 6 },
-  { key: 'dueDate', label: 'Выполнить до', span: 3 },
-  { key: 'assigneeId', label: 'Исполнитель', span: 4 },
-  { key: 'status', label: 'Статус', span: 2 },
-  { key: 'createdAt', label: 'Дата создания', span: 3 },
+const columns: { key: keyof TaskRow & string; title: string; span: number }[] = [
+  { key: 'title', title: 'Название', span: 3 },
+  { key: 'dealId', title: 'Сделка', span: 3 },
+  { key: 'description', title: 'Описание', span: 6 },
+  { key: 'dueDate', title: 'Выполнить до', span: 3 },
+  { key: 'assigneeId', title: 'Исполнитель', span: 4 },
+  { key: 'status', title: 'Статус', span: 2 },
+  { key: 'createdAt', title: 'Дата создания', span: 3 },
 ]
 
 const taskData: Task[] = [
@@ -58,7 +60,7 @@ const taskData: Task[] = [
   },
 ]
 
-const renderCellValue = (task: Task, key: SortField) => {
+const renderCellValue = (task: TaskRow, key: keyof TaskRow & string) => {
   const value = task[key]
 
   if (key === 'assigneeId') {
@@ -78,37 +80,19 @@ const renderCellValue = (task: Task, key: SortField) => {
 
 export const TasksPage = () => {
   const [searchText, setSearchText] = useState('')
-  const [sortField, setSortField] = useState<SortField | null>(null)
-  const [sortOrder, setSortOrder] = useState<SortOrder>('asc')
 
-  const handleSort = (field: SortField) => {
-    if (sortField === field) {
-      setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'))
-    } else {
-      setSortField(field)
-      setSortOrder('asc')
-    }
-  }
-
-  const filteredData = taskData.filter(
-    (item) =>
-      !searchText ||
-      item.title.toLowerCase().includes(searchText.toLowerCase()) ||
-      (item.description && item.description.toLowerCase().includes(searchText.toLowerCase())),
-  )
-
-  const sortedData = [...filteredData].sort((a, b) => {
-    if (!sortField) return 0
-    const valA = a[sortField]
-    const valB = b[sortField]
-    if (sortField === 'createdAt' || sortField === 'dueDate') {
-      const dateA = new Date(valA as string).getTime()
-      const dateB = new Date(valB as string).getTime()
-      return sortOrder === 'asc' ? dateA - dateB : dateB - dateA
-    }
-    const compare = String(valA).localeCompare(String(valB))
-    return sortOrder === 'asc' ? compare : -compare
-  })
+  const filteredData: TaskRow[] = taskData
+    .filter(
+      (item) =>
+        !searchText ||
+        item.title.toLowerCase().includes(searchText.toLowerCase()) ||
+        (item.description && item.description.toLowerCase().includes(searchText.toLowerCase())),
+    )
+    .map((item) => ({
+      ...item,
+      key: item.id,
+      className: statusBgMap[item.status],
+    }))
 
   return (
     <div className="flex flex-col gap-8">
@@ -132,54 +116,7 @@ export const TasksPage = () => {
             />
           </div>
         </div>
-
-        <div>
-          <Row gutter={8} className="mb-1 mx-6!">
-            {columns.map((col) => (
-              <Col key={col.key} span={col.span} className="flex last:justify-end">
-                <Button
-                  type="text"
-                  size="small"
-                  className="!p-0 !h-auto flex items-center gap-1 text-xs text-gray-500 tracking-wide"
-                  onClick={() => handleSort(col.key as SortField)}
-                >
-                  {col.label}
-                  {
-                    <DownOutlined
-                      className={clsx(
-                        'text-xs transition-transform',
-                        {
-                          'rotate-180': sortOrder === 'desc',
-                        },
-                        sortField === col.key && 'text-blue-500',
-                      )}
-                    />
-                  }
-                </Button>
-              </Col>
-            ))}
-          </Row>
-
-          {sortedData.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">Нет данных</div>
-          ) : (
-            sortedData.map((task) => (
-              <Card
-                key={task.id}
-                className={clsx('dashboard-card-row', statusBgMap[task.status])}
-                classNames={{ body: 'p-0' }}
-              >
-                <Row gutter={8}>
-                  {columns.map((col) => (
-                    <Col key={col.key} span={col.span} className="flex last:justify-end">
-                      {renderCellValue(task, col.key as SortField)}
-                    </Col>
-                  ))}
-                </Row>
-              </Card>
-            ))
-          )}
-        </div>
+        <Table columns={columns} data={filteredData} renderCell={renderCellValue} />
       </div>
     </div>
   )
