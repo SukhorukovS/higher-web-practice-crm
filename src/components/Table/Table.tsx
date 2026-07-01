@@ -43,31 +43,21 @@ export const Table = <T extends { key: Key; className?: string }>({
     if (!sortField || !sortOrder) return data
 
     return [...data].sort((a, b) => {
-      let valA: unknown = a[sortField]
-      let valB: unknown = b[sortField]
+      let valA: number | string = a[sortField] as number | string
+      let valB: number | string = b[sortField] as number | string
 
       if (typeof valA === 'string' && valA.includes('₽')) {
         valA = parseFloat(valA.replace(/[ ₽]/g, ''))
-        valB = parseFloat((valB as string).replace(/[ ₽]/g, ''))
+        valB = parseFloat(String(valB).replace(/[ ₽]/g, ''))
       }
 
-      if (typeof valA === 'number' && typeof valB === 'number') {
-        if (valA < valB) return sortOrder === 'asc' ? -1 : 1
-        if (valA > valB) return sortOrder === 'asc' ? 1 : -1
-        return 0
-      }
-
-      const strA = String(valA ?? '')
-      const strB = String(valB ?? '')
-      if (strA < strB) return sortOrder === 'asc' ? -1 : 1
-      if (strA > strB) return sortOrder === 'asc' ? 1 : -1
-      return 0
+      const compare = sortOrder === 'asc' ? -1 : 1
+      return valA < valB ? compare : valA > valB ? -compare : 0
     })
   }, [data, sortField, sortOrder])
 
   return (
     <div>
-      {/* Header Row */}
       <Row gutter={8} className="mb-1 mx-6!">
         {columns.map((col) => (
           <Col key={col.key} span={col.span} className="flex last:justify-end">
@@ -94,7 +84,6 @@ export const Table = <T extends { key: Key; className?: string }>({
         ))}
       </Row>
 
-      {/* Data Rows */}
       {sortedData.length === 0 ? (
         <div className="text-center py-8 text-gray-500">Нет данных</div>
       ) : (
