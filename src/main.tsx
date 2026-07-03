@@ -23,6 +23,9 @@ createRoot(document.getElementById('root')!).render(
               itemSelectedBg: 'transparent',
               collapsedIconSize: 24,
             },
+            Pagination: {
+              itemActiveBg: '#3B82F6',
+            },
           },
         }}
       >

@@ -94,7 +94,7 @@ export const Table = <T extends { key: Key; className?: string }>({
               'dashboard-card-row mb-2 border border-gray-100 shadow-sm rounded-lg',
               record.className,
             )}
-            classNames={{ body: 'p-3' }}
+            classNames={{ body: 'p-0' }}
           >
             <Row gutter={8} align="middle">
               {columns.map((col) => (

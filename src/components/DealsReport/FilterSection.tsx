@@ -28,8 +28,8 @@ export const FilterSection = ({
   viewFilter,
   setViewFilter,
 }: FilterSectionProps) => (
-  <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-    <Space size="middle">
+  <div className="flex items-center justify-between gap-2">
+    <Space size="small">
       <Select
         value={periodFilter}
         onChange={setPeriodFilter}
@@ -43,7 +43,7 @@ export const FilterSection = ({
         popupMatchSelectWidth={false}
       />
     </Space>
-    <Space size="middle">
+    <Space size="small">
       <Button className="bg-white hover:bg-gray-50">Экспорт в PDF</Button>
       <Button className="bg-white hover:bg-gray-50">Экспорт в XLSX</Button>
     </Space>
