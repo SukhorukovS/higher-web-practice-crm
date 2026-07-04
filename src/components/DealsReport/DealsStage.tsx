@@ -1,17 +1,27 @@
 import { Typography } from 'antd'
-import { useState } from 'react'
+import clsx from 'clsx'
+import { useMemo, useState } from 'react'
+
+import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
+import type { DealStatus } from '@/types/deal'
 
 import { type Column, Table } from '../Table'
 import { FilterSection, type PeriodFilter, type ViewFilter } from './FilterSection'
 
 const { Title } = Typography
 
-type DealStage = { key: string; status: string; amount: number; totalSum: number }
+type DealStage = {
+  key: string
+  status: DealStatus
+  amount: number
+  totalSum: number
+  className?: string
+}
 
 const dealsColumns = [
-  { key: 'status', title: 'Этап сделки', span: 6 },
-  { key: 'amount', title: 'Количество сделок на этапе', span: 9 },
-  { key: 'totalSum', title: 'Общая сумма сделок на этапе', span: 5 },
+  { key: 'status', title: 'Этап сделки', span: 8 },
+  { key: 'amount', title: 'Количество сделок на этапе', span: 8 },
+  { key: 'totalSum', title: 'Общая сумма сделок на этапе', span: 8 },
 ] satisfies Column<DealStage>[]
 
 const dealsData: DealStage[] = [
@@ -35,9 +45,37 @@ const dealsData: DealStage[] = [
   },
 ]
 
+const renderCellValue = (deal: DealStage, key: keyof DealStage & string) => {
+  const value = deal[key]
+
+  if (key === 'status') {
+    console.log(value)
+    return (
+      <p className={clsx('text-sm', statusColorMap[value as DealStatus])}>
+        {statusMap[value as DealStatus]}
+      </p>
+    )
+  }
+
+  if (key === 'totalSum') {
+    return <span className="text-sm">{String(value || '-')} ₽</span>
+  }
+
+  return <span className="text-sm">{String(value || '-')}</span>
+}
+
 export const DealsStage = () => {
   const [periodFilter, setPeriodFilter] = useState<PeriodFilter>('week')
   const [viewFilter, setViewFilter] = useState<ViewFilter>('list')
+
+  const dataWithClass = useMemo(
+    () =>
+      dealsData.map((deal) => ({
+        ...deal,
+        className: statusBgMap[deal.status],
+      })),
+    [],
+  )
 
   return (
     <div className="flex flex-col gap-3">
@@ -50,7 +88,7 @@ export const DealsStage = () => {
         viewFilter={viewFilter}
         setViewFilter={setViewFilter}
       />
-      <Table columns={dealsColumns} data={dealsData} />
+      <Table columns={dealsColumns} data={dataWithClass} renderCell={renderCellValue} />
     </div>
   )
 }
