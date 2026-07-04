@@ -1,7 +1,7 @@
 import { Button, Input, Typography } from 'antd'
 import clsx from 'clsx'
 
-import { Table } from '@/components/Table/Table'
+import { type Column, Table } from '@/components/Table/Table'
 import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
 import { useSearchFilter } from '@/hooks/useSearchFilter'
 import { SearchIcon } from '@/icons/SearchIcon'
@@ -14,7 +14,7 @@ interface TaskRow extends Task {
   className?: string
 }
 
-const columns: { key: keyof TaskRow & string; title: string; span: number }[] = [
+const columns = [
   { key: 'title', title: 'Название', span: 3 },
   { key: 'dealId', title: 'Сделка', span: 3 },
   { key: 'description', title: 'Описание', span: 6 },
@@ -22,7 +22,7 @@ const columns: { key: keyof TaskRow & string; title: string; span: number }[] = 
   { key: 'assigneeId', title: 'Исполнитель', span: 4 },
   { key: 'status', title: 'Статус', span: 2 },
   { key: 'createdAt', title: 'Дата создания', span: 3 },
-]
+] satisfies Column<TaskRow>[]
 
 const taskData: Task[] = [
   {

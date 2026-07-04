@@ -1,10 +1,13 @@
 import { DownOutlined } from '@ant-design/icons'
-import { Button, Card, Col, Row } from 'antd'
+import { Button, Card, Col, Pagination, Row } from 'antd'
 import clsx from 'clsx'
 import type { Key, ReactNode } from 'react'
 import { useMemo, useState } from 'react'
 
-interface Column<T> {
+import { LeftArrowIcon } from '@/icons/LeftArrowIcon'
+import { RightArrowIcon } from '@/icons/RightArrowIcon'
+
+export interface Column<T> {
   key: keyof T & string
   title: string
   span: number
@@ -15,6 +18,29 @@ interface TableProps<T extends { key: Key; className?: string }> {
   data: T[]
   defaultSortKey?: (keyof T & string) | null
   renderCell?: (record: T, key: keyof T & string) => ReactNode
+  pageSize?: number
+}
+
+const itemRender = (
+  _page: number,
+  type: 'page' | 'prev' | 'next' | 'jump-prev' | 'jump-next',
+  element: React.ReactNode,
+) => {
+  if (type === 'prev') {
+    return (
+      <div className="flex justify-center items-center h-full w-full">
+        <LeftArrowIcon />
+      </div>
+    )
+  }
+  if (type === 'next') {
+    return (
+      <div className="flex justify-center items-center h-full w-full">
+        <RightArrowIcon />
+      </div>
+    )
+  }
+  return element
 }
 
 export const Table = <T extends { key: Key; className?: string }>({
@@ -22,9 +48,11 @@ export const Table = <T extends { key: Key; className?: string }>({
   data,
   defaultSortKey = null,
   renderCell,
+  pageSize = 10,
 }: TableProps<T>) => {
   const [sortField, setSortField] = useState<(keyof T & string) | null>(defaultSortKey)
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | null>(null)
+  const [currentPage, setCurrentPage] = useState(1)
 
   const handleSort = (key: keyof T & string) => {
     if (sortField === key) {
@@ -56,6 +84,11 @@ export const Table = <T extends { key: Key; className?: string }>({
     })
   }, [data, sortField, sortOrder])
 
+  const pagedData = useMemo(() => {
+    const start = (currentPage - 1) * pageSize
+    return sortedData.slice(start, start + pageSize)
+  }, [sortedData, currentPage, pageSize])
+
   return (
     <div>
       <Row gutter={8} className="mb-1 mx-6!">
@@ -83,28 +116,39 @@ export const Table = <T extends { key: Key; className?: string }>({
           </Col>
         ))}
       </Row>
-
-      {sortedData.length === 0 ? (
-        <div className="text-center py-8 text-gray-500">Нет данных</div>
-      ) : (
-        sortedData.map((record) => (
-          <Card
-            key={record.key}
-            className={clsx(
-              'dashboard-card-row mb-2 border border-gray-100 shadow-sm rounded-lg',
-              record.className,
-            )}
-            classNames={{ body: 'p-0' }}
-          >
-            <Row gutter={8} align="middle">
-              {columns.map((col) => (
-                <Col key={col.key} span={col.span} className="flex last:justify-end items-center">
-                  {renderCell ? renderCell(record, col.key) : <>{record[col.key]}</>}
-                </Col>
-              ))}
-            </Row>
-          </Card>
-        ))
+      <div className="mb-3">
+        {pagedData.length === 0 ? (
+          <div className="text-center py-8 text-gray-500">Нет данных</div>
+        ) : (
+          pagedData.map((record) => (
+            <Card
+              key={record.key}
+              className={clsx(
+                'dashboard-card-row mb-2 border border-gray-100 shadow-sm rounded-lg',
+                record.className,
+              )}
+              classNames={{ body: 'p-0' }}
+            >
+              <Row gutter={8} align="middle">
+                {columns.map((col) => (
+                  <Col key={col.key} span={col.span} className="flex last:justify-end items-center">
+                    {renderCell ? renderCell(record, col.key) : <>{record[col.key]}</>}
+                  </Col>
+                ))}
+              </Row>
+            </Card>
+          ))
+        )}
+      </div>
+      {pageSize && data.length > pageSize && (
+        <Pagination
+          current={currentPage}
+          total={data.length}
+          pageSize={pageSize}
+          showSizeChanger={false}
+          itemRender={itemRender}
+          onChange={setCurrentPage}
+        />
       )}
     </div>
   )

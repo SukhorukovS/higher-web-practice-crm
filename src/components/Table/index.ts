@@ -1,3 +1,3 @@
-import { Table } from './Table'
+import { type Column, Table } from './Table'
 
-export { Table }
+export { type Column, Table }

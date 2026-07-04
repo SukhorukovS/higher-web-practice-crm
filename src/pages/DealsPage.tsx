@@ -1,7 +1,7 @@
 import { Button, Input, Typography } from 'antd'
 import clsx from 'clsx'
 
-import { Table } from '@/components/Table/Table'
+import { type Column, Table } from '@/components/Table/Table'
 import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
 import { useSearchFilter } from '@/hooks/useSearchFilter'
 import { SearchIcon } from '@/icons/SearchIcon'
@@ -14,7 +14,7 @@ interface DealRow extends Deal {
   className?: string
 }
 
-const columns: { key: keyof DealRow & string; title: string; span: number }[] = [
+const columns = [
   { key: 'title', title: 'Название', span: 5 },
   { key: 'clientId', title: 'Клиент', span: 2 },
   { key: 'description', title: 'Описание', span: 7 },
@@ -22,7 +22,7 @@ const columns: { key: keyof DealRow & string; title: string; span: number }[] = 
   { key: 'amount', title: 'Сумма', span: 2 },
   { key: 'createdAt', title: 'Дата создания', span: 3 },
   { key: 'completedAt', title: 'Дата завершения', span: 3 },
-]
+] satisfies Column<DealRow>[]
 
 const dealData: Deal[] = [
   {

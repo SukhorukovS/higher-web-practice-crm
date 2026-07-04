@@ -1,10 +1,7 @@
-import { Pagination, Typography } from 'antd'
+import { Typography } from 'antd'
 import { useState } from 'react'
 
-import { LeftArrowIcon } from '@/icons/LeftArrowIcon'
-import { RightArrowIcon } from '@/icons/RightArrowIcon'
-
-import { Table } from '../Table'
+import { type Column, Table } from '../Table'
 import { FilterSection, type PeriodFilter, type ViewFilter } from './FilterSection'
 
 const { Title } = Typography
@@ -18,13 +15,13 @@ interface SaleRow {
   date: string
 }
 
-const salesColumns: { key: keyof SaleRow & string; title: string; span: number }[] = [
+const salesColumns = [
   { key: 'id', title: 'ID сделки', span: 4 },
   { key: 'name', title: 'Название', span: 8 },
   { key: 'client', title: 'Клиент', span: 5 },
   { key: 'amount', title: 'Сумма', span: 4 },
   { key: 'date', title: 'Дата завершения', span: 3 },
-]
+] satisfies Column<SaleRow>[]
 
 const salesData: SaleRow[] = [
   {
@@ -61,28 +58,6 @@ const salesData: SaleRow[] = [
   },
 ]
 
-const itemRender = (
-  _page: number,
-  type: 'page' | 'prev' | 'next' | 'jump-prev' | 'jump-next',
-  element: React.ReactNode,
-) => {
-  if (type === 'prev') {
-    return (
-      <div className="flex justify-center items-center h-full w-full">
-        <LeftArrowIcon />
-      </div>
-    )
-  }
-  if (type === 'next') {
-    return (
-      <div className="flex justify-center items-center h-full w-full">
-        <RightArrowIcon />
-      </div>
-    )
-  }
-  return element
-}
-
 export const SalesReport = () => {
   const [periodFilter, setPeriodFilter] = useState<PeriodFilter>('week')
   const [viewFilter, setViewFilter] = useState<ViewFilter>('list')
@@ -98,8 +73,7 @@ export const SalesReport = () => {
         viewFilter={viewFilter}
         setViewFilter={setViewFilter}
       />
-      <Table columns={salesColumns} data={salesData} />
-      <Pagination current={1} total={10} showSizeChanger={false} itemRender={itemRender} />
+      <Table columns={salesColumns} data={salesData} pageSize={10} />
     </div>
   )
 }

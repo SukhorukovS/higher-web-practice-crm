@@ -1,6 +1,6 @@
 import { Button, Input, Typography } from 'antd'
 
-import { Table } from '@/components/Table'
+import { type Column, Table } from '@/components/Table'
 import { useSearchFilter } from '@/hooks/useSearchFilter'
 import { SearchIcon } from '@/icons/SearchIcon'
 
@@ -19,7 +19,7 @@ interface ClientData {
   className?: string
 }
 
-const columns: { key: keyof ClientData & string; title: string; span: number }[] = [
+const columns = [
   { key: 'name', title: 'Имя', span: 3 },
   { key: 'phone', title: 'Телефон', span: 3 },
   { key: 'email', title: 'Email', span: 3 },
@@ -27,7 +27,7 @@ const columns: { key: keyof ClientData & string; title: string; span: number }[]
   { key: 'website', title: 'Сайт', span: 3 },
   { key: 'comment', title: 'Комментарий', span: 5 },
   { key: 'createdAt', title: 'Добавлен', span: 4 },
-]
+] satisfies Column<ClientData>[]
 
 const data: ClientData[] = [
   {
