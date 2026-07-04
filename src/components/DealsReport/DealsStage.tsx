@@ -5,8 +5,8 @@ import { useMemo, useState } from 'react'
 import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
 import type { DealStatus } from '@/types/deal'
 
+import { FilterSection, type PeriodFilter, type ViewFilter } from '../FilterSection/FilterSection'
 import { type Column, Table } from '../Table'
-import { FilterSection, type PeriodFilter, type ViewFilter } from './FilterSection'
 
 const { Title } = Typography
 

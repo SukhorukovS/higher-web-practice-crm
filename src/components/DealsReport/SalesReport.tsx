@@ -1,8 +1,8 @@
 import { Typography } from 'antd'
 import { useState } from 'react'
 
+import { FilterSection, type PeriodFilter, type ViewFilter } from '../FilterSection/FilterSection'
 import { type Column, Table } from '../Table'
-import { FilterSection, type PeriodFilter, type ViewFilter } from './FilterSection'
 
 const { Title } = Typography
 

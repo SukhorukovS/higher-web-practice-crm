@@ -1,6 +1,7 @@
 import type { TabsProps } from 'antd'
 import { Tabs, Typography } from 'antd'
 
+import { ClientReport } from '@/components/ClientReport'
 import { DealsReport } from '@/components/DealsReport'
 
 const { Title } = Typography
@@ -14,7 +15,7 @@ const items: TabsProps['items'] = [
   {
     key: '2',
     label: 'Отчёты по клиентам',
-    children: 'Content of Tab Pane 2',
+    children: <ClientReport />,
   },
   {
     key: '3',
@@ -27,7 +28,7 @@ export function ReportPage() {
   return (
     <div className="flex flex-col gap-8">
       <Title level={1} className="text-3xl">
-        Сделки
+        Отчёты
       </Title>
       <Tabs
         items={items}
