@@ -18,11 +18,11 @@ type DealStage = {
   className?: string
 }
 
-const dealsColumns = [
+const dealsColumns: Column<DealStage>[] = [
   { key: 'status', title: 'Этап сделки', span: 8 },
   { key: 'amount', title: 'Количество сделок на этапе', span: 8 },
   { key: 'totalSum', title: 'Общая сумма сделок на этапе', span: 8 },
-] satisfies Column<DealStage>[]
+]
 
 const dealsData: DealStage[] = [
   {

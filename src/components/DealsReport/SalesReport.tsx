@@ -14,13 +14,13 @@ interface SaleRow {
   date: string
 }
 
-const salesColumns = [
+const salesColumns: Column<SaleRow>[] = [
   { key: 'id', title: 'ID сделки', span: 4 },
   { key: 'name', title: 'Название', span: 8 },
   { key: 'client', title: 'Клиент', span: 5 },
   { key: 'amount', title: 'Сумма', span: 4 },
   { key: 'date', title: 'Дата завершения', span: 3 },
-] satisfies Column<SaleRow>[]
+]
 
 const salesData: SaleRow[] = [
   {
