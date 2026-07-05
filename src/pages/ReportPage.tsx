@@ -3,6 +3,7 @@ import { Tabs, Typography } from 'antd'
 
 import { ClientReport } from '@/components/ClientReport'
 import { DealsReport } from '@/components/DealsReport'
+import { OverdueTasks } from '@/components/OverdueTasks'
 
 const { Title } = Typography
 
@@ -20,7 +21,7 @@ const items: TabsProps['items'] = [
   {
     key: '3',
     label: 'Отчёты по задачам',
-    children: 'Content of Tab Pane 3',
+    children: <OverdueTasks />,
   },
 ]
 
