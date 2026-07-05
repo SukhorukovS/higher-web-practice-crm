@@ -1,7 +1,6 @@
 import { Typography } from 'antd'
-import { useState } from 'react'
 
-import { FilterSection, type PeriodFilter, type ViewFilter } from '../FilterSection/FilterSection'
+import { type Filters, FilterSection } from '../FilterSection/FilterSection'
 import { type Column, Table } from '../Table'
 
 const { Title } = Typography
@@ -59,20 +58,16 @@ const salesData: SaleRow[] = [
 ]
 
 export const SalesReport = () => {
-  const [periodFilter, setPeriodFilter] = useState<PeriodFilter>('week')
-  const [viewFilter, setViewFilter] = useState<ViewFilter>('list')
+  const handleFiltersChange = (filters: Filters) => {
+    console.log(filters)
+  }
 
   return (
     <div className="flex flex-col gap-3">
       <Title level={5} className="font-bold">
         Общий, продажи
       </Title>
-      <FilterSection
-        periodFilter={periodFilter}
-        setPeriodFilter={setPeriodFilter}
-        viewFilter={viewFilter}
-        setViewFilter={setViewFilter}
-      />
+      <FilterSection onChange={handleFiltersChange} />
       <Table columns={salesColumns} data={salesData} pageSize={10} />
     </div>
   )

@@ -1,11 +1,11 @@
 import { Typography } from 'antd'
 import clsx from 'clsx'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 
 import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
 import type { DealStatus } from '@/types/deal'
 
-import { FilterSection, type PeriodFilter, type ViewFilter } from '../FilterSection/FilterSection'
+import { type Filters, FilterSection } from '../FilterSection/FilterSection'
 import { type Column, Table } from '../Table'
 
 const { Title } = Typography
@@ -65,9 +65,6 @@ const renderCellValue = (deal: DealStage, key: keyof DealStage & string) => {
 }
 
 export const DealsStage = () => {
-  const [periodFilter, setPeriodFilter] = useState<PeriodFilter>('week')
-  const [viewFilter, setViewFilter] = useState<ViewFilter>('list')
-
   const dataWithClass = useMemo(
     () =>
       dealsData.map((deal) => ({
@@ -77,17 +74,16 @@ export const DealsStage = () => {
     [],
   )
 
+  const handleFiltersChange = (filters: Filters) => {
+    console.log(filters)
+  }
+
   return (
     <div className="flex flex-col gap-3">
       <Title level={5} className="font-bold">
         Общий, продажи
       </Title>
-      <FilterSection
-        periodFilter={periodFilter}
-        setPeriodFilter={setPeriodFilter}
-        viewFilter={viewFilter}
-        setViewFilter={setViewFilter}
-      />
+      <FilterSection onChange={handleFiltersChange} />
       <Table columns={dealsColumns} data={dataWithClass} renderCell={renderCellValue} />
     </div>
   )

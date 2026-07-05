@@ -1,5 +1,5 @@
 import { Button, Select, Space } from 'antd'
-import type { Dispatch, SetStateAction } from 'react'
+import { useCallback, useState } from 'react'
 
 const periodOptions = [
   { value: 'week', label: 'За неделю' },
@@ -15,37 +15,61 @@ const viewOptions = [
 export type PeriodFilter = 'week' | 'month' | 'quarter'
 export type ViewFilter = 'list' | 'grid'
 
+export interface Filters {
+  period: PeriodFilter
+  view: ViewFilter
+}
+
 interface FilterSectionProps {
-  periodFilter: PeriodFilter
-  setPeriodFilter: Dispatch<SetStateAction<PeriodFilter>>
-  viewFilter: ViewFilter
-  setViewFilter: Dispatch<SetStateAction<ViewFilter>>
+  defaultPeriod?: PeriodFilter
+  defaultView?: ViewFilter
+  onChange?: (filters: Filters) => void
 }
 
 export const FilterSection = ({
-  periodFilter,
-  setPeriodFilter,
-  viewFilter,
-  setViewFilter,
-}: FilterSectionProps) => (
-  <div className="flex items-center justify-between gap-2">
-    <Space size="small">
-      <Select
-        value={periodFilter}
-        onChange={setPeriodFilter}
-        options={periodOptions}
-        popupMatchSelectWidth={false}
-      />
-      <Select
-        value={viewFilter}
-        onChange={setViewFilter}
-        options={viewOptions}
-        popupMatchSelectWidth={false}
-      />
-    </Space>
-    <Space size="small">
-      <Button className="bg-white hover:bg-gray-50">Экспорт в PDF</Button>
-      <Button className="bg-white hover:bg-gray-50">Экспорт в XLSX</Button>
-    </Space>
-  </div>
-)
+  defaultPeriod = 'week',
+  defaultView = 'list',
+  onChange,
+}: FilterSectionProps) => {
+  const [period, setPeriod] = useState<PeriodFilter>(defaultPeriod)
+  const [view, setView] = useState<ViewFilter>(defaultView)
+
+  const handlePeriodChange = useCallback(
+    (value: PeriodFilter) => {
+      setPeriod(value)
+      onChange?.({ period: value, view })
+    },
+    [view, onChange],
+  )
+
+  const handleViewChange = useCallback(
+    (value: ViewFilter) => {
+      setView(value)
+      onChange?.({ period, view: value })
+    },
+    [period, onChange],
+  )
+
+  return (
+    <div className="flex items-center justify-between gap-2">
+      <Space size="small">
+        <Select
+          value={period}
+          onChange={handlePeriodChange}
+          options={periodOptions}
+          popupMatchSelectWidth={false}
+        />
+        <Select
+          value={view}
+          onChange={handleViewChange}
+          options={viewOptions}
+          popupMatchSelectWidth={false}
+        />
+      </Space>
+      <Space size="small">
+        <Button className="bg-white hover:bg-gray-50">Экспорт в PDF</Button>
+        <Button className="bg-white hover:bg-gray-50">Экспорт в XLSX</Button>
+      </Space>
+    </div>
+  )
+}
