@@ -1,5 +1,7 @@
 import { Button, Input, Typography } from 'antd'
+import { useState } from 'react'
 
+import { ClientModal } from '@/components/modals/ClientModal'
 import { type Column, Table } from '@/components/Table'
 import { useSearchFilter } from '@/hooks/useSearchFilter'
 import { SearchIcon } from '@/icons/SearchIcon'
@@ -159,6 +161,8 @@ const renderCellValue = (client: ClientData, key: keyof ClientData & string) => 
 }
 
 export const ClientsPage = () => {
+  const [isOpen, setIsOpen] = useState(false)
+
   const { searchText, setSearchText, filteredData } = useSearchFilter(
     data,
     ['name', 'email', 'company'],
@@ -169,30 +173,33 @@ export const ClientsPage = () => {
   )
 
   return (
-    <div className="flex flex-col gap-8">
-      <Title level={1} className="text-3xl">
-        Клиенты
-      </Title>
-      <div className="flex flex-col gap-4">
-        <div className="flex gap-2">
-          <Button type="primary" size="large">
-            Новый клиент
-          </Button>
-          <div className="flex-1">
-            <Input
-              prefix={<SearchIcon />}
-              placeholder="Искать"
-              className="py-[10px] h-10 bg-transparent"
-              classNames={{ prefix: 'mr-4' }}
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              allowClear
-            />
+    <>
+      <div className="flex flex-col gap-8">
+        <Title level={1} className="text-3xl">
+          Клиенты
+        </Title>
+        <div className="flex flex-col gap-4">
+          <div className="flex gap-2">
+            <Button type="primary" size="large" onClick={() => setIsOpen(true)}>
+              Новый клиент
+            </Button>
+            <div className="flex-1">
+              <Input
+                prefix={<SearchIcon />}
+                placeholder="Искать"
+                className="py-[10px] h-10 bg-transparent"
+                classNames={{ prefix: 'mr-4' }}
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                allowClear
+              />
+            </div>
           </div>
-        </div>
 
-        <Table columns={columns} data={filteredData} renderCell={renderCellValue} />
+          <Table columns={columns} data={filteredData} renderCell={renderCellValue} />
+        </div>
       </div>
-    </div>
+      <ClientModal isOpen={isOpen} handleCancel={() => setIsOpen(false)} />
+    </>
   )
 }
