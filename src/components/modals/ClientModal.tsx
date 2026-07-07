@@ -2,6 +2,7 @@ import { Button, Form, Input, Modal, Typography } from 'antd'
 import type { FC } from 'react'
 
 import type { Client } from '@/types/client'
+import clsx from 'clsx'
 
 type Props = {
   isOpen: boolean
@@ -58,10 +59,14 @@ export const ClientModal: FC<Props> = ({ isOpen, client, handleCancel }) => {
       }}
       footer={[
         <div className="flex gap-4">
-          <Button key="submit" type="primary" className="grow" onClick={handleOk}>
+          <Button key="submit" type="primary" className="grow font-bold" onClick={handleOk}>
             {client ? 'Редактировать' : 'Cоздать'}
           </Button>
-          <Button key="back" onClick={handleCancel}>
+          <Button
+            key="back"
+            onClick={handleCancel}
+            className={clsx(client && 'text-red-500', 'font-bold')}
+          >
             {client ? 'Удалить клиента' : 'Отменить'}
           </Button>
         </div>,
@@ -72,6 +77,7 @@ export const ClientModal: FC<Props> = ({ isOpen, client, handleCancel }) => {
         classNames={{
           label: 'text-gray-400 text-xs',
         }}
+        initialValues={client}
       >
         <Form.Item<FieldType>
           label="Имя"
@@ -117,7 +123,7 @@ export const ClientModal: FC<Props> = ({ isOpen, client, handleCancel }) => {
         </div>
         <Form.Item<FieldType>
           label="Комментарий"
-          name="email"
+          name="comment"
           labelCol={{ style: { paddingBottom: '2px' } }}
           className="mb-8"
         >

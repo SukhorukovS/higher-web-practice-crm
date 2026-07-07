@@ -162,6 +162,7 @@ const renderCellValue = (client: ClientData, key: keyof ClientData & string) => 
 
 export const ClientsPage = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const [selectedClient, setSelectedClient] = useState<ClientData | null>(null)
 
   const { searchText, setSearchText, filteredData } = useSearchFilter(
     data,
@@ -196,10 +197,27 @@ export const ClientsPage = () => {
             </div>
           </div>
 
-          <Table columns={columns} data={filteredData} renderCell={renderCellValue} />
+          <Table
+            columns={columns}
+            data={filteredData}
+            renderCell={renderCellValue}
+            onRowClick={(client) => {
+              setSelectedClient(client)
+              setIsOpen(true)
+            }}
+          />
         </div>
       </div>
-      <ClientModal isOpen={isOpen} handleCancel={() => setIsOpen(false)} />
+      <ClientModal
+        isOpen={isOpen}
+        handleCancel={() => {
+          setIsOpen(false)
+          setSelectedClient(null)
+        }}
+        client={
+          selectedClient ? { ...selectedClient, id: selectedClient.key, createdBy: '' } : undefined
+        }
+      />
     </>
   )
 }

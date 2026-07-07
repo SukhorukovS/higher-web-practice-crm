@@ -19,6 +19,7 @@ interface TableProps<T extends { key: Key; className?: string }> {
   defaultSortKey?: (keyof T & string) | null
   renderCell?: (record: T, key: keyof T & string) => ReactNode
   pageSize?: number
+  onRowClick?: (record: T) => void
 }
 
 const itemRender = (
@@ -49,6 +50,7 @@ export const Table = <T extends { key: Key; className?: string }>({
   defaultSortKey = null,
   renderCell,
   pageSize = 10,
+  onRowClick,
 }: TableProps<T>) => {
   const [sortField, setSortField] = useState<(keyof T & string) | null>(defaultSortKey)
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | null>(null)
@@ -125,9 +127,11 @@ export const Table = <T extends { key: Key; className?: string }>({
               key={record.key}
               className={clsx(
                 'dashboard-card-row mb-2 border border-gray-100 shadow-sm rounded-lg',
+                onRowClick && 'cursor-pointer',
                 record.className,
               )}
               classNames={{ body: 'p-0' }}
+              onClick={() => onRowClick?.(record)}
             >
               <Row gutter={8} align="middle">
                 {columns.map((col) => (
