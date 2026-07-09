@@ -1,8 +1,10 @@
 import { Button, Card, Col, Row, Typography } from 'antd'
 import clsx from 'clsx'
-import React from 'react'
+import React, { useState } from 'react'
 
 import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
+
+import { DealModal } from '../modals/DealModal'
 
 interface Deal {
   key: string
@@ -99,42 +101,46 @@ const dealsData: Deal[] = [
 ]
 
 export const ActiveDealsTable: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false)
   return (
-    <div className="dashboard-section">
-      <div className="flex justify-between items-center">
-        <Title level={5} className="dashboard-title">
-          Топ 10 активных сделок
-        </Title>
+    <>
+      <div className="dashboard-section">
+        <div className="flex justify-between items-center">
+          <Title level={5} className="dashboard-title">
+            Топ 10 активных сделок
+          </Title>
+        </div>
+        {dealsData.map((deal) => (
+          <Card
+            key={deal.key}
+            className={clsx('dashboard-card-row text-sm', statusBgMap[deal.status])}
+            classNames={{ body: 'p-0' }}
+          >
+            <Row gutter={8}>
+              <Col span={10}>{deal.name}</Col>
+              <Col span={6} className="text-gray-500">
+                {deal.person}
+              </Col>
+              <Col span={3} className="font-bold">
+                {deal.amount}
+              </Col>
+              <Col span={2} className={clsx(statusColorMap[deal.status])}>
+                {statusMap[deal.status]}
+              </Col>
+              <Col span={3} className="text-gray-500">
+                {deal.date}
+              </Col>
+            </Row>
+          </Card>
+        ))}
+        <div className="mt-3">
+          <Button type="primary" size="large" onClick={() => setIsOpen(true)}>
+            Новая сделка
+          </Button>
+        </div>
       </div>
-      {dealsData.map((deal) => (
-        <Card
-          key={deal.key}
-          className={clsx('dashboard-card-row text-sm', statusBgMap[deal.status])}
-          classNames={{ body: 'p-0' }}
-        >
-          <Row gutter={8}>
-            <Col span={10}>{deal.name}</Col>
-            <Col span={6} className="text-gray-500">
-              {deal.person}
-            </Col>
-            <Col span={3} className="font-bold">
-              {deal.amount}
-            </Col>
-            <Col span={2} className={clsx(statusColorMap[deal.status])}>
-              {statusMap[deal.status]}
-            </Col>
-            <Col span={3} className="text-gray-500">
-              {deal.date}
-            </Col>
-          </Row>
-        </Card>
-      ))}
-      <div className="mt-3">
-        <Button type="primary" size="large">
-          Новая сделка
-        </Button>
-      </div>
-    </div>
+      <DealModal isOpen={isOpen} handleCancel={() => setIsOpen(false)} />
+    </>
   )
 }
 

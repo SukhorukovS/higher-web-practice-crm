@@ -1,8 +1,11 @@
 import { Button, Card, Typography } from 'antd'
 import clsx from 'clsx'
+import { useState } from 'react'
 
 import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
 import type { Task } from '@/types/task'
+
+import { DealModal } from '../modals/DealModal'
 
 const { Title, Text, Paragraph } = Typography
 
@@ -43,37 +46,40 @@ const tasks: Task[] = [
 ]
 
 export const LastTasks = () => {
+  const [isOpen, setIsOpen] = useState(false)
   return (
-    <div className="dashboard-section">
-      <Title level={5} className="dashboard-title">
-        топ 10 активных клиентов
-      </Title>
-      <div className="dashboard-grid">
-        {tasks.map((task) => (
-          <Card
-            key={task.id}
-            className={clsx('dashboard-card-col', statusBgMap[task.status])}
-            classNames={{ body: 'dashboard-card-col-body' }}
-          >
-            <div className="grow">
-              <Paragraph className="font-bold text-sm block mb-[2px]">{task.title}</Paragraph>
-              <Paragraph className="text-xs text-gray-400 mb-[2px]">сделка</Paragraph>
-              <Text className="text-sm text-gray-500">Проект «Сварог 2024»</Text>
-            </div>
-            <div className="mt-2 flex justify-between">
-              <Text className="text-sm text-gray-500">{task.dueDate}</Text>
-              <Text className={clsx('text-sm', statusColorMap[task.status])}>
-                {statusMap[task.status]}
-              </Text>
-            </div>
-          </Card>
-        ))}
+    <>
+      <div className="dashboard-section">
+        <Title level={5} className="dashboard-title">
+          топ 10 активных клиентов
+        </Title>
+        <div className="dashboard-grid">
+          {tasks.map((task) => (
+            <Card
+              key={task.id}
+              className={clsx('dashboard-card-col', statusBgMap[task.status])}
+              classNames={{ body: 'dashboard-card-col-body' }}
+            >
+              <div className="grow">
+                <Paragraph className="font-bold text-sm block mb-[2px]">{task.title}</Paragraph>
+                <Paragraph className="text-xs text-gray-400 mb-[2px]">сделка</Paragraph>
+                <Text className="text-sm text-gray-500">Проект «Сварог 2024»</Text>
+              </div>
+              <div className="mt-2 flex justify-between">
+                <Text className="text-sm text-gray-500">{task.dueDate}</Text>
+                <Text className={clsx('text-sm', statusColorMap[task.status])}>
+                  {statusMap[task.status]}
+                </Text>
+              </div>
+            </Card>
+          ))}
+        </div>
+        <div>
+          <Button type="primary" size="large">
+            Новая задача
+          </Button>
+        </div>
       </div>
-      <div>
-        <Button type="primary" size="large">
-          Новая задача
-        </Button>
-      </div>
-    </div>
+    </>
   )
 }

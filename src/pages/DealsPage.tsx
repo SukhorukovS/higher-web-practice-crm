@@ -1,6 +1,8 @@
 import { Button, Input, Typography } from 'antd'
 import clsx from 'clsx'
+import { useState } from 'react'
 
+import { DealModal } from '@/components/modals/DealModal'
 import { type Column, Table } from '@/components/Table/Table'
 import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
 import { useSearchFilter } from '@/hooks/useSearchFilter'
@@ -206,6 +208,8 @@ const renderCellValue = (deal: DealRow, key: keyof DealRow & string) => {
 }
 
 export const DealsPage = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [selectedDeal, setSelectedDeal] = useState<DealRow | null>(null)
   const { searchText, setSearchText, filteredData } = useSearchFilter<Deal, DealRow>(
     dealData,
     ['title', 'clientId'],
@@ -217,29 +221,47 @@ export const DealsPage = () => {
   )
 
   return (
-    <div className="flex flex-col gap-8">
-      <Title level={1} className="text-3xl">
-        Сделки
-      </Title>
-      <div className="flex flex-col gap-4">
-        <div className="flex gap-2">
-          <Button type="primary" size="large">
-            Новый клиент
-          </Button>
-          <div className="flex-1">
-            <Input
-              prefix={<SearchIcon />}
-              placeholder="Искать"
-              className="py-[10px] h-10 bg-transparent"
-              classNames={{ prefix: 'mr-4' }}
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              allowClear
-            />
+    <>
+      <div className="flex flex-col gap-8">
+        <Title level={1} className="text-3xl">
+          Сделки
+        </Title>
+        <div className="flex flex-col gap-4">
+          <div className="flex gap-2">
+            <Button type="primary" size="large" onClick={() => setIsOpen(true)}>
+              Новая сделка
+            </Button>
+            <div className="flex-1">
+              <Input
+                prefix={<SearchIcon />}
+                placeholder="Искать"
+                className="py-[10px] h-10 bg-transparent"
+                classNames={{ prefix: 'mr-4' }}
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                allowClear
+              />
+            </div>
           </div>
+          <Table
+            columns={columns}
+            data={filteredData}
+            renderCell={renderCellValue}
+            onRowClick={(deal) => {
+              setSelectedDeal(deal)
+              setIsOpen(true)
+            }}
+          />
         </div>
-        <Table columns={columns} data={filteredData} renderCell={renderCellValue} />
       </div>
-    </div>
+      <DealModal
+        isOpen={isOpen}
+        handleCancel={() => {
+          setIsOpen(false)
+          setSelectedDeal(null)
+        }}
+        deal={selectedDeal ? { ...selectedDeal } : undefined}
+      />
+    </>
   )
 }
