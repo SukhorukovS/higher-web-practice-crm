@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
 import type { Task } from '@/types/task'
 
-import { DealModal } from '../modals/DealModal'
+import { TaskModal } from '../modals/TaskModal'
 
 const { Title, Text, Paragraph } = Typography
 
@@ -75,11 +75,12 @@ export const LastTasks = () => {
           ))}
         </div>
         <div>
-          <Button type="primary" size="large">
+          <Button type="primary" size="large" onClick={() => setIsOpen(true)}>
             Новая задача
           </Button>
         </div>
       </div>
+      <TaskModal isOpen={isOpen} handleCancel={() => setIsOpen(false)} />
     </>
   )
 }

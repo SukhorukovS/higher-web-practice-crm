@@ -1,6 +1,8 @@
 import { Button, Input, Typography } from 'antd'
 import clsx from 'clsx'
+import { useState } from 'react'
 
+import { TaskModal } from '@/components/modals/TaskModal'
 import { type Column, Table } from '@/components/Table/Table'
 import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
 import { useSearchFilter } from '@/hooks/useSearchFilter'
@@ -79,6 +81,8 @@ const renderCellValue = (task: TaskRow, key: keyof TaskRow & string) => {
 }
 
 export const TasksPage = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [selectedTask, setSelectedTask] = useState<TaskRow | null>(null)
   const { searchText, setSearchText, filteredData } = useSearchFilter<Task, TaskRow>(
     taskData,
     ['title', 'description'],
@@ -90,29 +94,47 @@ export const TasksPage = () => {
   )
 
   return (
-    <div className="flex flex-col gap-8">
-      <Title level={1} className="text-3xl">
-        Задачи
-      </Title>
-      <div className="flex flex-col gap-4">
-        <div className="flex gap-2">
-          <Button type="primary" size="large">
-            Новая задача
-          </Button>
-          <div className="flex-1">
-            <Input
-              prefix={<SearchIcon />}
-              placeholder="Искать"
-              className="py-[10px] h-10 bg-transparent"
-              classNames={{ prefix: 'mr-4' }}
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              allowClear
-            />
+    <>
+      <div className="flex flex-col gap-8">
+        <Title level={1} className="text-3xl">
+          Задачи
+        </Title>
+        <div className="flex flex-col gap-4">
+          <div className="flex gap-2">
+            <Button type="primary" size="large" onClick={() => setIsOpen(true)}>
+              Новая задача
+            </Button>
+            <div className="flex-1">
+              <Input
+                prefix={<SearchIcon />}
+                placeholder="Искать"
+                className="py-[10px] h-10 bg-transparent"
+                classNames={{ prefix: 'mr-4' }}
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                allowClear
+              />
+            </div>
           </div>
+          <Table
+            columns={columns}
+            data={filteredData}
+            renderCell={renderCellValue}
+            onRowClick={(task) => {
+              setSelectedTask(task)
+              setIsOpen(true)
+            }}
+          />
         </div>
-        <Table columns={columns} data={filteredData} renderCell={renderCellValue} />
       </div>
-    </div>
+      <TaskModal
+        isOpen={isOpen}
+        handleCancel={() => {
+          setIsOpen(false)
+          setSelectedTask(null)
+        }}
+        task={selectedTask ? { ...selectedTask } : undefined}
+      />
+    </>
   )
 }
