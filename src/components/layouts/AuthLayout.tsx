@@ -16,8 +16,8 @@ export function AuthLayout({ formComponent, secondaryText, linkTo, linkText }: A
   return (
     <Layout>
       <main className="welcome-layout">
-        <Row gutter={20} align="middle" className="w-[1180px] m-auto">
-          <Col span={12}>
+        <Row gutter={20} align="middle" className="md:w-[1180px] m-auto">
+          <Col span={12} className="hidden md:block">
             <img alt="logo" src={logo} className="h-10" />
             <Paragraph className="mt-4 mb-10">
               Платформа для&nbsp;управления клиентами, сделками и&nbsp;задачами. Эффективно
@@ -29,7 +29,17 @@ export function AuthLayout({ formComponent, secondaryText, linkTo, linkText }: A
             </Text>
             <Link to={linkTo}>{linkText}</Link>
           </Col>
-          <Col span={12}>{formComponent}</Col>
+          <Col xs={24} md={12}>
+            {formComponent}
+          </Col>
+        </Row>
+        <Row className="md:hidden flex-col p-5">
+          <Text type="secondary" className="block">
+            {secondaryText}
+          </Text>
+          <Link to={linkTo} className="font-bold">
+            {linkText}
+          </Link>
         </Row>
       </main>
     </Layout>

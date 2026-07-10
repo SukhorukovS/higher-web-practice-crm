@@ -1,5 +1,5 @@
 .auth-form {
-  @apply bg-white border rounded-xl border-gray-300 px-6 py-10 w-95;
+  @apply md:bg-white md:border rounded-xl border-gray-300 px-6 py-10 md:w-95 w-full;
 }
 
 .auth-label {

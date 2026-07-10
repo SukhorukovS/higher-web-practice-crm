@@ -21,7 +21,7 @@ export const LoginForm = () => {
         label: 'auth-label',
       }}
     >
-      <Title level={1} className="text-2xl mb-6">
+      <Title level={1} className="text-xl md:text-2xl mb-6">
         Вход в аккаунт
       </Title>
       <Form.Item<FieldType>
@@ -41,11 +41,11 @@ export const LoginForm = () => {
         <Input.Password placeholder="******" />
       </Form.Item>
       <div className="text-right">
-        <Link to={ROUTES.FORGOT_PASSWORD} className="text-gray-500! text-base">
+        <Link to={ROUTES.FORGOT_PASSWORD} className="text-gray-500! text-sm md:text-base">
           Забыли пароль?
         </Link>
       </div>
-      <Button type="primary" size="large" className="w-full mt-14">
+      <Button type="primary" size="large" className="w-full mt-8 md:mt-14">
         Войти
       </Button>
     </Form>
