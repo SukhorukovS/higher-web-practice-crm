@@ -1,4 +1,4 @@
-import { Form, Typography } from 'antd'
+import { Typography } from 'antd'
 import { Link } from 'react-router-dom'
 
 import { ProfileAvatar, ProfileInfoForm, ProfilePasswordForm } from '@/components/forms/Profile'
@@ -12,11 +12,11 @@ export const ProfilePage = () => (
       Настройка аккаунта
     </Title>
     <Section className="w-[680px] flex-1 flex flex-col">
-      <Form layout="vertical" classNames={{ label: 'text-gray-400 text-xs' }} className="grow">
+      <div className="grow">
         <ProfileAvatar />
         <ProfileInfoForm />
         <ProfilePasswordForm />
-      </Form>
+      </div>
       <Link to="">Удалить аккаунт</Link>
     </Section>
   </>

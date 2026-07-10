@@ -1,6 +1,10 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, DatePicker, Form, Input, Modal, Select, Typography } from 'antd'
 import clsx from 'clsx'
+import dayjs from 'dayjs'
 import type { FC } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 import { statusMap } from '@/constants/statusMaps'
 import type { Task } from '@/types/task'
@@ -11,13 +15,15 @@ type Props = {
   task?: Task
 }
 
-type FieldType = {
-  title: string
-  dealId?: string
-  dueDate: string
-  status: string
-  description?: string
-}
+const taskSchema = z.object({
+  title: z.string().trim().min(1, 'Введите название'),
+  dealId: z.string().optional(),
+  dueDate: z.string().min(1, 'Выберите дату'),
+  status: z.string().min(1, 'Выберите статус'),
+  description: z.string().trim().optional(),
+})
+
+type TaskFormValues = z.infer<typeof taskSchema>
 
 const { Title, Paragraph } = Typography
 
@@ -27,6 +33,8 @@ const dealOptions = [
   { label: 'Обновление сайта Светлояр', value: 'd1000000-0000-4000-8000-000000000003' },
   { label: 'Консалтинг по IT-оптимизации', value: 'd1000000-0000-4000-8000-000000000004' },
 ]
+
+const isNewTask = (task?: Task) => !task
 
 const ModalTitle = ({ createdAt }: { createdAt?: string }) => {
   if (createdAt) {
@@ -48,16 +56,30 @@ const ModalTitle = ({ createdAt }: { createdAt?: string }) => {
 }
 
 export const TaskModal: FC<Props> = ({ isOpen, task, handleCancel }) => {
-  const handleOk = () => {
-    console.log()
-  }
+  const isNew = isNewTask(task)
 
-  const isNewTask = !task
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TaskFormValues>({
+    resolver: zodResolver(taskSchema),
+    defaultValues: {
+      title: task?.title ?? '',
+      dealId: task?.dealId ?? undefined,
+      dueDate: task?.dueDate ?? '',
+      status: isNew ? 'new' : (task?.status ?? ''),
+      description: task?.description ?? '',
+    },
+  })
+
+  const onSubmit = (data: TaskFormValues) => {
+    console.log(data)
+  }
 
   return (
     <Modal
       open={isOpen}
-      onOk={handleOk}
       onCancel={handleCancel}
       title={<ModalTitle createdAt={task?.createdAt} />}
       closeIcon={null}
@@ -67,8 +89,13 @@ export const TaskModal: FC<Props> = ({ isOpen, task, handleCancel }) => {
         },
       }}
       footer={[
-        <div className="flex gap-4">
-          <Button key="submit" type="primary" className="grow font-bold" onClick={handleOk}>
+        <div className="flex gap-4" key="footer">
+          <Button
+            key="submit"
+            type="primary"
+            className="grow font-bold"
+            onClick={handleSubmit(onSubmit)}
+          >
             {task ? 'Редактировать' : 'Cоздать'}
           </Button>
           <Button
@@ -86,61 +113,100 @@ export const TaskModal: FC<Props> = ({ isOpen, task, handleCancel }) => {
         classNames={{
           label: 'text-gray-400 text-xs',
         }}
-        initialValues={{
-          ...task,
-          dueDate: task?.dueDate ? task.dueDate : undefined,
-          status: isNewTask ? 'new' : task?.status,
-        }}
       >
         <div className="grid grid-cols-2 gap-2">
-          <Form.Item<FieldType>
-            label="Название"
+          <Controller
             name="title"
-            labelCol={{ style: { paddingBottom: '2px' } }}
-            className="mb-4"
-          >
-            <Input placeholder="Позвонить клиенту" />
-          </Form.Item>
-          <Form.Item<FieldType>
-            label="Сделка"
-            name="dealId"
-            labelCol={{ style: { paddingBottom: '2px' } }}
-            className="mb-4"
-          >
-            <Select options={dealOptions} placeholder="Выберите сделку" allowClear />
-          </Form.Item>
-          <Form.Item<FieldType>
-            label="Выполнить до"
-            name="dueDate"
-            labelCol={{ style: { paddingBottom: '2px' } }}
-            className="mb-4"
-          >
-            <DatePicker className="w-full" placeholder="Выберите дату" />
-          </Form.Item>
-          <Form.Item<FieldType>
-            label="Статус"
-            name="status"
-            labelCol={{ style: { paddingBottom: '2px' } }}
-            className="mb-4"
-          >
-            <Select
-              disabled={isNewTask}
-              options={Object.entries(statusMap).map(([value, label]) => ({ value, label }))}
-              placeholder="Выберите статус"
-            />
-          </Form.Item>
-        </div>
-        <Form.Item<FieldType>
-          label="Описание"
-          name="description"
-          labelCol={{ style: { paddingBottom: '2px' } }}
-          className="mb-8"
-        >
-          <Input.TextArea
-            placeholder="Обсудить детали сделки"
-            style={{ height: 80, resize: 'none' }}
+            control={control}
+            render={({ field }) => (
+              <Form.Item
+                label="Название *"
+                validateStatus={errors.title ? 'error' : ''}
+                help={errors.title?.message}
+                labelCol={{ style: { paddingBottom: '2px' } }}
+                className="mb-4"
+              >
+                <Input {...field} placeholder="Позвонить клиенту" />
+              </Form.Item>
+            )}
           />
-        </Form.Item>
+          <Controller
+            name="dealId"
+            control={control}
+            render={({ field }) => (
+              <Form.Item
+                label="Сделка"
+                validateStatus={errors.dealId ? 'error' : ''}
+                help={errors.dealId?.message}
+                labelCol={{ style: { paddingBottom: '2px' } }}
+                className="mb-4"
+              >
+                <Select {...field} options={dealOptions} placeholder="Выберите сделку" allowClear />
+              </Form.Item>
+            )}
+          />
+          <Controller
+            name="dueDate"
+            control={control}
+            render={({ field }) => (
+              <Form.Item
+                label="Выполнить до *"
+                validateStatus={errors.dueDate ? 'error' : ''}
+                help={errors.dueDate?.message}
+                labelCol={{ style: { paddingBottom: '2px' } }}
+                className="mb-4"
+              >
+                <DatePicker
+                  className="w-full"
+                  placeholder="Выберите дату"
+                  value={field.value ? dayjs(field.value) : null}
+                  onChange={(_date, dateString) => {
+                    field.onChange(Array.isArray(dateString) ? dateString[0] : dateString)
+                  }}
+                />
+              </Form.Item>
+            )}
+          />
+          <Controller
+            name="status"
+            control={control}
+            render={({ field }) => (
+              <Form.Item
+                label="Статус *"
+                validateStatus={errors.status ? 'error' : ''}
+                help={errors.status?.message}
+                labelCol={{ style: { paddingBottom: '2px' } }}
+                className="mb-4"
+              >
+                <Select
+                  {...field}
+                  disabled={isNew}
+                  options={Object.entries(statusMap).map(([value, label]) => ({ value, label }))}
+                  placeholder="Выберите статус"
+                />
+              </Form.Item>
+            )}
+          />
+        </div>
+        <Controller
+          name="description"
+          control={control}
+          render={({ field }) => (
+            <Form.Item
+              label="Описание"
+              validateStatus={errors.description ? 'error' : ''}
+              help={errors.description?.message}
+              labelCol={{ style: { paddingBottom: '2px' } }}
+              className="mb-8"
+            >
+              <Input.TextArea
+                {...field}
+                placeholder="Обсудить детали сделки"
+                style={{ height: 80, resize: 'none' }}
+              />
+            </Form.Item>
+          )}
+        />
       </Form>
     </Modal>
   )

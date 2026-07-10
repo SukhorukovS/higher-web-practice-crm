@@ -1,6 +1,9 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Form, Input, Modal, Typography } from 'antd'
 import clsx from 'clsx'
 import type { FC } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 import type { Client } from '@/types/client'
 
@@ -10,14 +13,16 @@ type Props = {
   client?: Client
 }
 
-type FieldType = {
-  name: string
-  email?: string
-  phone: string
-  company: string
-  site: string
-  comment?: string
-}
+const clientSchema = z.object({
+  name: z.string().trim().min(1, 'Введите имя'),
+  phone: z.string().trim().min(1, 'Введите телефон'),
+  company: z.string().trim().min(1, 'Введите компанию'),
+  site: z.string().trim().min(1, 'Введите сайт'),
+  email: z.string().trim().email('Некорректный email').or(z.literal('')).optional(),
+  comment: z.string().trim().optional(),
+})
+
+type ClientFormValues = z.infer<typeof clientSchema>
 
 const { Title, Paragraph } = Typography
 
@@ -41,14 +46,29 @@ const ModalTitle = ({ addDate }: { addDate?: string }) => {
 }
 
 export const ClientModal: FC<Props> = ({ isOpen, client, handleCancel }) => {
-  const handleOk = () => {
-    console.log()
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ClientFormValues>({
+    resolver: zodResolver(clientSchema),
+    defaultValues: {
+      name: client?.name ?? '',
+      phone: client?.phone ?? '',
+      company: client?.company ?? '',
+      site: client?.website ?? '',
+      email: client?.email ?? '',
+      comment: client?.comment ?? '',
+    },
+  })
+
+  const onSubmit = (data: ClientFormValues) => {
+    console.log(data)
   }
 
   return (
     <Modal
       open={isOpen}
-      onOk={handleOk}
       onCancel={handleCancel}
       title={<ModalTitle addDate={client?.createdAt} />}
       closeIcon={null}
@@ -58,8 +78,13 @@ export const ClientModal: FC<Props> = ({ isOpen, client, handleCancel }) => {
         },
       }}
       footer={[
-        <div className="flex gap-4">
-          <Button key="submit" type="primary" className="grow font-bold" onClick={handleOk}>
+        <div className="flex gap-4" key="footer">
+          <Button
+            key="submit"
+            type="primary"
+            className="grow font-bold"
+            onClick={handleSubmit(onSubmit)}
+          >
             {client ? 'Редактировать' : 'Cоздать'}
           </Button>
           <Button
@@ -77,61 +102,103 @@ export const ClientModal: FC<Props> = ({ isOpen, client, handleCancel }) => {
         classNames={{
           label: 'text-gray-400 text-xs',
         }}
-        initialValues={client}
       >
-        <Form.Item<FieldType>
-          label="Имя"
+        <Controller
           name="name"
-          labelCol={{ style: { paddingBottom: '2px' } }}
-          className="mb-4"
-        >
-          <Input placeholder="Добрыня" />
-        </Form.Item>
+          control={control}
+          render={({ field }) => (
+            <Form.Item
+              label="Имя *"
+              validateStatus={errors.name ? 'error' : ''}
+              help={errors.name?.message}
+              labelCol={{ style: { paddingBottom: '2px' } }}
+              className="mb-4"
+            >
+              <Input {...field} placeholder="Добрыня" />
+            </Form.Item>
+          )}
+        />
         <div className="grid grid-cols-2 gap-2">
-          <Form.Item<FieldType>
-            label="Телефон"
+          <Controller
             name="phone"
-            labelCol={{ style: { paddingBottom: '2px' } }}
-            className="mb-2"
-          >
-            <Input placeholder="+7 915 876-54-32" />
-          </Form.Item>
-          <Form.Item<FieldType>
-            label="Компания"
-            name="company"
-            labelCol={{ style: { paddingBottom: '2px' } }}
-            className="mb-2"
-          >
-            <Input placeholder="Доброград" />
-          </Form.Item>
-          <Form.Item<FieldType>
-            label="Сайт"
-            name="site"
-            labelCol={{ style: { paddingBottom: '2px' } }}
-            className="mb-4"
-          >
-            <Input placeholder="www.dobrograd.ru" />
-          </Form.Item>
-          <Form.Item<FieldType>
-            label="Email"
-            name="email"
-            labelCol={{ style: { paddingBottom: '2px' } }}
-            className="mb-4"
-          >
-            <Input placeholder="ivanov@yandex.ru" />
-          </Form.Item>
-        </div>
-        <Form.Item<FieldType>
-          label="Комментарий"
-          name="comment"
-          labelCol={{ style: { paddingBottom: '2px' } }}
-          className="mb-8"
-        >
-          <Input.TextArea
-            placeholder="Прогнозируется рост активности."
-            style={{ height: 80, resize: 'none' }}
+            control={control}
+            render={({ field }) => (
+              <Form.Item
+                label="Телефон *"
+                validateStatus={errors.phone ? 'error' : ''}
+                help={errors.phone?.message}
+                labelCol={{ style: { paddingBottom: '2px' } }}
+                className="mb-2"
+              >
+                <Input {...field} placeholder="+7 915 876-54-32" />
+              </Form.Item>
+            )}
           />
-        </Form.Item>
+          <Controller
+            name="company"
+            control={control}
+            render={({ field }) => (
+              <Form.Item
+                label="Компания *"
+                validateStatus={errors.company ? 'error' : ''}
+                help={errors.company?.message}
+                labelCol={{ style: { paddingBottom: '2px' } }}
+                className="mb-2"
+              >
+                <Input {...field} placeholder="Доброград" />
+              </Form.Item>
+            )}
+          />
+          <Controller
+            name="site"
+            control={control}
+            render={({ field }) => (
+              <Form.Item
+                label="Сайт *"
+                validateStatus={errors.site ? 'error' : ''}
+                help={errors.site?.message}
+                labelCol={{ style: { paddingBottom: '2px' } }}
+                className="mb-4"
+              >
+                <Input {...field} placeholder="www.dobrograd.ru" />
+              </Form.Item>
+            )}
+          />
+          <Controller
+            name="email"
+            control={control}
+            render={({ field }) => (
+              <Form.Item
+                label="Email"
+                validateStatus={errors.email ? 'error' : ''}
+                help={errors.email?.message}
+                labelCol={{ style: { paddingBottom: '2px' } }}
+                className="mb-4"
+              >
+                <Input {...field} placeholder="ivanov@yandex.ru" />
+              </Form.Item>
+            )}
+          />
+        </div>
+        <Controller
+          name="comment"
+          control={control}
+          render={({ field }) => (
+            <Form.Item
+              label="Комментарий"
+              validateStatus={errors.comment ? 'error' : ''}
+              help={errors.comment?.message}
+              labelCol={{ style: { paddingBottom: '2px' } }}
+              className="mb-8"
+            >
+              <Input.TextArea
+                {...field}
+                placeholder="Прогнозируется рост активности."
+                style={{ height: 80, resize: 'none' }}
+              />
+            </Form.Item>
+          )}
+        />
       </Form>
     </Modal>
   )
