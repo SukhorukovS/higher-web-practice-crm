@@ -22,7 +22,7 @@ const usersApi = api.injectEndpoints({
       query: (body) => ({
         url: '/users',
         method: 'POST',
-        body,
+        body: { ...body, createdAt: new Date().toISOString() },
       }),
       invalidatesTags: ['User'],
     }),

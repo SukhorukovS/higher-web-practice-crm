@@ -21,7 +21,7 @@ const clientsApi = api.injectEndpoints({
       query: (body) => ({
         url: '/clients',
         method: 'POST',
-        body,
+        body: { ...body, createdAt: new Date().toISOString() },
       }),
       invalidatesTags: [{ type: 'Client', id: 'LIST' }],
     }),

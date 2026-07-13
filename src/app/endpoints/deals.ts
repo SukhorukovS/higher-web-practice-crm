@@ -21,7 +21,7 @@ const dealsApi = api.injectEndpoints({
       query: (body) => ({
         url: '/deals',
         method: 'POST',
-        body,
+        body: { ...body, createdAt: new Date().toISOString() },
       }),
       invalidatesTags: [{ type: 'Deal', id: 'LIST' }],
     }),

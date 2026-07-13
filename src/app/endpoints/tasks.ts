@@ -21,7 +21,7 @@ const tasksApi = api.injectEndpoints({
       query: (body) => ({
         url: '/tasks',
         method: 'POST',
-        body,
+        body: { ...body, createdAt: new Date().toISOString() },
       }),
       invalidatesTags: [{ type: 'Task', id: 'LIST' }],
     }),

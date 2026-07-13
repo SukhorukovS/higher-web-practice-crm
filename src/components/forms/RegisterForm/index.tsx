@@ -1,8 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button, Form, Input } from 'antd'
+import { Alert, Button, Form, Input } from 'antd'
 import { Typography } from 'antd'
+import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
+
+import { setCredentials } from '@/app/authSlice'
+import { useRegisterMutation } from '@/app/endpoints/users'
+import { useAppDispatch } from '@/app/store'
+import { ROUTES } from '@/types/route'
 
 const { Title } = Typography
 
@@ -23,6 +30,11 @@ const registerSchema = z
 type RegisterFormValues = z.infer<typeof registerSchema>
 
 export const RegisterForm = () => {
+  const [error, setError] = useState<string | null>(null)
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const [triggerRegister, { isLoading }] = useRegisterMutation()
+
   const {
     control,
     handleSubmit,
@@ -39,8 +51,22 @@ export const RegisterForm = () => {
     },
   })
 
-  const onSubmit = (data: RegisterFormValues) => {
-    console.log(data)
+  const onSubmit = async (data: RegisterFormValues) => {
+    setError(null)
+    try {
+      const payload = {
+        name: data.name,
+        surname: data.surname,
+        email: data.email,
+        username: data.username,
+        password: data.password,
+      }
+      const user = await triggerRegister(payload).unwrap()
+      dispatch(setCredentials(user))
+      navigate(ROUTES.DASHBOARD)
+    } catch {
+      setError('Ошибка при регистрации')
+    }
   }
 
   return (
@@ -55,6 +81,7 @@ export const RegisterForm = () => {
       <Title level={1} className="text-xl md:text-2xl mb-6">
         Регистрация
       </Title>
+      {error && <Alert message={error} type="error" showIcon className="mb-4" />}
       <Controller
         name="name"
         control={control}
@@ -145,7 +172,7 @@ export const RegisterForm = () => {
           </Form.Item>
         )}
       />
-      <Button type="primary" size="large" htmlType="submit" className="w-full">
+      <Button type="primary" size="large" htmlType="submit" loading={isLoading} className="w-full">
         Зарегистрироваться
       </Button>
     </Form>
