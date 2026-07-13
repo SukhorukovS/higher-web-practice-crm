@@ -2,10 +2,6 @@ main {
   @apply h-screen w-full flex justify-center flex-col md:flex-row;
 }
 
-.welcome-layout {
-  @apply bg-[url(/background.webp)] bg-no-repeat bg-center bg-cover;
-}
-
 a {
   @apply text-blue-600;
 }

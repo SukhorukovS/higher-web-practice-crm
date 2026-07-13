@@ -37,3 +37,7 @@
 .shadow {
   box-shadow: 0px 4px 8px 0px rgba(229, 231, 235, 1);
 }
+
+.welcome-layout {
+  @apply bg-[url(/mob-background.webp)] md:bg-[url(/background.webp)] bg-no-repeat bg-center bg-cover;
+}
