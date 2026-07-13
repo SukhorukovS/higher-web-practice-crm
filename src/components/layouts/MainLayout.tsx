@@ -4,6 +4,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import { SidebarFooter } from '@/components/layouts/SidebarFooter'
 import { SidebarHeader } from '@/components/layouts/SidebarHeader'
+import { useIsMobile } from '@/hooks/useIsMobile'
 import { BurgerIcon } from '@/icons/BurgerIcon'
 import { ClientsIcon } from '@/icons/ClientsIcon'
 import { DealsIcon } from '@/icons/DealsIcon'
@@ -14,20 +15,6 @@ import { UserIcon } from '@/icons/UserIcon'
 import { ROUTES } from '@/types/route'
 
 const { Sider } = Layout
-
-const MOBILE_BREAKPOINT = 768
-
-const useIsMobile = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < MOBILE_BREAKPOINT)
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
-  return isMobile
-}
 
 const menuItems = [
   { key: ROUTES.DASHBOARD, icon: <MainIcon />, label: 'Главная' },
