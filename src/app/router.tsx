@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 
+import { AuthGuard } from '@/components/Auth/AuthGuard'
 import { MainLayout } from '@/components/layouts/MainLayout'
 import { ClientsPage } from '@/pages/ClientsPage'
 import { DashboardPage } from '@/pages/DashboardPage'
@@ -18,7 +19,11 @@ export const router = createBrowserRouter([
   { path: ROUTES.FORGOT_PASSWORD, element: <ForgotPasswordPage /> },
   {
     path: ROUTES.DASHBOARD,
-    element: <MainLayout />,
+    element: (
+      <AuthGuard>
+        <MainLayout />
+      </AuthGuard>
+    ),
     children: [
       { index: true, element: <DashboardPage /> },
       { path: ROUTES.PROFILE, element: <ProfilePage /> },

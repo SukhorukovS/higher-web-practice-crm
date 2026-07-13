@@ -1,14 +1,17 @@
-import { configureStore } from '@reduxjs/toolkit'
-import { useDispatch, useSelector } from 'react-redux'
-
-import { api } from '@/app/api'
 import '@/app/endpoints/users'
 import '@/app/endpoints/clients'
 import '@/app/endpoints/deals'
 import '@/app/endpoints/tasks'
 
+import { configureStore } from '@reduxjs/toolkit'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { api } from '@/app/api'
+import { authReducer } from '@/app/authSlice'
+
 export const store = configureStore({
   reducer: {
+    auth: authReducer,
     [api.reducerPath]: api.reducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
