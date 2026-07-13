@@ -28,9 +28,10 @@ export const LoginForm = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
+    mode: 'onChange',
     defaultValues: {
       email: '',
       password: '',
@@ -105,6 +106,7 @@ export const LoginForm = () => {
         size="large"
         htmlType="submit"
         loading={isLoading}
+        disabled={!isValid}
         className="w-full mt-8 md:mt-14"
       >
         Войти

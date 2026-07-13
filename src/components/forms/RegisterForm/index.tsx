@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
 
 import { setCredentials } from '@/app/authSlice'
-import { useRegisterMutation } from '@/app/endpoints/users'
+import { useGetUsersQuery, useRegisterMutation } from '@/app/endpoints/users'
 import { useAppDispatch } from '@/app/store'
 import { ROUTES } from '@/types/route'
 
@@ -19,7 +19,11 @@ const registerSchema = z
     surname: z.string().trim().min(1, 'Введите фамилию'),
     email: z.string().trim().min(1, 'Введите email').email('Некорректный email'),
     username: z.string().trim().min(1, 'Введите имя аккаунта'),
-    password: z.string().min(6, 'Пароль должен содержать минимум 6 символов'),
+    password: z
+      .string()
+      .min(6, 'Пароль должен содержать минимум 6 символов')
+      .regex(/[a-zA-Z]/, 'Пароль должен содержать хотя бы одну букву')
+      .regex(/\d/, 'Пароль должен содержать хотя бы одну цифру'),
     repeatPassword: z.string().min(1, 'Повторите пароль'),
   })
   .refine((data) => data.password === data.repeatPassword, {
@@ -34,13 +38,15 @@ export const RegisterForm = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const [triggerRegister, { isLoading }] = useRegisterMutation()
+  const { data: users } = useGetUsersQuery()
 
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
+    mode: 'onChange',
     defaultValues: {
       name: '',
       surname: '',
@@ -53,6 +59,11 @@ export const RegisterForm = () => {
 
   const onSubmit = async (data: RegisterFormValues) => {
     setError(null)
+    const emailExists = users?.some((u) => u.email === data.email)
+    if (emailExists) {
+      setError('Пользователь с таким email уже зарегистрирован')
+      return
+    }
     try {
       const payload = {
         name: data.name,
@@ -172,7 +183,14 @@ export const RegisterForm = () => {
           </Form.Item>
         )}
       />
-      <Button type="primary" size="large" htmlType="submit" loading={isLoading} className="w-full">
+      <Button
+        type="primary"
+        size="large"
+        htmlType="submit"
+        loading={isLoading}
+        disabled={!isValid}
+        className="w-full"
+      >
         Зарегистрироваться
       </Button>
     </Form>
