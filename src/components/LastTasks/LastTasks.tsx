@@ -51,7 +51,7 @@ export const LastTasks = () => {
     <>
       <div className="dashboard-section">
         <Title level={5} className="dashboard-title">
-          топ 10 активных клиентов
+          Последние 10 задач
         </Title>
         <div className="dashboard-grid">
           {tasks.map((task) => (
@@ -63,7 +63,7 @@ export const LastTasks = () => {
               <div className="grow">
                 <Paragraph className="font-bold text-sm block mb-[2px]">{task.title}</Paragraph>
                 <Paragraph className="text-xs text-gray-400 mb-[2px]">сделка</Paragraph>
-                <Text className="text-sm text-gray-500">Проект «Сварог 2024»</Text>
+                <Text className="text-sm text-gray-500">{task.description}</Text>
               </div>
               <div className="mt-2 flex justify-between">
                 <Text className="text-sm text-gray-500">{task.dueDate}</Text>
@@ -74,8 +74,13 @@ export const LastTasks = () => {
             </Card>
           ))}
         </div>
-        <div>
-          <Button type="primary" size="large" onClick={() => setIsOpen(true)}>
+        <div className="mt-10 md:mt-3">
+          <Button
+            type="primary"
+            size="large"
+            className="w-full md:w-auto"
+            onClick={() => setIsOpen(true)}
+          >
             Новая задача
           </Button>
         </div>
