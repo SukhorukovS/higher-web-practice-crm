@@ -74,18 +74,25 @@ export const TopClients = () => {
               classNames={{ body: 'dashboard-card-col-body' }}
             >
               <div className="grow">
-                <Text className="font-bold text-sm block mb-[2px]">{client.name}</Text>
-                <Text className="text-sm text-gray-500">«{client.company}»</Text>
+                <Text className="md:font-bold text-sm block mb-[2px]">{client.name}</Text>
+                <Text className="text-xs md:text-sm text-gray-500">«{client.company}»</Text>
               </div>
-              <div className="mt-7">
-                <Text className="font-bold text-2xl text-green-500 mr-1">{client.deals}</Text>
+              <div className="mt-2 md:mt-7">
+                <Text className="font-bold text-xl md:text-2xl text-green-500 mr-1">
+                  {client.deals}
+                </Text>
                 <Text className="text-sm text-gray-400">сделок</Text>
               </div>
             </Card>
           ))}
         </div>
-        <div>
-          <Button type="primary" size="large" onClick={() => setIsOpen(true)}>
+        <div className="mt-10 md:mt-0">
+          <Button
+            type="primary"
+            size="large"
+            className="w-full md:w-auto"
+            onClick={() => setIsOpen(true)}
+          >
             Новый клиент
           </Button>
         </div>
