@@ -31,7 +31,7 @@
 }
 
 .dashboard-card-row {
-  @apply mb-[2px] shadow-md px-6 py-2;
+  @apply mb-1 md:mb-[2px] shadow-md px-3 md:px-6 py-2;
 }
 
 .shadow {

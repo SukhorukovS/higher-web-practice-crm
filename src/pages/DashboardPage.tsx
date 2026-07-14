@@ -36,7 +36,14 @@ export const DashboardPage = () => {
           <LastTasks />
         </>
       ) : (
-        <Tabs items={mobileTabs} />
+        <Tabs
+          items={mobileTabs}
+          classNames={{
+            item: 'text-sm text-gray-500 font-bold',
+            indicator: 'h-[2px]',
+            header: 'mb-10',
+          }}
+        />
       )}
     </div>
   )
