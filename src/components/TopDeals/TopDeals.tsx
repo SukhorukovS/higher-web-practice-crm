@@ -116,25 +116,32 @@ export const ActiveDealsTable: React.FC = () => {
             className={clsx('dashboard-card-row text-sm', statusBgMap[deal.status])}
             classNames={{ body: 'p-0' }}
           >
-            <Row gutter={8}>
-              <Col span={10}>{deal.name}</Col>
-              <Col span={6} className="text-gray-500">
+            <Row gutter={[8, 8]}>
+              <Col xs={24} md={10}>
+                {deal.name}
+              </Col>
+              <Col xs={24} md={6} className="text-gray-500">
                 {deal.person}
               </Col>
-              <Col span={3} className="font-bold">
+              <Col xs={24} md={3} className="font-bold">
                 {deal.amount}
               </Col>
-              <Col span={2} className={clsx(statusColorMap[deal.status])}>
+              <Col xs={12} md={2} className={clsx(statusColorMap[deal.status])}>
                 {statusMap[deal.status]}
               </Col>
-              <Col span={3} className="text-gray-500">
+              <Col xs={12} md={3} className="text-gray-500 text-right">
                 {deal.date}
               </Col>
             </Row>
           </Card>
         ))}
-        <div className="mt-3">
-          <Button type="primary" size="large" onClick={() => setIsOpen(true)}>
+        <div className="mt-10 md:mt-3">
+          <Button
+            type="primary"
+            size="large"
+            className="w-full md:w-auto"
+            onClick={() => setIsOpen(true)}
+          >
             Новая сделка
           </Button>
         </div>
