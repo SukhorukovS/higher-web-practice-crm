@@ -1,16 +1,18 @@
-import { Card, Col, Row, Typography } from 'antd'
+import { Card, Col, Row, Spin, Typography } from 'antd'
 import clsx from 'clsx'
+
+import { useSummaryStats } from '@/hooks/useSummaryStats'
 
 const { Text } = Typography
 
-export const SummaryBoard = () => {
-  const rows = [
-    { label: 'Клиенты', values: [150, 5, 15, 40, 132] },
-    { label: 'Активные сделки', values: [25, 3, 8, 20, 62] },
-    { label: 'Завершённые сделки', values: [10, 2, 6, 18, 50] },
-  ]
+const headers = ['на сегодня', 'за сегодня', 'за неделю', 'за месяц', 'за квартал']
 
-  const headers = ['на сегодня', 'за сегодня', 'за неделю', 'за месяц', 'за квартал']
+export const SummaryBoard = () => {
+  const { rows, isLoading } = useSummaryStats()
+
+  if (isLoading) {
+    return <Spin className="flex justify-center py-8" />
+  }
 
   return (
     <div>
