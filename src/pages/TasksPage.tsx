@@ -91,6 +91,16 @@ export const TasksPage = () => {
       )
     }
 
+    if (key === 'dueDate' || key === 'createdAt') {
+      return (
+        <span className="text-xs">
+          {dayjs(value as string)
+            .locale('ru')
+            .format('D MMMM YYYY')}
+        </span>
+      )
+    }
+
     return <span className="text-xs">{String(value || '-')}</span>
   }
 
