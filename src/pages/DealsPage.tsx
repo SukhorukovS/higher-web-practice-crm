@@ -8,8 +8,9 @@ import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
 import { useSearchFilter } from '@/hooks/useSearchFilter'
 import { SearchIcon } from '@/icons/SearchIcon'
 import type { Deal, DealStatus } from '@/types/deal'
+import { formatCurrency } from '@/utils/formatCurrency'
 
-const { Title } = Typography
+const { Title, Text, Paragraph } = Typography
 
 interface DealRow extends Deal {
   key: string
@@ -207,6 +208,30 @@ const renderCellValue = (deal: DealRow, key: keyof DealRow & string) => {
   return <span className="text-xs">{value || '-'}</span>
 }
 
+const renderMobileCard = (deal: DealRow) => (
+  <div className="flex flex-col gap-[6px]">
+    <div className="grid grid-cols-2 gap-[6px]">
+      <Text className="text-sm">{deal.title}</Text>
+      <Text className={clsx('text-xs text-right', statusColorMap[deal.status])}>
+        {statusMap[deal.status]}
+      </Text>
+      <Text className="text-sm">{deal.clientId}</Text>
+      <Text className="text-sm font-bold text-right">{formatCurrency(deal.amount)}</Text>
+    </div>
+    <Text className="text-xs text-gray-500">{deal.description}</Text>
+    <div className="grid grid-cols-2 gap-[6px]">
+      <div>
+        <Paragraph className="text-xs text-gray-500 mb-0">создана</Paragraph>
+        <Paragraph className="text-xs mb-0">{deal.createdAt}</Paragraph>
+      </div>
+      <div>
+        <Paragraph className="text-xs text-gray-500 text-right mb-0">завершена</Paragraph>
+        <Paragraph className="text-xs text-right mb-0">{deal.completedAt || '—'}</Paragraph>
+      </div>
+    </div>
+  </div>
+)
+
 export const DealsPage = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [selectedDeal, setSelectedDeal] = useState<DealRow | null>(null)
@@ -228,7 +253,12 @@ export const DealsPage = () => {
         </Title>
         <div className="flex flex-col gap-4">
           <div className="flex gap-2">
-            <Button type="primary" size="large" onClick={() => setIsOpen(true)}>
+            <Button
+              type="primary"
+              size="large"
+              onClick={() => setIsOpen(true)}
+              className="hidden md:block"
+            >
               Новая сделка
             </Button>
             <div className="flex-1">
@@ -247,11 +277,15 @@ export const DealsPage = () => {
             columns={columns}
             data={filteredData}
             renderCell={renderCellValue}
+            renderMobileCard={renderMobileCard}
             onRowClick={(deal) => {
               setSelectedDeal(deal)
               setIsOpen(true)
             }}
           />
+          <Button type="primary" size="large" onClick={() => setIsOpen(true)} className="md:hidden">
+            Новая сделка
+          </Button>
         </div>
       </div>
       <DealModal

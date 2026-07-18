@@ -101,7 +101,7 @@ export const Table = <T extends { key: Key; className?: string }>({
 
   if (isMobile && renderMobileCard) {
     return (
-      <div className="mb-3">
+      <div>
         {pagedData.map((record) => (
           <Card
             key={record.key}
