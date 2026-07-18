@@ -4,6 +4,7 @@ import clsx from 'clsx'
 import type { Key, ReactNode } from 'react'
 import { useMemo, useState } from 'react'
 
+import { useIsMobile } from '@/hooks/useIsMobile'
 import { LeftArrowIcon } from '@/icons/LeftArrowIcon'
 import { RightArrowIcon } from '@/icons/RightArrowIcon'
 
@@ -18,6 +19,7 @@ interface TableProps<T extends { key: Key; className?: string }> {
   data: T[]
   defaultSortKey?: (keyof T & string) | null
   renderCell?: (record: T, key: keyof T & string) => ReactNode
+  renderMobileCard?: (record: T) => ReactNode
   pageSize?: number
   onRowClick?: (record: T) => void
 }
@@ -51,7 +53,9 @@ export const Table = <T extends { key: Key; className?: string }>({
   renderCell,
   pageSize = 10,
   onRowClick,
+  renderMobileCard,
 }: TableProps<T>) => {
+  const isMobile = useIsMobile()
   const [sortField, setSortField] = useState<(keyof T & string) | null>(defaultSortKey)
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
@@ -91,6 +95,31 @@ export const Table = <T extends { key: Key; className?: string }>({
     return sortedData.slice(start, start + pageSize)
   }, [sortedData, currentPage, pageSize])
 
+  if (pagedData.length === 0) {
+    return <div className="text-center py-8 text-gray-500">Нет данных</div>
+  }
+
+  if (isMobile && renderMobileCard) {
+    return (
+      <div className="mb-3">
+        {pagedData.map((record) => (
+          <Card
+            key={record.key}
+            className={clsx(
+              'dashboard-card-row mb-2 border border-gray-100 shadow-sm rounded-lg',
+              onRowClick && 'cursor-pointer',
+              record.className,
+            )}
+            classNames={{ body: 'p-0' }}
+            onClick={() => onRowClick?.(record)}
+          >
+            {renderMobileCard(record)}
+          </Card>
+        ))}
+      </div>
+    )
+  }
+
   return (
     <div>
       <Row gutter={8} className="mb-1 mx-6!">
@@ -103,46 +132,38 @@ export const Table = <T extends { key: Key; className?: string }>({
               onClick={() => handleSort(col.key)}
             >
               {col.title}
-              {
-                <DownOutlined
-                  className={clsx(
-                    'text-[10px] transition-transform',
-                    {
-                      'rotate-180': sortOrder === 'desc',
-                    },
-                    sortField === col.key && 'text-blue-500',
-                  )}
-                />
-              }
+              <DownOutlined
+                className={clsx(
+                  'text-[10px] transition-transform',
+                  sortOrder === 'desc' && 'rotate-180',
+                  sortField === col.key && 'text-blue-500',
+                )}
+              />
             </Button>
           </Col>
         ))}
       </Row>
       <div className="mb-3">
-        {pagedData.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">Нет данных</div>
-        ) : (
-          pagedData.map((record) => (
-            <Card
-              key={record.key}
-              className={clsx(
-                'dashboard-card-row mb-2 border border-gray-100 shadow-sm rounded-lg',
-                onRowClick && 'cursor-pointer',
-                record.className,
-              )}
-              classNames={{ body: 'p-0' }}
-              onClick={() => onRowClick?.(record)}
-            >
-              <Row gutter={8} align="middle">
-                {columns.map((col) => (
-                  <Col key={col.key} span={col.span} className="flex last:justify-end items-center">
-                    {renderCell ? renderCell(record, col.key) : <>{record[col.key]}</>}
-                  </Col>
-                ))}
-              </Row>
-            </Card>
-          ))
-        )}
+        {pagedData.map((record) => (
+          <Card
+            key={record.key}
+            className={clsx(
+              'dashboard-card-row mb-2 border border-gray-100 shadow-sm rounded-lg',
+              onRowClick && 'cursor-pointer',
+              record.className,
+            )}
+            classNames={{ body: 'p-0' }}
+            onClick={() => onRowClick?.(record)}
+          >
+            <Row gutter={8} align="middle">
+              {columns.map((col) => (
+                <Col key={col.key} span={col.span} className="flex last:justify-end items-center">
+                  {renderCell ? renderCell(record, col.key) : <>{record[col.key]}</>}
+                </Col>
+              ))}
+            </Row>
+          </Card>
+        ))}
       </div>
       {pageSize && data.length > pageSize && (
         <Pagination

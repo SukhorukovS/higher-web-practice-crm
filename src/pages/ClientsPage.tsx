@@ -6,7 +6,7 @@ import { type Column, Table } from '@/components/Table'
 import { useSearchFilter } from '@/hooks/useSearchFilter'
 import { SearchIcon } from '@/icons/SearchIcon'
 
-const { Title } = Typography
+const { Title, Text, Paragraph } = Typography
 
 interface ClientData {
   key: string
@@ -173,6 +173,26 @@ export const ClientsPage = () => {
     }),
   )
 
+  const renderMobileCard = (client: ClientData) => (
+    <div className="flex flex-col gap-3">
+      <div className="grid grid-cols-2">
+        <Title level={5} className="text-sm font-bold">
+          {client.name}
+        </Title>
+        <Text>{client.createdAt}</Text>
+      </div>
+      <div className="grid grid-cols-2">
+        <a href={`tel://${client.phone}`}>{client.phone}</a>
+        <Text>{client.company}</Text>
+        <a href={`mailto://${client.email}`}>{client.email}</a>
+        <a href={client.website} target="_blank">
+          {client.website}
+        </a>
+      </div>
+      <Paragraph className="mb-0">{client.comment}</Paragraph>
+    </div>
+  )
+
   return (
     <>
       <div className="flex flex-col gap-8">
@@ -181,7 +201,12 @@ export const ClientsPage = () => {
         </Title>
         <div className="flex flex-col gap-4">
           <div className="flex gap-2">
-            <Button type="primary" size="large" onClick={() => setIsOpen(true)}>
+            <Button
+              type="primary"
+              size="large"
+              onClick={() => setIsOpen(true)}
+              className="hidden md:block"
+            >
               Новый клиент
             </Button>
             <div className="flex-1">
@@ -201,11 +226,15 @@ export const ClientsPage = () => {
             columns={columns}
             data={filteredData}
             renderCell={renderCellValue}
+            renderMobileCard={renderMobileCard}
             onRowClick={(client) => {
               setSelectedClient(client)
               setIsOpen(true)
             }}
           />
+          <Button type="primary" size="large" onClick={() => setIsOpen(true)} className="md:hidden">
+            Новый клиент
+          </Button>
         </div>
       </div>
       <ClientModal
