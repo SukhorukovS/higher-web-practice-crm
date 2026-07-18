@@ -1,7 +1,15 @@
+import 'dayjs/locale/ru'
+
 import { Button, Modal, Typography } from 'antd'
 import clsx from 'clsx'
+import dayjs from 'dayjs'
 import type { FC } from 'react'
 
+import {
+  useCreateClientMutation,
+  useDeleteClientMutation,
+  useUpdateClientMutation,
+} from '@/app/endpoints/clients'
 import { ClientForm, type ClientFormValues } from '@/components/forms/ClientForm'
 import type { Client } from '@/types/client'
 
@@ -22,7 +30,7 @@ const ModalTitle = ({ addDate }: { addDate?: string }) => {
         <Title level={3} className="text-2xl">
           Карточка клиента
         </Title>
-        <Paragraph>добавлен {addDate}</Paragraph>
+        <Paragraph>добавлен {dayjs(addDate).locale('ru').format('D MMMM YYYY')}</Paragraph>
       </div>
     )
   }
@@ -35,8 +43,33 @@ const ModalTitle = ({ addDate }: { addDate?: string }) => {
 }
 
 export const ClientModal: FC<Props> = ({ isOpen, client, handleCancel }) => {
-  const onSubmit = (data: ClientFormValues) => {
-    console.log(data)
+  const [createClient] = useCreateClientMutation()
+  const [updateClient] = useUpdateClientMutation()
+  const [deleteClient] = useDeleteClientMutation()
+
+  const onSubmit = async (data: ClientFormValues) => {
+    const payload = {
+      name: data.name,
+      phone: data.phone,
+      company: data.company,
+      email: data.email ?? '',
+      website: data.site,
+      comment: data.comment,
+    }
+
+    if (client) {
+      await updateClient({ id: client.id, ...payload })
+    } else {
+      await createClient(payload)
+    }
+    handleCancel()
+  }
+
+  const onDelete = async () => {
+    if (client) {
+      await deleteClient(client.id)
+      handleCancel()
+    }
   }
 
   return (
@@ -63,7 +96,7 @@ export const ClientModal: FC<Props> = ({ isOpen, client, handleCancel }) => {
           </Button>
           <Button
             key="back"
-            onClick={handleCancel}
+            onClick={client ? onDelete : handleCancel}
             className={clsx(client && 'text-red-500', 'font-bold')}
           >
             {client ? 'Удалить клиента' : 'Отменить'}
