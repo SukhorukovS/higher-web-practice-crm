@@ -1,14 +1,19 @@
-import { Button, Input, Typography } from 'antd'
-import clsx from 'clsx'
-import { useState } from 'react'
+import 'dayjs/locale/ru'
 
+import { Button, Input, Spin, Typography } from 'antd'
+import clsx from 'clsx'
+import dayjs from 'dayjs'
+import { useMemo, useState } from 'react'
+
+import { useGetDealsQuery } from '@/app/endpoints/deals'
+import { useGetTasksQuery } from '@/app/endpoints/tasks'
+import { useGetUsersQuery } from '@/app/endpoints/users'
 import { TaskModal } from '@/components/modals/TaskModal'
 import { type Column, Table } from '@/components/Table/Table'
 import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
 import { useSearchFilter } from '@/hooks/useSearchFilter'
 import { SearchIcon } from '@/icons/SearchIcon'
 import type { Task, TaskStatus } from '@/types/task'
-import dayjs from 'dayjs'
 
 const { Title, Text, Paragraph } = Typography
 
@@ -27,100 +32,99 @@ const columns = [
   { key: 'createdAt', title: 'Дата создания', span: 3 },
 ] satisfies Column<TaskRow>[]
 
-const taskData: Task[] = [
-  {
-    id: 't2000000-0000-4000-8000-000000000001',
-    title: 'Позвонить клиенту',
-    description: 'Обсудить детали сделки',
-    dealId: 'd1000000-0000-4000-8000-000000000001',
-    assigneeId: '2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001',
-    status: 'in_progress',
-    dueDate: '15 марта 2026',
-    createdAt: '10 марта 2026',
-    createdBy: '2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001',
-  },
-  {
-    id: 't2000000-0000-4000-8000-000000000002',
-    title: 'Подготовить коммерческое предложение',
-    description: 'Отправить PDF клиенту',
-    dealId: 'd1000000-0000-4000-8000-000000000003',
-    assigneeId: '5b7a3c2d-9e4f-4a1c-b2d3-7f6e5c4b1002',
-    status: 'new',
-    dueDate: '18 марта 2026',
-    createdAt: '11 марта 2026',
-    createdBy: '2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001',
-  },
-  {
-    id: 't2000000-0000-4000-8000-000000000003',
-    title: 'Закрыть сделку',
-    description: 'Подписать акт выполненных работ',
-    dealId: 'd1000000-0000-4000-8000-000000000002',
-    assigneeId: '5b7a3c2d-9e4f-4a1c-b2d3-7f6e5c4b1002',
-    status: 'completed',
-    dueDate: '5 марта 2026',
-    createdAt: '20 февраля 2026',
-    createdBy: '5b7a3c2d-9e4f-4a1c-b2d3-7f6e5c4b1002',
-  },
-]
-
-const renderCellValue = (task: TaskRow, key: keyof TaskRow & string) => {
-  const value = task[key]
-
-  if (key === 'assigneeId') {
-    return <span className="text-sm">{String(value)}</span>
-  }
-
-  if (key === 'status') {
-    return (
-      <p className={clsx('text-xs', statusColorMap[value as TaskStatus])}>
-        {statusMap[value as TaskStatus]}
-      </p>
-    )
-  }
-
-  return <span className="text-xs">{String(value || '-')}</span>
-}
-
-const renderMobileCard = (task: TaskRow) => (
-  <div className="flex flex-col gap-[6px]">
-    <div className="grid grid-cols-2 gap-[6px]">
-      <div>
-        <Paragraph className="text-sm mb-1">{task.title}</Paragraph>
-        <Text className="text-xs">{task.dealId}</Text>
-      </div>
-      <Text className={clsx('text-xs text-right', statusColorMap[task.status])}>
-        {statusMap[task.status]}
-      </Text>
-    </div>
-    <Text className="text-sm text-gray-500">{task.description}</Text>
-    <Paragraph className="text-xs text-blue-500">
-      {dayjs(task.dueDate).locale('ru').format('D MMMM YYYY')}
-    </Paragraph>
-    <div className="grid grid-cols-2 gap-[6px]">
-      <div>
-        <Paragraph className="text-sm mb-0">{task.assigneeId}</Paragraph>
-        <Paragraph className="text-xs text-gray-500">Исполнитель</Paragraph>
-      </div>
-      <div>
-        <Paragraph className="text-xs text-right mb-0">
-          {dayjs(task.createdAt).locale('ru').format('D MMMM YYYY')}
-        </Paragraph>
-      </div>
-    </div>
-  </div>
-)
-
 export const TasksPage = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [selectedTask, setSelectedTask] = useState<TaskRow | null>(null)
-  const { searchText, setSearchText, filteredData } = useSearchFilter<Task, TaskRow>(
-    taskData,
+
+  const { data: tasks, isLoading } = useGetTasksQuery()
+  const { data: deals } = useGetDealsQuery()
+  const { data: users } = useGetUsersQuery()
+
+  const dealTitleMap = useMemo(() => {
+    const map: Record<string, string> = {}
+    for (const d of deals ?? []) {
+      map[d.id] = d.title
+    }
+    return map
+  }, [deals])
+
+  const assigneeNameMap = useMemo(() => {
+    const map: Record<string, string> = {}
+    for (const u of users ?? []) {
+      map[u.id] = u.name
+    }
+    return map
+  }, [users])
+
+  const tableData: TaskRow[] = useMemo(
+    () =>
+      (tasks ?? []).map((t) => ({
+        ...t,
+        key: t.id,
+        className: statusBgMap[t.status],
+      })),
+    [tasks],
+  )
+
+  const { searchText, setSearchText, filteredData } = useSearchFilter(
+    tableData,
     ['title', 'description'],
-    (item) => ({
-      ...item,
-      key: item.id,
-      className: statusBgMap[item.status],
-    }),
+    (item) => ({ ...item }),
+  )
+
+  const renderCellValue = (task: TaskRow, key: keyof TaskRow & string) => {
+    const value = task[key]
+
+    if (key === 'dealId') {
+      return <span className="text-sm">{dealTitleMap[value as string] ?? String(value)}</span>
+    }
+
+    if (key === 'assigneeId') {
+      return <span className="text-sm">{assigneeNameMap[value as string] ?? String(value)}</span>
+    }
+
+    if (key === 'status') {
+      return (
+        <p className={clsx('text-xs', statusColorMap[value as TaskStatus])}>
+          {statusMap[value as TaskStatus]}
+        </p>
+      )
+    }
+
+    return <span className="text-xs">{String(value || '-')}</span>
+  }
+
+  const renderMobileCard = (task: TaskRow) => (
+    <div className="flex flex-col gap-[6px]">
+      <div className="grid grid-cols-2 gap-[6px]">
+        <div>
+          <Paragraph className="text-sm mb-1">{task.title}</Paragraph>
+          <Text className="text-xs">
+            {task.dealId ? (dealTitleMap[task.dealId] ?? task.dealId) : '-'}
+          </Text>
+        </div>
+        <Text className={clsx('text-xs text-right', statusColorMap[task.status])}>
+          {statusMap[task.status]}
+        </Text>
+      </div>
+      <Text className="text-sm text-gray-500">{task.description}</Text>
+      <Paragraph className="text-xs text-blue-500">
+        {dayjs(task.dueDate).locale('ru').format('D MMMM YYYY')}
+      </Paragraph>
+      <div className="grid grid-cols-2 gap-[6px]">
+        <div>
+          <Paragraph className="text-sm mb-0">
+            {assigneeNameMap[task.assigneeId] ?? task.assigneeId}
+          </Paragraph>
+          <Paragraph className="text-xs text-gray-500">Исполнитель</Paragraph>
+        </div>
+        <div>
+          <Paragraph className="text-xs text-right mb-0">
+            {dayjs(task.createdAt).locale('ru').format('D MMMM YYYY')}
+          </Paragraph>
+        </div>
+      </div>
+    </div>
   )
 
   return (
@@ -131,7 +135,12 @@ export const TasksPage = () => {
         </Title>
         <div className="flex flex-col gap-4">
           <div className="flex gap-2">
-            <Button type="primary" size="large" onClick={() => setIsOpen(true)}>
+            <Button
+              type="primary"
+              size="large"
+              onClick={() => setIsOpen(true)}
+              className="hidden md:block"
+            >
               Новая задача
             </Button>
             <div className="flex-1">
@@ -146,16 +155,24 @@ export const TasksPage = () => {
               />
             </div>
           </div>
-          <Table
-            columns={columns}
-            data={filteredData}
-            renderCell={renderCellValue}
-            onRowClick={(task) => {
-              setSelectedTask(task)
-              setIsOpen(true)
-            }}
-            renderMobileCard={renderMobileCard}
-          />
+
+          {isLoading ? (
+            <Spin className="flex justify-center py-8" />
+          ) : (
+            <Table
+              columns={columns}
+              data={filteredData}
+              renderCell={renderCellValue}
+              onRowClick={(task) => {
+                setSelectedTask(task)
+                setIsOpen(true)
+              }}
+              renderMobileCard={renderMobileCard}
+            />
+          )}
+          <Button type="primary" size="large" onClick={() => setIsOpen(true)} className="md:hidden">
+            Новая задача
+          </Button>
         </div>
       </div>
       <TaskModal
