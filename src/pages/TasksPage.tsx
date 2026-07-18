@@ -8,8 +8,9 @@ import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
 import { useSearchFilter } from '@/hooks/useSearchFilter'
 import { SearchIcon } from '@/icons/SearchIcon'
 import type { Task, TaskStatus } from '@/types/task'
+import dayjs from 'dayjs'
 
-const { Title } = Typography
+const { Title, Text, Paragraph } = Typography
 
 interface TaskRow extends Task {
   key: string
@@ -80,6 +81,35 @@ const renderCellValue = (task: TaskRow, key: keyof TaskRow & string) => {
   return <span className="text-xs">{String(value || '-')}</span>
 }
 
+const renderMobileCard = (task: TaskRow) => (
+  <div className="flex flex-col gap-[6px]">
+    <div className="grid grid-cols-2 gap-[6px]">
+      <div>
+        <Paragraph className="text-sm mb-1">{task.title}</Paragraph>
+        <Text className="text-xs">{task.dealId}</Text>
+      </div>
+      <Text className={clsx('text-xs text-right', statusColorMap[task.status])}>
+        {statusMap[task.status]}
+      </Text>
+    </div>
+    <Text className="text-sm text-gray-500">{task.description}</Text>
+    <Paragraph className="text-xs text-blue-500">
+      {dayjs(task.dueDate).locale('ru').format('D MMMM YYYY')}
+    </Paragraph>
+    <div className="grid grid-cols-2 gap-[6px]">
+      <div>
+        <Paragraph className="text-sm mb-0">{task.assigneeId}</Paragraph>
+        <Paragraph className="text-xs text-gray-500">Исполнитель</Paragraph>
+      </div>
+      <div>
+        <Paragraph className="text-xs text-right mb-0">
+          {dayjs(task.createdAt).locale('ru').format('D MMMM YYYY')}
+        </Paragraph>
+      </div>
+    </div>
+  </div>
+)
+
 export const TasksPage = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [selectedTask, setSelectedTask] = useState<TaskRow | null>(null)
@@ -124,6 +154,7 @@ export const TasksPage = () => {
               setSelectedTask(task)
               setIsOpen(true)
             }}
+            renderMobileCard={renderMobileCard}
           />
         </div>
       </div>
