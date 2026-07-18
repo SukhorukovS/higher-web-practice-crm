@@ -4,6 +4,7 @@ import type { FC } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { useGetClientsQuery } from '@/app/endpoints/clients'
 import { statusMap } from '@/constants/statusMaps'
 import type { Deal } from '@/types/deal'
 
@@ -24,6 +25,8 @@ type Props = {
 }
 
 export const DealForm: FC<Props> = ({ deal, onSubmit, formId }) => {
+  const { data: clients } = useGetClientsQuery()
+
   const {
     control,
     handleSubmit,
@@ -77,7 +80,7 @@ export const DealForm: FC<Props> = ({ deal, onSubmit, formId }) => {
             >
               <Select
                 {...field}
-                options={[{ label: 'Велимир', value: 'qowjerou203u4' }]}
+                options={(clients ?? []).map((c) => ({ label: c.name, value: c.id }))}
                 placeholder="Выберите клиента"
               />
             </Form.Item>
