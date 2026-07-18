@@ -1,7 +1,11 @@
-import { Button, Input, Typography } from 'antd'
-import clsx from 'clsx'
-import { useState } from 'react'
+import 'dayjs/locale/ru'
 
+import { Button, Input, Spin, Typography } from 'antd'
+import clsx from 'clsx'
+import dayjs from 'dayjs'
+import { useMemo, useState } from 'react'
+
+import { useGetDealsQuery } from '@/app/endpoints/deals'
 import { DealModal } from '@/components/modals/DealModal'
 import { type Column, Table } from '@/components/Table/Table'
 import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
@@ -27,162 +31,6 @@ const columns = [
   { key: 'completedAt', title: 'Дата завершения', span: 3 },
 ] satisfies Column<DealRow>[]
 
-const dealData: Deal[] = [
-  {
-    id: '1',
-    title: 'Проект «Сварог 2024»',
-    clientId: 'Ярополк',
-    description: 'Запуск нового проекта с расширением услуг',
-    status: 'new',
-    amount: 1000000,
-    createdAt: '5 ноября 2024',
-    createdBy: '2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001',
-  },
-  {
-    id: '2',
-    title: 'Обновление сайта Светлояр',
-    clientId: 'Светлана',
-    description: 'Обновление контента и UX/UI',
-    status: 'completed',
-    amount: 450000,
-    createdAt: '1 октября 2024',
-    completedAt: '20 октября 2024',
-    createdBy: '2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001',
-  },
-  {
-    id: '3',
-    title: 'Проект «Радуга 2025»',
-    clientId: 'Радомир',
-    description: 'Начало сотрудничества для разработки',
-    status: 'new',
-    amount: 800000,
-    createdAt: '20 октября 2024',
-    createdBy: '2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001',
-  },
-  {
-    id: '4',
-    title: 'Логистический контракт «Миловид»',
-    clientId: 'Милана',
-    description: 'Оптимизация логистических процессов',
-    status: 'cancelled',
-    amount: 600000,
-    createdAt: '11 сентября 2024',
-    createdBy: '2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001',
-  },
-  {
-    id: '5',
-    title: 'Разработка ПО для Добрыни',
-    clientId: 'Добрыня',
-    description: 'Создание внутренней CRM-системы',
-    status: 'in_progress',
-    amount: 5200000,
-    createdAt: '17 октября 2024',
-    createdBy: '2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001',
-  },
-  {
-    id: '6',
-    title: 'Проект «Ладомир»',
-    clientId: 'Лада',
-    description: 'Подготовка к запуску нового продукта',
-    status: 'completed',
-    amount: 1300000,
-    createdAt: '8 августа 2024',
-    completedAt: '1 октября 2024',
-    createdBy: '2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001',
-  },
-  {
-    id: '7',
-    title: 'Консультации для компании «Яро» по би',
-    clientId: 'Ярослав',
-    description: 'Проведение серии встреч по оптимизации процессов',
-    status: 'completed',
-    amount: 750000,
-    createdAt: '1 июня 2024',
-    completedAt: '30 июня 2024',
-    createdBy: '2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001',
-  },
-  {
-    id: '8',
-    title: 'Миролюб — Интеграция',
-    clientId: 'Радмила',
-    description: 'Интеграция систем управления',
-    status: 'in_progress',
-    amount: 1750000,
-    createdAt: '24 сентября 2024',
-    createdBy: '2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001',
-  },
-  {
-    id: '9',
-    title: '«Ясновид CRM»',
-    clientId: 'Ясна',
-    description: 'Разработка и внедрение CRM-системы',
-    status: 'new',
-    amount: 4500000,
-    createdAt: '12 сентября 2024',
-    createdBy: '2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001',
-  },
-  {
-    id: '10',
-    title: 'ИТ-проект «БоярДев»',
-    clientId: 'Боярин',
-    description: 'Разработка платформы для аналитики',
-    status: 'new',
-    amount: 6000000,
-    createdAt: '30 октября 2024',
-    createdBy: '2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001',
-  },
-  {
-    id: '11',
-    title: 'Разработка ПО для Добрыни',
-    clientId: 'Добрыня',
-    description: 'Создание внутренней CRM-системы',
-    status: 'in_progress',
-    amount: 2200000,
-    createdAt: '17 октября 2024',
-    createdBy: '2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001',
-  },
-  {
-    id: '12',
-    title: 'Миролюб — Интеграция',
-    clientId: 'Радмила',
-    description: 'Интеграция систем управления',
-    status: 'in_progress',
-    amount: 750000,
-    createdAt: '24 сентября 2024',
-    createdBy: '2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001',
-  },
-  {
-    id: '13',
-    title: 'Консалтинг по IT-оптимизации',
-    clientId: 'Доброгост',
-    description: 'Анализ и внедрение IT-решений для повышения эффективности',
-    status: 'in_progress',
-    amount: 1100000,
-    createdAt: '20 августа 2024',
-    createdBy: '2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001',
-  },
-  {
-    id: '14',
-    title: 'Сайт для компании «Сварожичи»',
-    clientId: 'Сварожичи',
-    description: 'Создание корпоративного сайта с интерактивными функциями',
-    status: 'in_progress',
-    amount: 350000,
-    createdAt: '5 сентября 2024',
-    createdBy: '2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001',
-  },
-  {
-    id: '15',
-    title: 'Подготовка к семинару «Инновации-2024',
-    clientId: 'Величана',
-    description: 'Организация и подготовка обучающего семинара',
-    status: 'in_progress',
-    amount: 500000,
-    createdAt: '22 октября 2024',
-    createdBy: '2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001',
-  },
-]
-
 const renderCellValue = (deal: DealRow, key: keyof DealRow & string) => {
   const value = deal[key]
   if (key === 'title' || key === 'clientId') {
@@ -190,11 +38,19 @@ const renderCellValue = (deal: DealRow, key: keyof DealRow & string) => {
   }
 
   if (key === 'amount') {
-    return <p className="text-sm text-right w-full">{String(value)} ₽</p>
+    return <p className="text-sm text-right w-full">{formatCurrency(value as number)}</p>
   }
 
   if (key === 'createdAt' || key === 'completedAt') {
-    return <p className="text-sm text-right w-full">{value || '-'}</p>
+    return (
+      <p className="text-sm text-right w-full">
+        {value
+          ? dayjs(value as string)
+              .locale('ru')
+              .format('D MMMM YYYY')
+          : '-'}
+      </p>
+    )
   }
 
   if (key === 'status') {
@@ -222,11 +78,15 @@ const renderMobileCard = (deal: DealRow) => (
     <div className="grid grid-cols-2 gap-[6px]">
       <div>
         <Paragraph className="text-xs text-gray-500 mb-0">создана</Paragraph>
-        <Paragraph className="text-xs mb-0">{deal.createdAt}</Paragraph>
+        <Paragraph className="text-xs mb-0">
+          {dayjs(deal.createdAt).locale('ru').format('D MMMM YYYY')}
+        </Paragraph>
       </div>
       <div>
         <Paragraph className="text-xs text-gray-500 text-right mb-0">завершена</Paragraph>
-        <Paragraph className="text-xs text-right mb-0">{deal.completedAt || '—'}</Paragraph>
+        <Paragraph className="text-xs text-right mb-0">
+          {deal.completedAt ? dayjs(deal.completedAt).locale('ru').format('D MMMM YYYY') : '—'}
+        </Paragraph>
       </div>
     </div>
   </div>
@@ -235,14 +95,23 @@ const renderMobileCard = (deal: DealRow) => (
 export const DealsPage = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [selectedDeal, setSelectedDeal] = useState<DealRow | null>(null)
-  const { searchText, setSearchText, filteredData } = useSearchFilter<Deal, DealRow>(
-    dealData,
+
+  const { data: deals, isLoading } = useGetDealsQuery()
+
+  const tableData: DealRow[] = useMemo(
+    () =>
+      (deals ?? []).map((d) => ({
+        ...d,
+        key: d.id,
+        className: statusBgMap[d.status],
+      })),
+    [deals],
+  )
+
+  const { searchText, setSearchText, filteredData } = useSearchFilter(
+    tableData,
     ['title', 'clientId'],
-    (item) => ({
-      ...item,
-      key: item.id,
-      className: statusBgMap[item.status],
-    }),
+    (item) => ({ ...item }),
   )
 
   return (
@@ -273,16 +142,21 @@ export const DealsPage = () => {
               />
             </div>
           </div>
-          <Table
-            columns={columns}
-            data={filteredData}
-            renderCell={renderCellValue}
-            renderMobileCard={renderMobileCard}
-            onRowClick={(deal) => {
-              setSelectedDeal(deal)
-              setIsOpen(true)
-            }}
-          />
+
+          {isLoading ? (
+            <Spin className="flex justify-center py-8" />
+          ) : (
+            <Table
+              columns={columns}
+              data={filteredData}
+              renderCell={renderCellValue}
+              renderMobileCard={renderMobileCard}
+              onRowClick={(deal) => {
+                setSelectedDeal(deal)
+                setIsOpen(true)
+              }}
+            />
+          )}
           <Button type="primary" size="large" onClick={() => setIsOpen(true)} className="md:hidden">
             Новая сделка
           </Button>
