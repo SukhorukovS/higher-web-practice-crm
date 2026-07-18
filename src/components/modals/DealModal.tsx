@@ -74,11 +74,6 @@ export const DealModal: FC<Props> = ({ isOpen, deal, handleCancel }) => {
       onCancel={handleCancel}
       title={<ModalTitle addDate={deal?.createdAt} />}
       closeIcon={null}
-      styles={{
-        container: {
-          background: '#fff',
-        },
-      }}
       footer={[
         <div className="flex gap-4" key="footer">
           <Button
@@ -99,6 +94,7 @@ export const DealModal: FC<Props> = ({ isOpen, deal, handleCancel }) => {
           </Button>
         </div>,
       ]}
+      classNames={{ container: 'h-full bg-white rounded-none md:h-auto md:rounded-xl' }}
     >
       <DealForm key={deal?.id ?? 'new'} deal={deal} onSubmit={onSubmit} formId={DEAL_FORM_ID} />
     </Modal>

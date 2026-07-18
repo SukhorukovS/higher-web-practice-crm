@@ -74,11 +74,7 @@ export const TaskModal: FC<Props> = ({ isOpen, task, handleCancel }) => {
       onCancel={handleCancel}
       title={<ModalTitle createdAt={task?.createdAt} />}
       closeIcon={null}
-      styles={{
-        container: {
-          background: '#fff',
-        },
-      }}
+      classNames={{ container: 'h-full bg-white rounded-none md:h-auto md:rounded-xl' }}
       footer={[
         <div className="flex gap-4" key="footer">
           <Button

@@ -78,11 +78,7 @@ export const ClientModal: FC<Props> = ({ isOpen, client, handleCancel }) => {
       onCancel={handleCancel}
       title={<ModalTitle addDate={client?.createdAt} />}
       closeIcon={null}
-      styles={{
-        container: {
-          background: '#fff',
-        },
-      }}
+      classNames={{ container: 'h-full bg-white rounded-none md:h-auto md:rounded-xl' }}
       footer={[
         <div className="flex gap-4" key="footer">
           <Button

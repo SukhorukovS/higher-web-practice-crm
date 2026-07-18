@@ -41,3 +41,14 @@
 .welcome-layout {
   @apply bg-[url(/mob-background.webp)] md:bg-[url(/background.webp)] bg-no-repeat bg-center bg-cover;
 }
+
+@media (max-width: 767px) {
+  .ant-modal {
+    max-width: 100vw;
+    width: 100vw;
+    height: 100dvh;
+    top: 0;
+    padding: 0;
+    margin: 0;
+  }
+}
