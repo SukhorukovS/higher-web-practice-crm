@@ -1,5 +1,6 @@
 import { Button, Modal, Typography } from 'antd'
 import clsx from 'clsx'
+import dayjs from 'dayjs'
 import type { FC } from 'react'
 
 import {
@@ -27,7 +28,7 @@ const ModalTitle = ({ addDate }: { addDate?: string }) => {
         <Title level={3} className="text-2xl">
           Карточка сделки
         </Title>
-        <Paragraph>Создана {addDate}</Paragraph>
+        <Paragraph>Создана {dayjs(addDate).locale('ru').format('D MMMM YYYY')}</Paragraph>
       </div>
     )
   }

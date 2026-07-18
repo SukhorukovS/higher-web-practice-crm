@@ -5,6 +5,7 @@ import type { FC } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { useGetDealsQuery } from '@/app/endpoints/deals'
 import { statusMap } from '@/constants/statusMaps'
 import type { Task } from '@/types/task'
 
@@ -18,13 +19,6 @@ const taskSchema = z.object({
 
 export type TaskFormValues = z.infer<typeof taskSchema>
 
-const dealOptions = [
-  { label: 'Проект «Сварог 2024»', value: 'd1000000-0000-4000-8000-000000000001' },
-  { label: 'Проект «Радуга 2025»', value: 'd1000000-0000-4000-8000-000000000002' },
-  { label: 'Обновление сайта Светлояр', value: 'd1000000-0000-4000-8000-000000000003' },
-  { label: 'Консалтинг по IT-оптимизации', value: 'd1000000-0000-4000-8000-000000000004' },
-]
-
 type Props = {
   task?: Task
   onSubmit: (data: TaskFormValues) => void
@@ -32,7 +26,9 @@ type Props = {
 }
 
 export const TaskForm: FC<Props> = ({ task, onSubmit, formId }) => {
+  const { data: deals } = useGetDealsQuery()
   const isNew = !task
+  const dealOptions = [...(deals ?? []).map((d) => ({ label: d.title, value: d.id }))]
 
   const {
     control,
@@ -85,7 +81,13 @@ export const TaskForm: FC<Props> = ({ task, onSubmit, formId }) => {
               labelCol={{ style: { paddingBottom: '2px' } }}
               className="mb-4"
             >
-              <Select {...field} options={dealOptions} placeholder="Выберите сделку" allowClear />
+              <Select
+                value={field.value || undefined}
+                onChange={field.onChange}
+                options={dealOptions}
+                placeholder="Выберите сделку"
+                allowClear
+              />
             </Form.Item>
           )}
         />

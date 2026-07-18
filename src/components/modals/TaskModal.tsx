@@ -1,9 +1,15 @@
 import { Button, Modal, Typography } from 'antd'
 import clsx from 'clsx'
+import dayjs from 'dayjs'
 import type { FC } from 'react'
 
+import {
+  useCreateTaskMutation,
+  useDeleteTaskMutation,
+  useUpdateTaskMutation,
+} from '@/app/endpoints/tasks'
 import { TaskForm, type TaskFormValues } from '@/components/forms/TaskForm'
-import type { Task } from '@/types/task'
+import type { Task, TaskStatus } from '@/types/task'
 
 type Props = {
   isOpen: boolean
@@ -22,7 +28,7 @@ const ModalTitle = ({ createdAt }: { createdAt?: string }) => {
         <Title level={3} className="text-2xl">
           Карточка задачи
         </Title>
-        <Paragraph>Создана {createdAt}</Paragraph>
+        <Paragraph>Создана {dayjs(createdAt).locale('ru').format('D MMMM YYYY')}</Paragraph>
       </div>
     )
   }
@@ -35,8 +41,31 @@ const ModalTitle = ({ createdAt }: { createdAt?: string }) => {
 }
 
 export const TaskModal: FC<Props> = ({ isOpen, task, handleCancel }) => {
-  const onSubmit = (data: TaskFormValues) => {
-    console.log(data)
+  const [createTask] = useCreateTaskMutation()
+  const [updateTask] = useUpdateTaskMutation()
+  const [deleteTask] = useDeleteTaskMutation()
+
+  const onSubmit = async (data: TaskFormValues) => {
+    const payload = {
+      title: data.title,
+      description: data.description,
+      dealId: data.dealId,
+      dueDate: data.dueDate,
+    }
+
+    if (task) {
+      await updateTask({ id: task.id, ...payload, status: data.status as TaskStatus })
+    } else {
+      await createTask({ ...payload, assigneeId: '' })
+    }
+    handleCancel()
+  }
+
+  const onDelete = async () => {
+    if (task) {
+      await deleteTask(task.id)
+      handleCancel()
+    }
   }
 
   return (
@@ -63,7 +92,7 @@ export const TaskModal: FC<Props> = ({ isOpen, task, handleCancel }) => {
           </Button>
           <Button
             key="back"
-            onClick={handleCancel}
+            onClick={task ? onDelete : handleCancel}
             className={clsx(task && 'text-red-500', 'font-bold')}
           >
             {task ? 'Удалить задачу' : 'Отменить'}
