@@ -87,19 +87,32 @@ export const ClientsPage = () => {
         <Title level={5} className="text-sm font-bold">
           {client.name}
         </Title>
-        <Text>{dayjs(client.createdAt).locale('ru').format('D MMMM YYYY')}</Text>
+        <Text className="text-right text-xs text-gray-500">
+          {dayjs(client.createdAt).locale('ru').format('D MMMM YYYY')}
+        </Text>
       </div>
       <div className="grid grid-cols-2">
-        <a href={`tel://${client.phone}`}>{client.phone}</a>
-        <Text>{client.company}</Text>
-        <a href={`mailto://${client.email}`}>{client.email}</a>
+        <a href={`tel://${client.phone}`} className="text-xs">
+          {client.phone}
+        </a>
+        <Text className="text-right">{client.company}</Text>
+        <a href={`mailto://${client.email}`} className="text-xs">
+          {client.email}
+        </a>
         {client.website && (
-          <a href={client.website} target="_blank" rel="noopener noreferrer">
+          <a
+            href={client.website}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-right text-xs"
+          >
             {client.website}
           </a>
         )}
       </div>
-      {client.comment && <Paragraph className="mb-0">{client.comment}</Paragraph>}
+      {client.comment && (
+        <Paragraph className="mb-0 text-xs text-gray-500">{client.comment}</Paragraph>
+      )}
     </div>
   )
 
