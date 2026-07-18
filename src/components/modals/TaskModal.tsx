@@ -100,7 +100,7 @@ export const TaskModal: FC<Props> = ({ isOpen, task, handleCancel }) => {
         </div>,
       ]}
     >
-      <TaskForm task={task} onSubmit={onSubmit} formId={TASK_FORM_ID} />
+      <TaskForm key={task?.id ?? 'new'} task={task} onSubmit={onSubmit} formId={TASK_FORM_ID} />
     </Modal>
   )
 }

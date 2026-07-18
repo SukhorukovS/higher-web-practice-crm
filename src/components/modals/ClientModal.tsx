@@ -104,7 +104,12 @@ export const ClientModal: FC<Props> = ({ isOpen, client, handleCancel }) => {
         </div>,
       ]}
     >
-      <ClientForm client={client} onSubmit={onSubmit} formId={CLIENT_FORM_ID} />
+      <ClientForm
+        key={client?.id ?? 'new'}
+        client={client}
+        onSubmit={onSubmit}
+        formId={CLIENT_FORM_ID}
+      />
     </Modal>
   )
 }

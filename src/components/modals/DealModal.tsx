@@ -100,7 +100,7 @@ export const DealModal: FC<Props> = ({ isOpen, deal, handleCancel }) => {
         </div>,
       ]}
     >
-      <DealForm deal={deal} onSubmit={onSubmit} formId={DEAL_FORM_ID} />
+      <DealForm key={deal?.id ?? 'new'} deal={deal} onSubmit={onSubmit} formId={DEAL_FORM_ID} />
     </Modal>
   )
 }
