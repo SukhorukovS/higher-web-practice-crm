@@ -2,8 +2,13 @@ import { Button, Modal, Typography } from 'antd'
 import clsx from 'clsx'
 import type { FC } from 'react'
 
+import {
+  useCreateDealMutation,
+  useDeleteDealMutation,
+  useUpdateDealMutation,
+} from '@/app/endpoints/deals'
 import { DealForm, type DealFormValues } from '@/components/forms/DealForm'
-import type { Deal } from '@/types/deal'
+import type { Deal, DealStatus } from '@/types/deal'
 
 type Props = {
   isOpen: boolean
@@ -35,8 +40,31 @@ const ModalTitle = ({ addDate }: { addDate?: string }) => {
 }
 
 export const DealModal: FC<Props> = ({ isOpen, deal, handleCancel }) => {
-  const onSubmit = (data: DealFormValues) => {
-    console.log(data)
+  const [createDeal] = useCreateDealMutation()
+  const [updateDeal] = useUpdateDealMutation()
+  const [deleteDeal] = useDeleteDealMutation()
+
+  const onSubmit = async (data: DealFormValues) => {
+    const payload = {
+      title: data.title,
+      description: data.description,
+      clientId: data.client,
+      amount: Number(data.amount),
+    }
+
+    if (deal) {
+      await updateDeal({ id: deal.id, ...payload, status: data.status as DealStatus })
+    } else {
+      await createDeal(payload)
+    }
+    handleCancel()
+  }
+
+  const onDelete = async () => {
+    if (deal) {
+      await deleteDeal(deal.id)
+      handleCancel()
+    }
   }
 
   return (
@@ -63,7 +91,7 @@ export const DealModal: FC<Props> = ({ isOpen, deal, handleCancel }) => {
           </Button>
           <Button
             key="back"
-            onClick={handleCancel}
+            onClick={deal ? onDelete : handleCancel}
             className={clsx(deal && 'text-red-500', 'font-bold')}
           >
             {deal ? 'Удалить сделку' : 'Отменить'}
