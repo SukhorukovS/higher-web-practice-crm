@@ -5,6 +5,7 @@ import clsx from 'clsx'
 import dayjs from 'dayjs'
 import { useMemo, useState } from 'react'
 
+import { useGetClientsQuery } from '@/app/endpoints/clients'
 import { useGetDealsQuery } from '@/app/endpoints/deals'
 import { DealModal } from '@/components/modals/DealModal'
 import { type Column, Table } from '@/components/Table/Table'
@@ -19,11 +20,12 @@ const { Title, Text, Paragraph } = Typography
 interface DealRow extends Deal {
   key: string
   className?: string
+  clientName: string
 }
 
 const columns = [
   { key: 'title', title: 'Название', span: 5 },
-  { key: 'clientId', title: 'Клиент', span: 2 },
+  { key: 'clientName', title: 'Клиент', span: 2 },
   { key: 'description', title: 'Описание', span: 7 },
   { key: 'status', title: 'Этап (статус)', span: 2 },
   { key: 'amount', title: 'Сумма', span: 2 },
@@ -33,7 +35,7 @@ const columns = [
 
 const renderCellValue = (deal: DealRow, key: keyof DealRow & string) => {
   const value = deal[key]
-  if (key === 'title' || key === 'clientId') {
+  if (key === 'title' || key === 'clientName') {
     return <span className="text-sm">{String(value)}</span>
   }
 
@@ -71,7 +73,7 @@ const renderMobileCard = (deal: DealRow) => (
       <Text className={clsx('text-xs text-right', statusColorMap[deal.status])}>
         {statusMap[deal.status]}
       </Text>
-      <Text className="text-sm">{deal.clientId}</Text>
+      <Text className="text-sm">{deal.clientName}</Text>
       <Text className="text-sm font-bold text-right">{formatCurrency(deal.amount)}</Text>
     </div>
     <Text className="text-xs text-gray-500">{deal.description}</Text>
@@ -96,21 +98,31 @@ export const DealsPage = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [selectedDeal, setSelectedDeal] = useState<DealRow | null>(null)
 
-  const { data: deals, isLoading } = useGetDealsQuery()
+  const { data: deals, isLoading: isDealsLoading } = useGetDealsQuery()
+  const { data: clients, isLoading: isClientsLoading } = useGetClientsQuery()
+
+  const clientNameMap = useMemo(() => {
+    const map: Record<string, string> = {}
+    for (const c of clients ?? []) {
+      map[c.id] = c.name
+    }
+    return map
+  }, [clients])
 
   const tableData: DealRow[] = useMemo(
     () =>
       (deals ?? []).map((d) => ({
         ...d,
         key: d.id,
+        clientName: clientNameMap[d.clientId] ?? d.clientId,
         className: statusBgMap[d.status],
       })),
-    [deals],
+    [deals, clientNameMap],
   )
 
   const { searchText, setSearchText, filteredData } = useSearchFilter(
     tableData,
-    ['title', 'clientId'],
+    ['title', 'clientName'],
     (item) => ({ ...item }),
   )
 
@@ -143,7 +155,7 @@ export const DealsPage = () => {
             </div>
           </div>
 
-          {isLoading ? (
+          {isDealsLoading || isClientsLoading ? (
             <Spin className="flex justify-center py-8" />
           ) : (
             <Table
