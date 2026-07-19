@@ -54,7 +54,7 @@ export const TaskForm: FC<Props> = ({ task, onSubmit, formId }) => {
       }}
       onFinish={handleSubmit(onSubmit)}
     >
-      <div className="grid grid-cols-2 gap-2">
+      <div className="md:grid grid-cols-2 gap-2">
         <Controller
           name="title"
           control={control}

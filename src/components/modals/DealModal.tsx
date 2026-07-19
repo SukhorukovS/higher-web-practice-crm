@@ -1,3 +1,5 @@
+import 'dayjs/locale/ru'
+
 import { Button, Modal, Typography } from 'antd'
 import clsx from 'clsx'
 import dayjs from 'dayjs'
@@ -9,6 +11,7 @@ import {
   useUpdateDealMutation,
 } from '@/app/endpoints/deals'
 import { DealForm, type DealFormValues } from '@/components/forms/DealForm'
+import { LeftArrowIcon } from '@/icons/LeftArrowIcon'
 import type { Deal, DealStatus } from '@/types/deal'
 
 type Props = {
@@ -21,22 +24,34 @@ const { Title, Paragraph } = Typography
 
 const DEAL_FORM_ID = 'deal-form'
 
-const ModalTitle = ({ addDate }: { addDate?: string }) => {
+const ModalTitle = ({ addDate, onCancel }: { addDate?: string; onCancel: () => void }) => {
   if (addDate) {
     return (
-      <div className="flex justify-between">
-        <Title level={3} className="text-2xl">
-          Карточка сделки
-        </Title>
-        <Paragraph>Создана {dayjs(addDate).locale('ru').format('D MMMM YYYY')}</Paragraph>
+      <div className="md:flex justify-between">
+        <div className="flex gap-2 items-center mb-4">
+          <div onClick={onCancel} className="md:hidden">
+            <LeftArrowIcon />
+          </div>
+          <Title level={3} className="text-xl md:text-2xl mb-0">
+            Карточка сделки
+          </Title>
+        </div>
+        <Paragraph className="text-xs md:text-base">
+          Создана {dayjs(addDate).locale('ru').format('D MMMM YYYY')}
+        </Paragraph>
       </div>
     )
   }
 
   return (
-    <Title level={3} className="text-2xl">
-      Новая сделка
-    </Title>
+    <div className="flex gap-2 items-center mb-4">
+      <div onClick={onCancel} className="md:hidden">
+        <LeftArrowIcon />
+      </div>
+      <Title level={3} className="text-xl md:text-2xl mb-0">
+        Новая сделка
+      </Title>
+    </div>
   )
 }
 
@@ -72,10 +87,14 @@ export const DealModal: FC<Props> = ({ isOpen, deal, handleCancel }) => {
     <Modal
       open={isOpen}
       onCancel={handleCancel}
-      title={<ModalTitle addDate={deal?.createdAt} />}
+      title={<ModalTitle addDate={deal?.createdAt} onCancel={handleCancel} />}
       closeIcon={null}
+      classNames={{
+        container: 'h-full bg-white rounded-none md:h-auto md:rounded-xl flex flex-col',
+        body: 'flex-1',
+      }}
       footer={[
-        <div className="flex gap-4" key="footer">
+        <div className="flex flex-col md:flex-row gap-4" key="footer">
           <Button
             key="submit"
             type="primary"
@@ -94,7 +113,6 @@ export const DealModal: FC<Props> = ({ isOpen, deal, handleCancel }) => {
           </Button>
         </div>,
       ]}
-      classNames={{ container: 'h-full bg-white rounded-none md:h-auto md:rounded-xl' }}
     >
       <DealForm key={deal?.id ?? 'new'} deal={deal} onSubmit={onSubmit} formId={DEAL_FORM_ID} />
     </Modal>
