@@ -64,7 +64,7 @@ export const ClientForm: FC<Props> = ({ client, onSubmit, formId }) => {
           </Form.Item>
         )}
       />
-      <div className="grid grid-cols-2 gap-2">
+      <div className="md:grid grid-cols-2 gap-2">
         <Controller
           name="phone"
           control={control}
