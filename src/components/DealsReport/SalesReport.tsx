@@ -3,7 +3,7 @@ import { Typography } from 'antd'
 import { type Filters, FilterSection } from '../FilterSection/FilterSection'
 import { type Column, Table } from '../Table'
 
-const { Title } = Typography
+const { Title, Text } = Typography
 
 interface SaleRow {
   key: string
@@ -57,6 +57,22 @@ const salesData: SaleRow[] = [
   },
 ]
 
+const renderMobileCard = (deal: SaleRow) => (
+  <div>
+    <div className="flex justify-between">
+      <div className="flex gap-4">
+        <Text className="text-blue-500">{deal.id}</Text>
+        <Text>{deal.client}</Text>
+      </div>
+      <Text>{deal.name}</Text>
+    </div>
+    <div className="flex justify-between">
+      <Text className="font-bold">{deal.amount}</Text>
+      <Text className="text-gray-500 text-xs">{deal.date}</Text>
+    </div>
+  </div>
+)
+
 export const SalesReport = () => {
   const handleFiltersChange = (filters: Filters) => {
     console.log(filters)
@@ -68,7 +84,12 @@ export const SalesReport = () => {
         Общий, продажи
       </Title>
       <FilterSection onChange={handleFiltersChange} />
-      <Table columns={salesColumns} data={salesData} pageSize={10} />
+      <Table
+        columns={salesColumns}
+        data={salesData}
+        pageSize={10}
+        renderMobileCard={renderMobileCard}
+      />
     </div>
   )
 }

@@ -52,21 +52,23 @@ export const FilterSection = ({
 
   return (
     <div className="flex items-center justify-between gap-2">
-      <Space size="small">
+      <Space size="small" align="baseline" classNames={{ item: 'grow w-full', root: 'w-full' }}>
         <Select
           value={period}
           onChange={handlePeriodChange}
           options={periodOptions}
           popupMatchSelectWidth={false}
+          className="w-full"
         />
         <Select
           value={view}
           onChange={handleViewChange}
           options={viewOptions}
           popupMatchSelectWidth={false}
+          className="w-full"
         />
       </Space>
-      <Space size="small">
+      <Space size="small" className="hidden md:flex">
         <Button className="bg-white hover:bg-gray-50">Экспорт в PDF</Button>
         <Button className="bg-white hover:bg-gray-50">Экспорт в XLSX</Button>
       </Space>
