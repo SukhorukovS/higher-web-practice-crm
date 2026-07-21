@@ -1,20 +1,14 @@
 import { Typography } from 'antd'
+import { useState } from 'react'
 
-import { type Filters, FilterSection } from '../FilterSection/FilterSection'
+import { useSalesReport } from '@/hooks/useSalesReport'
+
+import { type Filters, FilterSection, type PeriodFilter } from '../FilterSection/FilterSection'
 import { type Column, Table } from '../Table'
 
 const { Title, Text } = Typography
 
-interface SaleRow {
-  key: string
-  id: string
-  name: string
-  client: string
-  amount: string
-  date: string
-}
-
-const salesColumns: Column<SaleRow>[] = [
+const salesColumns: Column<import('@/hooks/useSalesReport').SaleRow>[] = [
   { key: 'id', title: 'ID сделки', span: 4 },
   { key: 'name', title: 'Название', span: 8 },
   { key: 'client', title: 'Клиент', span: 5 },
@@ -22,42 +16,7 @@ const salesColumns: Column<SaleRow>[] = [
   { key: 'date', title: 'Дата завершения', span: 3 },
 ]
 
-const salesData: SaleRow[] = [
-  {
-    key: '1003',
-    id: '1003',
-    name: 'Проект «Древослав»',
-    client: 'Добрыня',
-    amount: '3 000 000 ₽',
-    date: '21 сентября 2024',
-  },
-  {
-    key: '1001',
-    id: '1001',
-    name: 'Проект «Ладомир»',
-    client: 'Лада',
-    amount: '2 300 000 ₽',
-    date: '1 октября 2024',
-  },
-  {
-    key: '1002',
-    id: '1002',
-    name: 'Проект «Ярополк»',
-    client: 'Ясна',
-    amount: '1 500 000 ₽',
-    date: '12 октября 2024',
-  },
-  {
-    key: '1004',
-    id: '1004',
-    name: 'Проект «Светлояр»',
-    client: 'Светлана',
-    amount: '900 000 ₽',
-    date: '5 ноября 2024',
-  },
-]
-
-const renderMobileCard = (deal: SaleRow) => (
+const renderMobileCard = (deal: import('@/hooks/useSalesReport').SaleRow) => (
   <div>
     <div className="flex justify-between">
       <div className="flex gap-4">
@@ -74,8 +33,11 @@ const renderMobileCard = (deal: SaleRow) => (
 )
 
 export const SalesReport = () => {
+  const [period, setPeriod] = useState<PeriodFilter>('week')
+  const { salesRows, isLoading } = useSalesReport(period)
+
   const handleFiltersChange = (filters: Filters) => {
-    console.log(filters)
+    setPeriod(filters.period)
   }
 
   return (
@@ -84,12 +46,16 @@ export const SalesReport = () => {
         Общий, продажи
       </Title>
       <FilterSection onChange={handleFiltersChange} />
-      <Table
-        columns={salesColumns}
-        data={salesData}
-        pageSize={10}
-        renderMobileCard={renderMobileCard}
-      />
+      {isLoading ? (
+        <div className="text-center py-8 text-gray-500">Загрузка...</div>
+      ) : (
+        <Table
+          columns={salesColumns}
+          data={salesRows}
+          pageSize={10}
+          renderMobileCard={renderMobileCard}
+        />
+      )}
     </div>
   )
 }

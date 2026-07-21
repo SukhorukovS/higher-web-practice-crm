@@ -52,20 +52,24 @@ export const FilterSection = ({
 
   return (
     <div className="flex items-center justify-between gap-2">
-      <Space size="small" align="baseline" classNames={{ item: 'grow w-full', root: 'w-full' }}>
+      <Space
+        size="small"
+        align="baseline"
+        classNames={{ item: 'grow w-full md:w-auto', root: 'w-full md:w-auto' }}
+      >
         <Select
           value={period}
           onChange={handlePeriodChange}
           options={periodOptions}
           popupMatchSelectWidth={false}
-          className="w-full"
+          className="w-full md:w-auto"
         />
         <Select
           value={view}
           onChange={handleViewChange}
           options={viewOptions}
           popupMatchSelectWidth={false}
-          className="w-full"
+          className="w-full md:w-auto"
         />
       </Space>
       <Space size="small" className="hidden md:flex">
