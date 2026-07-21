@@ -1,32 +1,14 @@
 import { useMemo } from 'react'
 
 import { useGetDealsQuery } from '@/app/endpoints/deals'
-import type { PeriodFilter } from '@/components/FilterSection/FilterSection'
 import type { DealStatus } from '@/types/deal'
+import { isWithinPeriod, type PeriodFilter } from '@/utils/isWithinPeriod'
 
 export type DealStageRow = {
   key: string
   status: DealStatus
   amount: number
   totalSum: number
-}
-
-function isWithinPeriod(dateStr: string, period: PeriodFilter): boolean {
-  const date = new Date(dateStr)
-  const now = new Date()
-  const diffMs = now.getTime() - date.getTime()
-  const diffDays = diffMs / (1000 * 60 * 60 * 24)
-
-  switch (period) {
-    case 'week':
-      return diffDays <= 7
-    case 'month':
-      return diffDays <= 30
-    case 'quarter':
-      return diffDays <= 90
-    default:
-      return true
-  }
 }
 
 export const useDealsStage = (period: PeriodFilter = 'week') => {

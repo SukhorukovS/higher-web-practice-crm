@@ -4,6 +4,7 @@ import { useGetClientsQuery } from '@/app/endpoints/clients'
 import { useGetDealsQuery } from '@/app/endpoints/deals'
 import type { Deal, DealStatus } from '@/types/deal'
 import { formatCurrency } from '@/utils/formatCurrency'
+import { isWithinPeriod, type PeriodFilter } from '@/utils/isWithinPeriod'
 
 export type SaleRow = {
   key: string
@@ -14,27 +15,7 @@ export type SaleRow = {
   date: string
 }
 
-type PeriodFilter = 'week' | 'month' | 'quarter'
-
 const COMPLETED_STATUS: DealStatus = 'completed'
-
-function isWithinPeriod(dateStr: string, period: PeriodFilter): boolean {
-  const date = new Date(dateStr)
-  const now = new Date()
-  const diffMs = now.getTime() - date.getTime()
-  const diffDays = diffMs / (1000 * 60 * 60 * 24)
-
-  switch (period) {
-    case 'week':
-      return diffDays <= 7
-    case 'month':
-      return diffDays <= 30
-    case 'quarter':
-      return diffDays <= 90
-    default:
-      return true
-  }
-}
 
 export const useSalesReport = (period: PeriodFilter = 'week') => {
   const { data: deals, isLoading: dealsLoading } = useGetDealsQuery()

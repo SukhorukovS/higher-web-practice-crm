@@ -2,8 +2,9 @@ import { Typography } from 'antd'
 import { useState } from 'react'
 
 import { type SaleRow, useSalesReport } from '@/hooks/useSalesReport'
+import type { PeriodFilter } from '@/utils/isWithinPeriod'
 
-import { type Filters, FilterSection, type PeriodFilter } from '../FilterSection/FilterSection'
+import { type Filters, FilterSection } from '../FilterSection/FilterSection'
 import { type Column, Table } from '../Table'
 
 const { Title, Text } = Typography

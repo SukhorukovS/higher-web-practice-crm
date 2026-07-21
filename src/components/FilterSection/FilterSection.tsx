@@ -1,6 +1,8 @@
 import { Button, Select, Space } from 'antd'
 import { useCallback, useState } from 'react'
 
+import { type PeriodFilter } from '@/utils/isWithinPeriod'
+
 const periodOptions = [
   { value: 'week', label: 'За неделю' },
   { value: 'month', label: 'За месяц' },
@@ -12,7 +14,6 @@ const viewOptions = [
   { value: 'grid', label: 'Сеткой' },
 ]
 
-export type PeriodFilter = 'week' | 'month' | 'quarter'
 export type ViewFilter = 'list' | 'grid'
 
 export interface Filters {

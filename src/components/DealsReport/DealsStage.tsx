@@ -5,9 +5,10 @@ import { useMemo, useState } from 'react'
 import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
 import { type DealStageRow, useDealsStage } from '@/hooks/useDealsStage'
 import type { DealStatus } from '@/types/deal'
+import type { PeriodFilter } from '@/utils/isWithinPeriod'
 import { pluralize } from '@/utils/pluralize'
 
-import { type Filters, FilterSection, type PeriodFilter } from '../FilterSection/FilterSection'
+import { type Filters, FilterSection } from '../FilterSection/FilterSection'
 import { type Column, Table } from '../Table'
 
 const { Title, Text } = Typography
