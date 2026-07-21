@@ -1,13 +1,13 @@
 import { Typography } from 'antd'
 import clsx from 'clsx'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
 import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
 import { type DealStageRow, useDealsStage } from '@/hooks/useDealsStage'
 import type { DealStatus } from '@/types/deal'
 import { pluralize } from '@/utils/pluralize'
 
-import { type Filters, FilterSection } from '../FilterSection/FilterSection'
+import { type Filters, FilterSection, type PeriodFilter } from '../FilterSection/FilterSection'
 import { type Column, Table } from '../Table'
 
 const { Title, Text } = Typography
@@ -53,7 +53,8 @@ const renderMobileCard = (deal: DealStage) => (
 )
 
 export const DealsStage = () => {
-  const { stageRows, isLoading } = useDealsStage()
+  const [period, setPeriod] = useState<PeriodFilter>('week')
+  const { stageRows, isLoading } = useDealsStage(period)
 
   const dataWithClass = useMemo(
     () =>
@@ -65,7 +66,7 @@ export const DealsStage = () => {
   )
 
   const handleFiltersChange = (filters: Filters) => {
-    console.log(filters)
+    setPeriod(filters.period)
   }
 
   return (
