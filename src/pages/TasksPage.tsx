@@ -1,6 +1,6 @@
 import 'dayjs/locale/ru'
 
-import { Button, Input, Spin, Typography } from 'antd'
+import { Button, Input, Typography } from 'antd'
 import clsx from 'clsx'
 import dayjs from 'dayjs'
 import { useMemo, useState } from 'react'
@@ -166,20 +166,17 @@ export const TasksPage = () => {
             </div>
           </div>
 
-          {isLoading ? (
-            <Spin className="flex justify-center py-8" />
-          ) : (
-            <Table
-              columns={columns}
-              data={filteredData}
-              renderCell={renderCellValue}
-              onRowClick={(task) => {
-                setSelectedTask(task)
-                setIsOpen(true)
-              }}
-              renderMobileCard={renderMobileCard}
-            />
-          )}
+          <Table
+            columns={columns}
+            data={filteredData}
+            renderCell={renderCellValue}
+            isLoading={isLoading}
+            onRowClick={(task) => {
+              setSelectedTask(task)
+              setIsOpen(true)
+            }}
+            renderMobileCard={renderMobileCard}
+          />
           <Button type="primary" size="large" onClick={() => setIsOpen(true)} className="md:hidden">
             Новая задача
           </Button>

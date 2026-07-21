@@ -56,11 +56,6 @@ export const useSalesReport = (period: PeriodFilter = 'week') => {
         const completionDate = deal.completedAt || deal.createdAt
         return isWithinPeriod(completionDate, period)
       })
-      .sort((a: Deal, b: Deal) => {
-        const dateA = new Date(a.completedAt || a.createdAt).getTime()
-        const dateB = new Date(b.completedAt || b.createdAt).getTime()
-        return dateB - dateA
-      })
       .map((deal: Deal) => ({
         key: deal.id,
         id: deal.id,

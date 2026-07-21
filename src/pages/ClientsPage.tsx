@@ -1,6 +1,6 @@
 import 'dayjs/locale/ru'
 
-import { Button, Input, Spin, Typography } from 'antd'
+import { Button, Input, Typography } from 'antd'
 import dayjs from 'dayjs'
 import { useMemo, useState } from 'react'
 
@@ -145,20 +145,17 @@ export const ClientsPage = () => {
             </div>
           </div>
 
-          {isLoading ? (
-            <Spin className="flex justify-center py-8" />
-          ) : (
-            <Table
-              columns={columns}
-              data={filteredData}
-              renderCell={renderCellValue}
-              renderMobileCard={renderMobileCard}
-              onRowClick={(client) => {
-                setSelectedClient(client)
-                setIsOpen(true)
-              }}
-            />
-          )}
+          <Table
+            columns={columns}
+            data={filteredData}
+            renderCell={renderCellValue}
+            renderMobileCard={renderMobileCard}
+            isLoading={isLoading}
+            onRowClick={(client) => {
+              setSelectedClient(client)
+              setIsOpen(true)
+            }}
+          />
           <Button type="primary" size="large" onClick={() => setIsOpen(true)} className="md:hidden">
             Новый клиент
           </Button>

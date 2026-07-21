@@ -1,6 +1,6 @@
 import 'dayjs/locale/ru'
 
-import { Button, Input, Spin, Typography } from 'antd'
+import { Button, Input, Typography } from 'antd'
 import clsx from 'clsx'
 import dayjs from 'dayjs'
 import { useMemo, useState } from 'react'
@@ -155,20 +155,17 @@ export const DealsPage = () => {
             </div>
           </div>
 
-          {isDealsLoading || isClientsLoading ? (
-            <Spin className="flex justify-center py-8" />
-          ) : (
-            <Table
-              columns={columns}
-              data={filteredData}
-              renderCell={renderCellValue}
-              renderMobileCard={renderMobileCard}
-              onRowClick={(deal) => {
-                setSelectedDeal(deal)
-                setIsOpen(true)
-              }}
-            />
-          )}
+          <Table
+            columns={columns}
+            data={filteredData}
+            renderCell={renderCellValue}
+            renderMobileCard={renderMobileCard}
+            isLoading={isDealsLoading || isClientsLoading}
+            onRowClick={(deal) => {
+              setSelectedDeal(deal)
+              setIsOpen(true)
+            }}
+          />
           <Button type="primary" size="large" onClick={() => setIsOpen(true)} className="md:hidden">
             Новая сделка
           </Button>

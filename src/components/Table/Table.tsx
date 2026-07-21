@@ -1,5 +1,5 @@
 import { DownOutlined } from '@ant-design/icons'
-import { Button, Card, Col, Pagination, Row } from 'antd'
+import { Button, Card, Col, Pagination, Row, Spin } from 'antd'
 import clsx from 'clsx'
 import type { Key, ReactNode } from 'react'
 import { useMemo, useState } from 'react'
@@ -22,6 +22,7 @@ interface TableProps<T extends { key: Key; className?: string }> {
   renderMobileCard?: (record: T) => ReactNode
   pageSize?: number
   onRowClick?: (record: T) => void
+  isLoading?: boolean
 }
 
 const itemRender = (
@@ -54,6 +55,7 @@ export const Table = <T extends { key: Key; className?: string }>({
   pageSize = 10,
   onRowClick,
   renderMobileCard,
+  isLoading = false,
 }: TableProps<T>) => {
   const isMobile = useIsMobile()
   const [sortField, setSortField] = useState<(keyof T & string) | null>(defaultSortKey)
@@ -94,6 +96,10 @@ export const Table = <T extends { key: Key; className?: string }>({
     const start = (currentPage - 1) * pageSize
     return sortedData.slice(start, start + pageSize)
   }, [sortedData, currentPage, pageSize])
+
+  if (isLoading) {
+    return <Spin className="flex justify-center py-8" />
+  }
 
   if (pagedData.length === 0) {
     return <div className="text-center py-8 text-gray-500">Нет данных</div>

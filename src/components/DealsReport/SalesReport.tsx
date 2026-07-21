@@ -46,16 +46,13 @@ export const SalesReport = () => {
         Общий, продажи
       </Title>
       <FilterSection onChange={handleFiltersChange} />
-      {isLoading ? (
-        <div className="text-center py-8 text-gray-500">Загрузка...</div>
-      ) : (
-        <Table
-          columns={salesColumns}
-          data={salesRows}
-          pageSize={10}
-          renderMobileCard={renderMobileCard}
-        />
-      )}
+      <Table
+        columns={salesColumns}
+        data={salesRows}
+        pageSize={10}
+        isLoading={isLoading}
+        renderMobileCard={renderMobileCard}
+      />
     </div>
   )
 }
