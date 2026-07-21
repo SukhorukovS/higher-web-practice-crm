@@ -8,6 +8,7 @@ import type { DealStatus } from '@/types/deal'
 
 import { type Filters, FilterSection } from '../FilterSection/FilterSection'
 import { type Column, Table } from '../Table'
+import { pluralize } from '@/utils/pluralize'
 
 const { Title, Text } = Typography
 
@@ -44,7 +45,9 @@ const renderMobileCard = (deal: DealStage) => (
     <div className="flex justify-between">
       <Text className={clsx('text-sm', statusColorMap[deal.status])}>{statusMap[deal.status]}</Text>
       <Text className="text-sm">{deal.totalSum} сумма</Text>
-      <Text className="text-sm">{deal.amount} сделок</Text>
+      <Text className="text-sm">
+        {deal.amount} {pluralize(deal.amount, ['сделка', 'сделки', 'сделок'])}
+      </Text>
     </div>
   </div>
 )
