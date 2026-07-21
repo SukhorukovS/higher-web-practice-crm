@@ -5,10 +5,10 @@ import { useMemo } from 'react'
 import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
 import { type DealStageRow, useDealsStage } from '@/hooks/useDealsStage'
 import type { DealStatus } from '@/types/deal'
+import { pluralize } from '@/utils/pluralize'
 
 import { type Filters, FilterSection } from '../FilterSection/FilterSection'
 import { type Column, Table } from '../Table'
-import { pluralize } from '@/utils/pluralize'
 
 const { Title, Text } = Typography
 
