@@ -32,7 +32,16 @@ export const DealModal: FC<Props> = ({ isOpen, deal, handleCancel }) => {
     }
 
     if (deal) {
-      await updateDeal({ id: deal.id, ...payload, status: data.status as DealStatus })
+      const completedAt =
+        data.status === 'completed' && deal.status !== 'completed'
+          ? new Date().toISOString()
+          : deal.completedAt
+      await updateDeal({
+        id: deal.id,
+        ...payload,
+        status: data.status as DealStatus,
+        completedAt,
+      })
     } else {
       await createDeal(payload)
     }
