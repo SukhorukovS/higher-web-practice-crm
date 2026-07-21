@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import { useMemo } from 'react'
 
 import { useGetDealsQuery } from '@/app/endpoints/deals'
@@ -12,19 +11,22 @@ export type DealStageRow = {
   totalSum: number
 }
 
-const isThisWeek = (date: string) => dayjs(date).isSame(dayjs(), 'week')
-const isThisMonth = (date: string) => dayjs(date).isSame(dayjs(), 'month')
-const getQuarter = (d: dayjs.Dayjs) => Math.floor(d.month() / 3)
-const isThisQuarter = (date: string) => {
-  const d = dayjs(date)
-  const now = dayjs()
-  return d.year() === now.year() && getQuarter(d) === getQuarter(now)
-}
+function isWithinPeriod(dateStr: string, period: PeriodFilter): boolean {
+  const date = new Date(dateStr)
+  const now = new Date()
+  const diffMs = now.getTime() - date.getTime()
+  const diffDays = diffMs / (1000 * 60 * 60 * 24)
 
-const periodFilters: Record<PeriodFilter, (date: string) => boolean> = {
-  week: isThisWeek,
-  month: isThisMonth,
-  quarter: isThisQuarter,
+  switch (period) {
+    case 'week':
+      return diffDays <= 7
+    case 'month':
+      return diffDays <= 30
+    case 'quarter':
+      return diffDays <= 90
+    default:
+      return true
+  }
 }
 
 export const useDealsStage = (period: PeriodFilter = 'week') => {
@@ -33,8 +35,7 @@ export const useDealsStage = (period: PeriodFilter = 'week') => {
   const stageRows: DealStageRow[] = useMemo(() => {
     if (!deals) return []
 
-    const filter = periodFilters[period]
-    const filteredDeals = deals.filter((deal) => filter(deal.createdAt))
+    const filteredDeals = deals.filter((deal) => isWithinPeriod(deal.createdAt, period))
 
     const grouped = new Map<DealStatus, { amount: number; totalSum: number }>()
 

@@ -53,8 +53,8 @@ export const useSalesReport = (period: PeriodFilter = 'week') => {
     return deals
       .filter((deal: Deal) => {
         if (deal.status !== COMPLETED_STATUS) return false
-        const completionDate = deal.completedAt || deal.createdAt
-        return isWithinPeriod(completionDate, period)
+        const completionDate = deal.completedAt
+        return isWithinPeriod(completionDate!, period)
       })
       .map((deal: Deal) => ({
         key: deal.id,
