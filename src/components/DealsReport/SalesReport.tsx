@@ -1,14 +1,14 @@
 import { Typography } from 'antd'
 import { useState } from 'react'
 
-import { useSalesReport } from '@/hooks/useSalesReport'
+import { type SaleRow, useSalesReport } from '@/hooks/useSalesReport'
 
 import { type Filters, FilterSection, type PeriodFilter } from '../FilterSection/FilterSection'
 import { type Column, Table } from '../Table'
 
 const { Title, Text } = Typography
 
-const salesColumns: Column<import('@/hooks/useSalesReport').SaleRow>[] = [
+const salesColumns: Column<SaleRow>[] = [
   { key: 'id', title: 'ID сделки', span: 4 },
   { key: 'name', title: 'Название', span: 8 },
   { key: 'client', title: 'Клиент', span: 5 },
@@ -16,7 +16,7 @@ const salesColumns: Column<import('@/hooks/useSalesReport').SaleRow>[] = [
   { key: 'date', title: 'Дата завершения', span: 3 },
 ]
 
-const renderMobileCard = (deal: import('@/hooks/useSalesReport').SaleRow) => (
+const renderMobileCard = (deal: SaleRow) => (
   <div>
     <div className="flex justify-between">
       <div className="flex gap-4">

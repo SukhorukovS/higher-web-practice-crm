@@ -128,7 +128,7 @@ export const Table = <T extends { key: Key; className?: string }>({
 
   return (
     <div>
-      <Row gutter={8} className="mb-1 mx-6!">
+      <Row gutter={8} className="hidden md:flex mb-1 mx-6!">
         {columns.map((col) => (
           <Col key={col.key} span={col.span} className="flex last:justify-end">
             <Button

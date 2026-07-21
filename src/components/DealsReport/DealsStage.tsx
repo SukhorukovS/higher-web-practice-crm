@@ -8,7 +8,7 @@ import type { DealStatus } from '@/types/deal'
 import { type Filters, FilterSection } from '../FilterSection/FilterSection'
 import { type Column, Table } from '../Table'
 
-const { Title } = Typography
+const { Title, Text } = Typography
 
 type DealStage = {
   key: string
@@ -49,7 +49,6 @@ const renderCellValue = (deal: DealStage, key: keyof DealStage & string) => {
   const value = deal[key]
 
   if (key === 'status') {
-    console.log(value)
     return (
       <p className={clsx('text-sm', statusColorMap[value as DealStatus])}>
         {statusMap[value as DealStatus]}
@@ -63,6 +62,16 @@ const renderCellValue = (deal: DealStage, key: keyof DealStage & string) => {
 
   return <span className="text-sm">{String(value || '-')}</span>
 }
+
+const renderMobileCard = (deal: DealStage) => (
+  <div>
+    <div className="flex justify-between">
+      <Text className={clsx('text-sm', statusColorMap[deal.status])}>{statusMap[deal.status]}</Text>
+      <Text className="text-sm">{deal.totalSum} сумма</Text>
+      <Text className="text-sm">{deal.amount} сделок</Text>
+    </div>
+  </div>
+)
 
 export const DealsStage = () => {
   const dataWithClass = useMemo(
@@ -81,10 +90,15 @@ export const DealsStage = () => {
   return (
     <div className="flex flex-col gap-3">
       <Title level={5} className="font-bold">
-        Общий, продажи
+        Этапы сделок
       </Title>
       <FilterSection onChange={handleFiltersChange} />
-      <Table columns={dealsColumns} data={dataWithClass} renderCell={renderCellValue} />
+      <Table
+        columns={dealsColumns}
+        data={dataWithClass}
+        renderCell={renderCellValue}
+        renderMobileCard={renderMobileCard}
+      />
     </div>
   )
 }
