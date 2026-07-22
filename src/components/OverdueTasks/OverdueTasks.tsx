@@ -1,10 +1,12 @@
 import { Typography } from 'antd'
 import { useMemo } from 'react'
 
+import { statusMap } from '@/constants/statusMaps'
+
 import { FilterSection } from '../FilterSection/FilterSection'
 import { type Column, Table } from '../Table'
 
-const { Title } = Typography
+const { Title, Text } = Typography
 
 type TaskData = {
   key: string
@@ -51,8 +53,8 @@ const overdueTasksList: TaskData[] = [
   },
 ]
 
-const renderCellValue = (deal: TaskData, key: keyof TaskData & string) => {
-  const value = deal[key]
+const renderCellValue = (task: TaskData, key: keyof TaskData & string) => {
+  const value = task[key]
 
   if (key === 'status') {
     return <p className="text-sm text-red-500">{value}</p>
@@ -60,6 +62,23 @@ const renderCellValue = (deal: TaskData, key: keyof TaskData & string) => {
 
   return <span className="text-sm">{String(value || '-')}</span>
 }
+
+const renderMobileCard = (task: TaskData) => (
+  <div>
+    <div className="flex justify-between">
+      <Text className="text-sm font-bold">id {task.taskId}</Text>
+      <Text className="text-sm text-red-500">{task.status}</Text>
+    </div>
+    <Text>{task.name}</Text>
+    <div className="flex justify-between items-end">
+      <div>
+        <Text className="text-sm">{task.assignee}</Text>
+        <Text className="block text-xs text-gray-500">Ответственный</Text>
+      </div>
+      <Text className="text-xs text-gray-500">{task.dueDate}</Text>
+    </div>
+  </div>
+)
 
 export const OverdueTasks = () => {
   const dataWithClass = useMemo(
@@ -74,10 +93,15 @@ export const OverdueTasks = () => {
   return (
     <div className="flex flex-col gap-3">
       <Title level={5} className="font-bold">
-        Активности клиентов
+        Просроченные задачи
       </Title>
       <FilterSection onChange={console.log} />
-      <Table columns={overdueTasksColumns} data={dataWithClass} renderCell={renderCellValue} />
+      <Table
+        columns={overdueTasksColumns}
+        data={dataWithClass}
+        renderCell={renderCellValue}
+        renderMobileCard={renderMobileCard}
+      />
     </div>
   )
 }
