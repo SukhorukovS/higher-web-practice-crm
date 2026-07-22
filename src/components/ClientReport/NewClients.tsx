@@ -3,7 +3,7 @@ import { Typography } from 'antd'
 import { FilterSection } from '../FilterSection/FilterSection'
 import { type Column, Table } from '../Table'
 
-const { Title } = Typography
+const { Title, Text } = Typography
 
 type ClientData = {
   key: string
@@ -38,12 +38,27 @@ const newClientList: ClientData[] = [
   },
 ]
 
+const renderMobileCard = (client: ClientData) => (
+  <>
+    <div className="flex justify-between">
+      <div className="text-xs text-gray-500">
+        id <Text className="text-sm text-blue-500">{client.clientId}</Text>
+      </div>
+      <div className="text-xs text-gray-500">
+        Клиент <Text className="text-sm">{client.name}</Text>
+      </div>
+      <Text className="text-sm font-bold">{client.company}</Text>
+    </div>
+    <Text className="text-xs text-gray-500">{client.addAt}</Text>
+  </>
+)
+
 export const NewClients = () => (
   <div className="flex flex-col gap-3">
     <Title level={5} className="font-bold">
       Новые клиенты
     </Title>
     <FilterSection onChange={console.log} />
-    <Table columns={newClientColumns} data={newClientList} />
+    <Table columns={newClientColumns} data={newClientList} renderMobileCard={renderMobileCard} />
   </div>
 )
