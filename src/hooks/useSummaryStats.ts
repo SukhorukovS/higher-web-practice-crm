@@ -43,10 +43,10 @@ export const useSummaryStats = () => {
 
   const completedDealsStats = [
     completedDeals.length,
-    completedDeals.filter((deal) => isSameDay(deal.completedAt ?? deal.createdAt)).length,
-    completedDeals.filter((deal) => isThisWeek(deal.completedAt ?? deal.createdAt)).length,
-    completedDeals.filter((deal) => isThisMonth(deal.completedAt ?? deal.createdAt)).length,
-    completedDeals.filter((deal) => isThisQuarter(deal.completedAt ?? deal.createdAt)).length,
+    completedDeals.filter((deal) => isSameDay(deal.completedAt!)).length,
+    completedDeals.filter((deal) => isThisWeek(deal.completedAt!)).length,
+    completedDeals.filter((deal) => isThisMonth(deal.completedAt!)).length,
+    completedDeals.filter((deal) => isThisQuarter(deal.completedAt!)).length,
   ]
 
   return {

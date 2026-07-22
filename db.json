@@ -62,6 +62,36 @@
       "createdAt": "2026-03-01T14:00:00Z",
       "deleted": false,
       "createdBy": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001"
+    },
+    {
+      "id": "a1b2c3d4-e5f6-4a7b-8c9d-000000000004",
+      "name": "Анна Волкова",
+      "phone": "+79994445566",
+      "email": "volkova@mail.ru",
+      "company": "ООО Волк-Трейд",
+      "createdAt": "2026-07-20T10:00:00Z",
+      "deleted": false,
+      "createdBy": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001"
+    },
+    {
+      "id": "a1b2c3d4-e5f6-4a7b-8c9d-000000000005",
+      "name": "Пётр Лебедев",
+      "phone": "+79995556677",
+      "email": "lebedev@mail.ru",
+      "company": "ИП Лебедев",
+      "createdAt": "2026-07-05T14:30:00Z",
+      "deleted": false,
+      "createdBy": "5b7a3c2d-9e4f-4a1c-b2d3-7f6e5c4b1002"
+    },
+    {
+      "id": "a1b2c3d4-e5f6-4a7b-8c9d-000000000006",
+      "name": "Ольга Новикова",
+      "phone": "+79996667788",
+      "email": "novikova@mail.ru",
+      "company": "ООО Новик",
+      "createdAt": "2026-05-30T09:00:00Z",
+      "deleted": false,
+      "createdBy": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001"
     }
   ],
   "deals": [

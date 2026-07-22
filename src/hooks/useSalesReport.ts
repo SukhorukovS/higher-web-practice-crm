@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { useMemo } from 'react'
 
 import { useGetClientsQuery } from '@/app/endpoints/clients'
@@ -43,11 +44,7 @@ export const useSalesReport = (period: PeriodFilter = 'week') => {
         name: deal.title,
         client: clientMap.get(deal.clientId) ?? 'Неизвестный',
         amount: formatCurrency(deal.amount),
-        date: new Date(deal.completedAt || deal.createdAt).toLocaleDateString('ru-RU', {
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric',
-        }),
+        date: dayjs(deal.completedAt!).format('D MMMM YYYY'),
       }))
   }, [deals, clientMap, period])
 
