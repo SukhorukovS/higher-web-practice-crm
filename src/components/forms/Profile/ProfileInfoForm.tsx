@@ -52,7 +52,7 @@ export const ProfileInfoForm = () => {
   return (
     <div className="flex flex-col w-full gap-4">
       {infoFields.map((row, i) => (
-        <div key={i} className="flex gap-2 w-full">
+        <div key={i} className="flex flex-col gap-3 md:gap-2 w-full md:flex-row">
           {row.map(({ name, label, placeholder }) => (
             <Controller
               key={name}
@@ -64,7 +64,7 @@ export const ProfileInfoForm = () => {
                   validateStatus={errors[name] ? 'error' : ''}
                   help={errors[name]?.message}
                   labelCol={labelCol}
-                  className="mb-0 w-1/2"
+                  className="mb-0 w-full md:w-1/2"
                 >
                   <Input {...field} placeholder={placeholder} />
                 </Form.Item>

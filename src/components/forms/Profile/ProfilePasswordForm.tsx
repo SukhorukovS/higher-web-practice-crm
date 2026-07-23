@@ -50,9 +50,9 @@ export const ProfilePasswordForm = () => {
       <Title level={3} className="text-base font-bold mt-8 mb-3">
         Пароль
       </Title>
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex flex-col w-full gap-3">
         {passwordFields.map((row, i) => (
-          <div key={i} className="flex gap-2 w-full">
+          <div key={i} className="flex flex-col gap-2 w-full md:flex-row">
             {row.map(({ name, label, placeholder }) => (
               <Controller
                 key={name}
@@ -64,7 +64,7 @@ export const ProfilePasswordForm = () => {
                     validateStatus={errors[name] ? 'error' : ''}
                     help={errors[name]?.message}
                     labelCol={labelCol}
-                    className="mb-0 w-1/2"
+                    className="mb-0 w-full md:w-1/2"
                   >
                     <Input.Password {...field} placeholder={placeholder} visibilityToggle={false} />
                   </Form.Item>

@@ -1,4 +1,4 @@
-import { Typography } from 'antd'
+import { Form, Typography } from 'antd'
 import { Link } from 'react-router-dom'
 
 import { ProfileAvatar, ProfileInfoForm, ProfilePasswordForm } from '@/components/forms/Profile'
@@ -8,16 +8,27 @@ const { Title } = Typography
 
 export const ProfilePage = () => (
   <>
-    <Title level={1} className="text-3xl">
+    <Title level={1} className="hidden md:block text-3xl">
       Настройка аккаунта
     </Title>
-    <Section className="w-[680px] flex-1 flex flex-col">
-      <div className="grow">
+    <Section className="w-full md:w-[680px] flex flex-col">
+      <Form
+        layout="vertical"
+        className="grow"
+        classNames={{
+          label: 'auth-label',
+        }}
+      >
         <ProfileAvatar />
         <ProfileInfoForm />
         <ProfilePasswordForm />
-      </div>
-      <Link to="">Удалить аккаунт</Link>
+        <Link to="" className="hidden md:inline">
+          Удалить аккаунт
+        </Link>
+      </Form>
     </Section>
+    <Link to="" className="flex justify-center items-end flex-1 text-base md:hidden">
+      Удалить аккаунт
+    </Link>
   </>
 )

@@ -4,7 +4,7 @@ import userAvatar from '/user.png'
 import { PhotoIcon } from '@/icons/PhotoIcon'
 
 export const ProfileAvatar = () => (
-  <div className="flex items-end">
+  <div className="flex justify-center md:justify-start mb-4 items-end">
     <img alt="logo" src={userAvatar} className="h-[96px] w-[96px] rounded-full" />
     <Button
       type="primary"

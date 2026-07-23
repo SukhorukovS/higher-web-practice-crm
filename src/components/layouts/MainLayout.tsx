@@ -24,7 +24,7 @@ const menuItems = [
   { key: ROUTES.TASKS, icon: <TasksIcon />, label: 'Задачи' },
 ]
 
-export const MainLayout = () => {
+export const MainLayout = ({ withBackground = false }: { withBackground?: boolean } = {}) => {
   const [collapsed, setCollapsed] = useState(false)
   const isMobile = useIsMobile()
   const navigate = useNavigate()
@@ -78,7 +78,9 @@ export const MainLayout = () => {
             />
           </div>
         </Drawer>
-        <div className="flex-1 p-5 overflow-y-auto">
+        <div
+          className={`flex-1 flex flex-col p-5 overflow-y-auto${withBackground ? ' welcome-layout' : ''}`}
+        >
           <Outlet />
         </div>
       </Layout>
