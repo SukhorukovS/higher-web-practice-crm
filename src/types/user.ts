@@ -2,6 +2,7 @@ export type User = {
   id: string
   email: string
   name: string
+  surname: string
   createdAt: string
   password?: string
 }
@@ -26,5 +27,6 @@ export type LoginPayload = {
 export type UpdateProfilePayload = {
   email?: string
   name?: string
+  surname?: string
   password?: string
 }
