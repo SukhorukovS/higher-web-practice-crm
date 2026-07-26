@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, Input } from 'antd'
+import { useEffect } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -17,12 +18,19 @@ const labelCol = { style: { paddingBottom: '2px' } }
 
 interface ProfileInfoFormProps {
   profile: User | null
+  onDirtyChange?: (isDirty: boolean) => void
+  onRegisterGetValues?: (getValues: () => ProfileInfoValues) => void
 }
 
-export const ProfileInfoForm = ({ profile }: ProfileInfoFormProps) => {
+export const ProfileInfoForm = ({
+  profile,
+  onDirtyChange,
+  onRegisterGetValues,
+}: ProfileInfoFormProps) => {
   const {
     control,
-    formState: { errors },
+    getValues,
+    formState: { errors, isDirty },
   } = useForm<ProfileInfoValues>({
     resolver: zodResolver(profileInfoSchema),
     defaultValues: {
@@ -31,6 +39,14 @@ export const ProfileInfoForm = ({ profile }: ProfileInfoFormProps) => {
       email: profile?.email ?? '',
     },
   })
+
+  useEffect(() => {
+    onDirtyChange?.(isDirty)
+  }, [isDirty, onDirtyChange])
+
+  useEffect(() => {
+    onRegisterGetValues?.(() => getValues())
+  }, [getValues, onRegisterGetValues])
 
   const name = useWatch({ control, name: 'name' })
   const surname = useWatch({ control, name: 'surname' })

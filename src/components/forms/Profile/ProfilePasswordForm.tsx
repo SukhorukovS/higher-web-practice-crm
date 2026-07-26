@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, Input, Typography } from 'antd'
+import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -18,6 +19,11 @@ const profilePasswordSchema = z
 
 type ProfilePasswordValues = z.infer<typeof profilePasswordSchema>
 
+interface ProfilePasswordFormProps {
+  onDirtyChange?: (isDirty: boolean) => void
+  onRegisterGetValues?: (getValues: () => ProfilePasswordValues) => void
+}
+
 const labelCol = { style: { paddingBottom: '2px' } }
 
 const passwordFields: {
@@ -32,10 +38,14 @@ const passwordFields: {
   ],
 ]
 
-export const ProfilePasswordForm = () => {
+export const ProfilePasswordForm = ({
+  onDirtyChange,
+  onRegisterGetValues,
+}: ProfilePasswordFormProps) => {
   const {
     control,
-    formState: { errors },
+    getValues,
+    formState: { errors, isDirty },
   } = useForm<ProfilePasswordValues>({
     resolver: zodResolver(profilePasswordSchema),
     defaultValues: {
@@ -44,6 +54,14 @@ export const ProfilePasswordForm = () => {
       repeatPassword: '',
     },
   })
+
+  useEffect(() => {
+    onDirtyChange?.(isDirty)
+  }, [isDirty, onDirtyChange])
+
+  useEffect(() => {
+    onRegisterGetValues?.(() => getValues())
+  }, [getValues, onRegisterGetValues])
 
   return (
     <>

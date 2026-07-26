@@ -1,7 +1,8 @@
-import { Form, Spin, Typography } from 'antd'
+import { Button, Form, Spin, Typography } from 'antd'
+import { useCallback, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import { useGetUserByIdQuery } from '@/app/endpoints/users'
+import { useGetUserByIdQuery, useUpdateProfileMutation } from '@/app/endpoints/users'
 import { useAppSelector } from '@/app/store'
 import { ProfileAvatar, ProfileInfoForm, ProfilePasswordForm } from '@/components/forms/Profile'
 import { Section } from '@/components/ui/Section'
@@ -13,6 +14,59 @@ export const ProfilePage = () => {
   const { data: profile, isLoading } = useGetUserByIdQuery(currentUser?.id ?? '', {
     skip: !currentUser?.id,
   })
+  const [updateProfile] = useUpdateProfileMutation()
+
+  const [isInfoDirty, setIsInfoDirty] = useState(false)
+  const [isPasswordDirty, setIsPasswordDirty] = useState(false)
+
+  const getInfoValuesRef = useRef<(() => { name: string; surname: string; email: string }) | null>(
+    null,
+  )
+  const getPasswordValuesRef = useRef<
+    (() => { password: string; newPassword: string; repeatPassword: string }) | null
+  >(null)
+
+  const handleInfoDirtyChange = useCallback((dirty: boolean) => setIsInfoDirty(dirty), [])
+  const handlePasswordDirtyChange = useCallback((dirty: boolean) => setIsPasswordDirty(dirty), [])
+
+  const handleRegisterInfoGetValues = useCallback(
+    (getValues: () => { name: string; surname: string; email: string }) => {
+      getInfoValuesRef.current = getValues
+    },
+    [],
+  )
+
+  const handleRegisterPasswordGetValues = useCallback(
+    (getValues: () => { password: string; newPassword: string; repeatPassword: string }) => {
+      getPasswordValuesRef.current = getValues
+    },
+    [],
+  )
+
+  const isDirty = isInfoDirty || isPasswordDirty
+
+  const handleSave = async () => {
+    if (!currentUser?.id) return
+
+    const infoValues = getInfoValuesRef.current?.()
+    const passwordValues = getPasswordValuesRef.current?.()
+
+    const payload: { name?: string; surname?: string; email?: string; password?: string } = {}
+
+    if (isInfoDirty && infoValues) {
+      payload.name = infoValues.name
+      payload.surname = infoValues.surname
+      payload.email = infoValues.email
+    }
+
+    if (isPasswordDirty && passwordValues?.newPassword) {
+      payload.password = passwordValues.newPassword
+    }
+
+    if (Object.keys(payload).length > 0) {
+      await updateProfile({ id: currentUser.id, ...payload })
+    }
+  }
 
   if (isLoading) {
     return (
@@ -36,9 +90,24 @@ export const ProfilePage = () => {
           }}
         >
           <ProfileAvatar />
-          <ProfileInfoForm profile={profile ?? null} />
-          <ProfilePasswordForm />
-          <Link to="" className="hidden md:inline">
+          <ProfileInfoForm
+            profile={profile ?? null}
+            onDirtyChange={handleInfoDirtyChange}
+            onRegisterGetValues={handleRegisterInfoGetValues}
+          />
+          <ProfilePasswordForm
+            onDirtyChange={handlePasswordDirtyChange}
+            onRegisterGetValues={handleRegisterPasswordGetValues}
+          />
+          <Button
+            type="primary"
+            disabled={!isDirty}
+            onClick={handleSave}
+            className="mt-6 w-full md:w-auto"
+          >
+            Сохранить изменения
+          </Button>
+          <Link to="" className="hidden md:inline ml-4">
             Удалить аккаунт
           </Link>
         </Form>
