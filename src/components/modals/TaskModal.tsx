@@ -5,6 +5,7 @@ import {
   useDeleteTaskMutation,
   useUpdateTaskMutation,
 } from '@/app/endpoints/tasks'
+import { useAppSelector } from '@/app/store'
 import { TaskForm, type TaskFormValues } from '@/components/forms/TaskForm'
 import type { Task, TaskStatus } from '@/types/task'
 
@@ -22,6 +23,7 @@ export const TaskModal: FC<Props> = ({ isOpen, task, handleCancel }) => {
   const [createTask] = useCreateTaskMutation()
   const [updateTask] = useUpdateTaskMutation()
   const [deleteTask] = useDeleteTaskMutation()
+  const user = useAppSelector((state) => state.auth.user)
 
   const onSubmit = async (data: TaskFormValues) => {
     const payload = {
@@ -34,7 +36,7 @@ export const TaskModal: FC<Props> = ({ isOpen, task, handleCancel }) => {
     if (task) {
       await updateTask({ id: task.id, ...payload, status: data.status as TaskStatus })
     } else {
-      await createTask({ ...payload, assigneeId: '' })
+      await createTask({ ...payload, assigneeId: user!.id, createdBy: user!.id })
     }
     handleCancel()
   }

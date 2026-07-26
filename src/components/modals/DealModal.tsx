@@ -5,6 +5,7 @@ import {
   useDeleteDealMutation,
   useUpdateDealMutation,
 } from '@/app/endpoints/deals'
+import { useAppSelector } from '@/app/store'
 import { DealForm, type DealFormValues } from '@/components/forms/DealForm'
 import type { Deal, DealStatus } from '@/types/deal'
 
@@ -22,6 +23,7 @@ export const DealModal: FC<Props> = ({ isOpen, deal, handleCancel }) => {
   const [createDeal] = useCreateDealMutation()
   const [updateDeal] = useUpdateDealMutation()
   const [deleteDeal] = useDeleteDealMutation()
+  const user = useAppSelector((state) => state.auth.user)
 
   const onSubmit = async (data: DealFormValues) => {
     const payload = {
@@ -43,7 +45,7 @@ export const DealModal: FC<Props> = ({ isOpen, deal, handleCancel }) => {
         completedAt,
       })
     } else {
-      await createDeal(payload)
+      await createDeal({ ...payload, createdBy: user!.id })
     }
     handleCancel()
   }

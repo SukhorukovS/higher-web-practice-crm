@@ -22,6 +22,7 @@ export type CreateDealPayload = {
   description?: string
   clientId: string
   amount: number
+  createdBy: string
 }
 
 export type UpdateDealPayload = {

@@ -5,6 +5,7 @@ import {
   useDeleteClientMutation,
   useUpdateClientMutation,
 } from '@/app/endpoints/clients'
+import { useAppSelector } from '@/app/store'
 import { ClientForm, type ClientFormValues } from '@/components/forms/ClientForm'
 import type { Client } from '@/types/client'
 
@@ -22,6 +23,7 @@ export const ClientModal: FC<Props> = ({ isOpen, client, handleCancel }) => {
   const [createClient] = useCreateClientMutation()
   const [updateClient] = useUpdateClientMutation()
   const [deleteClient] = useDeleteClientMutation()
+  const user = useAppSelector((state) => state.auth.user)
 
   const onSubmit = async (data: ClientFormValues) => {
     const payload = {
@@ -36,7 +38,7 @@ export const ClientModal: FC<Props> = ({ isOpen, client, handleCancel }) => {
     if (client) {
       await updateClient({ id: client.id, ...payload })
     } else {
-      await createClient(payload)
+      await createClient({ ...payload, createdBy: user!.id })
     }
     handleCancel()
   }

@@ -24,6 +24,7 @@ export type CreateTaskPayload = {
   dealId?: string
   assigneeId: string
   dueDate?: string
+  createdBy: string
 }
 
 export type UpdateTaskPayload = {

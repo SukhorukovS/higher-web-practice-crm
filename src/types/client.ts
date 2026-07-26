@@ -20,6 +20,7 @@ export type CreateClientPayload = {
   company: string
   website?: string
   comment?: string
+  createdBy: string
 }
 
 export type UpdateClientPayload = Partial<CreateClientPayload>
