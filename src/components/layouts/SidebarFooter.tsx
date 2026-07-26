@@ -1,8 +1,10 @@
-import { Typography } from 'antd'
+import { Button, Typography } from 'antd'
 import type { FC } from 'react'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import user from '/user.png'
+import { logout } from '@/app/authSlice'
 import { ROUTES } from '@/types/route'
 
 type Props = {
@@ -12,21 +14,34 @@ type Props = {
 
 export const SidebarFooter: FC<Props> = ({ collapsed = false, isActive = false }) => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const handleLogout = () => {
+    dispatch(logout())
+    navigate(ROUTES.MAIN)
+  }
 
   return (
-    <div
-      className="flex items-center w-full py-2 mb-5 gap-4 cursor-pointer"
-      onClick={() => navigate(ROUTES.PROFILE)}
-    >
-      <img
-        alt="logo"
-        src={user}
-        className={`h-10 w-10 rounded-full ${isActive ? 'border border-blue-500' : ''}`}
-      />
+    <div className="flex flex-col w-full py-2 mb-5">
+      <div
+        className="flex items-center gap-4 cursor-pointer"
+        onClick={() => navigate(ROUTES.PROFILE)}
+      >
+        <img
+          alt="logo"
+          src={user}
+          className={`h-10 w-10 rounded-full ${isActive ? 'border border-blue-500' : ''}`}
+        />
+        {!collapsed && (
+          <Typography className={`text-base font-bold ${isActive ? 'text-blue-500' : ''}`}>
+            Yaropolk
+          </Typography>
+        )}
+      </div>
       {!collapsed && (
-        <Typography className={`text-base font-bold ${isActive ? 'text-blue-500' : ''}`}>
-          Yaropolk
-        </Typography>
+        <Button type="link" className="mt-2 self-start px-0 text-red-500" onClick={handleLogout}>
+          Выйти
+        </Button>
       )}
     </div>
   )
