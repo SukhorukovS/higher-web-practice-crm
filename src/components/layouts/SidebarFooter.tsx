@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 import user from '/user.png'
 import { logout } from '@/app/authSlice'
+import { useAppSelector } from '@/app/store'
 import { ROUTES } from '@/types/route'
 
 type Props = {
@@ -15,6 +16,7 @@ type Props = {
 export const SidebarFooter: FC<Props> = ({ collapsed = false, isActive = false }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const currentUser = useAppSelector((state) => state.auth.user)
 
   const handleLogout = () => {
     dispatch(logout())
@@ -34,7 +36,7 @@ export const SidebarFooter: FC<Props> = ({ collapsed = false, isActive = false }
         />
         {!collapsed && (
           <Typography className={`text-base font-bold ${isActive ? 'text-blue-500' : ''}`}>
-            Yaropolk
+            {currentUser?.name ?? 'Пользователь'}
           </Typography>
         )}
       </div>

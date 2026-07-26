@@ -1,5 +1,6 @@
 import { Tabs, Typography } from 'antd'
 
+import { useAppSelector } from '@/app/store'
 import { LastTasks } from '@/components/LastTasks'
 import { SummaryBoard } from '@/components/SummaryBoard'
 import { TopClients } from '@/components/TopClients'
@@ -17,12 +18,13 @@ const mobileTabs = [
 
 export const DashboardPage = () => {
   const isMobile = useIsMobile()
+  const currentUser = useAppSelector((state) => state.auth.user)
 
   return (
     <div className="flex flex-col gap-8">
       <div>
         <Title level={1} className="text-2xl md:text-3xl mb-2">
-          Добро пожаловать, Ярополк!
+          Добро пожаловать, {currentUser?.name ?? 'Пользователь'}!
         </Title>
         <Paragraph type="secondary" className="text-sm md:text-base">
           Посмотрите сводную информацию по&nbsp;вашим клиентам, сделкам и&nbsp;задачам
