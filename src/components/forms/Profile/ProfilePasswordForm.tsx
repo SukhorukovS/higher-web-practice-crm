@@ -6,22 +6,41 @@ import { z } from 'zod'
 
 const { Title } = Typography
 
-const profilePasswordSchema = z
-  .object({
-    password: z.string().min(1, 'Введите текущий пароль'),
-    newPassword: z.string().min(6, 'Минимум 6 символов'),
-    repeatPassword: z.string().min(1, 'Повторите пароль'),
-  })
-  .refine((data) => data.newPassword === data.repeatPassword, {
-    message: 'Пароли не совпадают',
-    path: ['repeatPassword'],
-  })
+const createProfilePasswordSchema = (currentPassword: string) =>
+  z
+    .object({
+      password: z.string().min(1, 'Введите текущий пароль'),
+      newPassword: z.string().min(6, 'Минимум 6 символов'),
+      repeatPassword: z.string().min(1, 'Повторите пароль'),
+    })
+    .superRefine((data, ctx) => {
+      if (data.password !== currentPassword) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Неверный текущий пароль',
+          path: ['password'],
+        })
+      }
+      if (data.newPassword !== data.repeatPassword) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Пароли не совпадают',
+          path: ['repeatPassword'],
+        })
+      }
+    })
 
-type ProfilePasswordValues = z.infer<typeof profilePasswordSchema>
+type ProfilePasswordValues = {
+  password: string
+  newPassword: string
+  repeatPassword: string
+}
 
 interface ProfilePasswordFormProps {
+  currentPassword: string
   onDirtyChange?: (isDirty: boolean) => void
   onRegisterGetValues?: (getValues: () => ProfilePasswordValues) => void
+  onRegisterTrigger?: (trigger: () => Promise<boolean>) => void
 }
 
 const labelCol = { style: { paddingBottom: '2px' } }
@@ -39,15 +58,18 @@ const passwordFields: {
 ]
 
 export const ProfilePasswordForm = ({
+  currentPassword,
   onDirtyChange,
   onRegisterGetValues,
+  onRegisterTrigger,
 }: ProfilePasswordFormProps) => {
   const {
     control,
     getValues,
+    trigger,
     formState: { errors, isDirty },
   } = useForm<ProfilePasswordValues>({
-    resolver: zodResolver(profilePasswordSchema),
+    resolver: zodResolver(createProfilePasswordSchema(currentPassword)),
     defaultValues: {
       password: '',
       newPassword: '',
@@ -62,6 +84,10 @@ export const ProfilePasswordForm = ({
   useEffect(() => {
     onRegisterGetValues?.(() => getValues())
   }, [getValues, onRegisterGetValues])
+
+  useEffect(() => {
+    onRegisterTrigger?.(() => trigger())
+  }, [trigger, onRegisterTrigger])
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { Button, Form, Spin, Typography } from 'antd'
+import { Button, Form, message, Spin, Typography } from 'antd'
 import { useCallback, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -25,6 +25,7 @@ export const ProfilePage = () => {
   const getPasswordValuesRef = useRef<
     (() => { password: string; newPassword: string; repeatPassword: string }) | null
   >(null)
+  const triggerPasswordRef = useRef<(() => Promise<boolean>) | null>(null)
 
   const handleInfoDirtyChange = useCallback((dirty: boolean) => setIsInfoDirty(dirty), [])
   const handlePasswordDirtyChange = useCallback((dirty: boolean) => setIsPasswordDirty(dirty), [])
@@ -43,6 +44,10 @@ export const ProfilePage = () => {
     [],
   )
 
+  const handleRegisterPasswordTrigger = useCallback((trigger: () => Promise<boolean>) => {
+    triggerPasswordRef.current = trigger
+  }, [])
+
   const isDirty = isInfoDirty || isPasswordDirty
 
   const handleSave = async () => {
@@ -60,11 +65,14 @@ export const ProfilePage = () => {
     }
 
     if (isPasswordDirty && passwordValues?.newPassword) {
+      const isValid = await triggerPasswordRef.current?.()
+      if (!isValid) return
       payload.password = passwordValues.newPassword
     }
 
     if (Object.keys(payload).length > 0) {
       await updateProfile({ id: currentUser.id, ...payload })
+      message.success('Профиль успешно обновлён')
     }
   }
 
@@ -96,8 +104,10 @@ export const ProfilePage = () => {
             onRegisterGetValues={handleRegisterInfoGetValues}
           />
           <ProfilePasswordForm
+            currentPassword={profile?.password ?? ''}
             onDirtyChange={handlePasswordDirtyChange}
             onRegisterGetValues={handleRegisterPasswordGetValues}
+            onRegisterTrigger={handleRegisterPasswordTrigger}
           />
           <Button
             type="primary"
