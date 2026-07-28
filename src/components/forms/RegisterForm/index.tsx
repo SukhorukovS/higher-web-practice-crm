@@ -18,7 +18,6 @@ const registerSchema = z
     name: z.string().trim().min(1, 'Введите имя'),
     surname: z.string().trim().min(1, 'Введите фамилию'),
     email: z.string().trim().min(1, 'Введите email').email('Некорректный email'),
-    username: z.string().trim().min(1, 'Введите имя аккаунта'),
     password: z
       .string()
       .min(6, 'Пароль должен содержать минимум 6 символов')
@@ -51,7 +50,6 @@ export const RegisterForm = () => {
       name: '',
       surname: '',
       email: '',
-      username: '',
       password: '',
       repeatPassword: '',
     },
@@ -69,7 +67,6 @@ export const RegisterForm = () => {
         name: data.name,
         surname: data.surname,
         email: data.email,
-        username: data.username,
         password: data.password,
       }
       const user = await triggerRegister(payload).unwrap()
@@ -135,21 +132,6 @@ export const RegisterForm = () => {
             className="mb-4"
           >
             <Input {...field} placeholder="ivanov@yandex.ru" />
-          </Form.Item>
-        )}
-      />
-      <Controller
-        name="username"
-        control={control}
-        render={({ field }) => (
-          <Form.Item
-            label="Имя аккаунта *"
-            validateStatus={errors.username ? 'error' : ''}
-            help={errors.username?.message}
-            labelCol={{ style: { paddingBottom: '2px' } }}
-            className="mb-4"
-          >
-            <Input {...field} placeholder="Yaropolk" />
           </Form.Item>
         )}
       />

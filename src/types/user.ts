@@ -7,16 +7,11 @@ export type User = {
   password?: string
 }
 
-export type UserProfile = User & {
-  password?: string
-}
-
 export type RegisterPayload = {
   email: string
   password: string
   name: string
   surname: string
-  username: string
 }
 
 export type LoginPayload = {

@@ -1,3 +1,4 @@
+import { message } from 'antd'
 import type { FC } from 'react'
 
 import {
@@ -35,18 +36,26 @@ export const ClientModal: FC<Props> = ({ isOpen, client, handleCancel }) => {
       comment: data.comment,
     }
 
-    if (client) {
-      await updateClient({ id: client.id, ...payload })
-    } else {
-      await createClient({ ...payload, createdBy: user!.id })
+    try {
+      if (client) {
+        await updateClient({ id: client.id, ...payload }).unwrap()
+      } else {
+        await createClient({ ...payload, createdBy: user!.id }).unwrap()
+      }
+      handleCancel()
+    } catch {
+      message.error('Ошибка при сохранении клиента')
     }
-    handleCancel()
   }
 
   const onDelete = async () => {
     if (client) {
-      await deleteClient(client.id)
-      handleCancel()
+      try {
+        await deleteClient(client.id).unwrap()
+        handleCancel()
+      } catch {
+        message.error('Ошибка при удалении клиента')
+      }
     }
   }
 

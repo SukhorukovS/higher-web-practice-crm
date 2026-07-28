@@ -71,8 +71,12 @@ export const ProfilePage = () => {
     }
 
     if (Object.keys(payload).length > 0) {
-      await updateProfile({ id: currentUser.id, ...payload })
-      message.success('Профиль успешно обновлён')
+      try {
+        await updateProfile({ id: currentUser.id, ...payload }).unwrap()
+        message.success('Профиль успешно обновлён')
+      } catch {
+        message.error('Ошибка при обновлении профиля')
+      }
     }
   }
 

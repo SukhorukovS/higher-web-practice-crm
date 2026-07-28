@@ -1,3 +1,4 @@
+import { message } from 'antd'
 import type { FC } from 'react'
 
 import {
@@ -33,18 +34,26 @@ export const TaskModal: FC<Props> = ({ isOpen, task, handleCancel }) => {
       dueDate: data.dueDate,
     }
 
-    if (task) {
-      await updateTask({ id: task.id, ...payload, status: data.status as TaskStatus })
-    } else {
-      await createTask({ ...payload, assigneeId: user!.id, createdBy: user!.id })
+    try {
+      if (task) {
+        await updateTask({ id: task.id, ...payload, status: data.status as TaskStatus }).unwrap()
+      } else {
+        await createTask({ ...payload, assigneeId: user!.id, createdBy: user!.id }).unwrap()
+      }
+      handleCancel()
+    } catch {
+      message.error('Ошибка при сохранении задачи')
     }
-    handleCancel()
   }
 
   const onDelete = async () => {
     if (task) {
-      await deleteTask(task.id)
-      handleCancel()
+      try {
+        await deleteTask(task.id).unwrap()
+        handleCancel()
+      } catch {
+        message.error('Ошибка при удалении задачи')
+      }
     }
   }
 
