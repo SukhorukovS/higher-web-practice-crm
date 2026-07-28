@@ -34,9 +34,9 @@ const renderCellValue = (client: ClientData, key: keyof ClientData & string) => 
       </a>
     )
   }
-  if (key === 'website') {
+  if (key === 'website' && typeof value === 'string') {
     return (
-      <a href={`https://${value}`} target="_blank" rel="noopener noreferrer" className="text-xs">
+      <a href={value} target="_blank" rel="noopener noreferrer" className="text-xs">
         {String(value ?? '')}
       </a>
     )
@@ -96,7 +96,7 @@ export const ClientsPage = () => {
           {client.phone}
         </a>
         <Text className="text-right">{client.company}</Text>
-        <a href={`mailto://${client.email}`} className="text-xs">
+        <a href={`mailto:${client.email}`} className="text-xs">
           {client.email}
         </a>
         {client.website && (
