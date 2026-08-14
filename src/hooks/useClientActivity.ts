@@ -54,8 +54,6 @@ export const useClientActivity = (period: PeriodFilter = 'week') => {
         dealsCount: dealsByClient.get(client.id) ?? 0,
         completedTasks: completedTasksByClient.get(client.id) ?? 0,
       }))
-      .filter((row) => row.dealsCount > 0 || row.completedTasks > 0)
-      .sort((a, b) => b.dealsCount - a.dealsCount || b.completedTasks - a.completedTasks)
   }, [clients, deals, tasks, period])
 
   return { rows, isLoading }

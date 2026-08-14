@@ -164,20 +164,6 @@ describe('useClientActivity', () => {
     ])
   })
 
-  it('filters out clients with no activity', () => {
-    mockQueries({
-      clients: [client({ id: 'c1' }), client({ id: 'c2', name: 'Пётр' })],
-      deals: [deal({ id: 'd1', clientId: 'c1' })],
-      tasks: [],
-    })
-
-    const { result } = renderHook(() => useClientActivity('week'))
-
-    expect(result.current.rows).toEqual([
-      { clientId: 'c1', clientName: 'Иван', dealsCount: 1, completedTasks: 0 },
-    ])
-  })
-
   it('sorts rows by dealsCount then completedTasks descending', () => {
     mockQueries({
       clients: [
