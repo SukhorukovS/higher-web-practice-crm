@@ -42,7 +42,7 @@ export const useSalesReport = (period: PeriodFilter = 'week') => {
         key: deal.id,
         id: deal.id,
         name: deal.title,
-        client: clientMap.get(deal.clientId) ?? 'Неизвестный',
+        client: clientMap.get(deal.clientId) || '',
         amount: formatCurrency(deal.amount),
         date: dayjs(deal.completedAt!).format('D MMMM YYYY'),
       }))
