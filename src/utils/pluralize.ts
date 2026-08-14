@@ -1,6 +1,7 @@
 export function pluralize(count: number, variants: [string, string, string]): string {
-  const mod10 = count % 10
-  const mod100 = count % 100
+  const abs = Math.abs(Math.trunc(count))
+  const mod10 = abs % 10
+  const mod100 = abs % 100
 
   if (mod100 >= 11 && mod100 <= 19) {
     return variants[2]

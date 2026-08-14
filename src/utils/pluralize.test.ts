@@ -9,13 +9,13 @@ describe('pluralize', () => {
     expect(pluralize(1, variants)).toBe('товар')
   })
 
-  it('uses the genitive singular for 2-4', () => {
+  it('uses second form for 2-4', () => {
     expect(pluralize(2, variants)).toBe('товара')
     expect(pluralize(3, variants)).toBe('товара')
     expect(pluralize(4, variants)).toBe('товара')
   })
 
-  it('uses the genitive plural for 5-20', () => {
+  it('uses the third form for 5-20', () => {
     expect(pluralize(5, variants)).toBe('товаров')
     expect(pluralize(10, variants)).toBe('товаров')
     expect(pluralize(11, variants)).toBe('товаров')
@@ -31,9 +31,25 @@ describe('pluralize', () => {
   it('handles hundreds with teens', () => {
     expect(pluralize(111, variants)).toBe('товаров')
     expect(pluralize(112, variants)).toBe('товаров')
+    expect(pluralize(1112, variants)).toBe('товаров')
   })
 
   it('handles zero', () => {
     expect(pluralize(0, variants)).toBe('товаров')
+  })
+
+  it('handles negative numbers', () => {
+    expect(pluralize(-1, variants)).toBe('товар')
+    expect(pluralize(-2, variants)).toBe('товара')
+    expect(pluralize(-5, variants)).toBe('товаров')
+    expect(pluralize(-21, variants)).toBe('товар')
+    expect(pluralize(-111, variants)).toBe('товаров')
+  })
+
+  it('handles fractional numbers by truncating', () => {
+    expect(pluralize(1.9, variants)).toBe('товар')
+    expect(pluralize(2.5, variants)).toBe('товара')
+    expect(pluralize(11.7, variants)).toBe('товаров')
+    expect(pluralize(-1.9, variants)).toBe('товар')
   })
 })
