@@ -69,7 +69,6 @@ export const TasksPage = () => {
   const { searchText, setSearchText, filteredData } = useSearchFilter(
     tableData,
     ['title', 'description'],
-    (item) => ({ ...item }),
   )
 
   const renderCellValue = (task: TaskRow, key: keyof TaskRow & string) => {

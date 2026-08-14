@@ -78,7 +78,6 @@ export const ClientsPage = () => {
   const { searchText, setSearchText, filteredData } = useSearchFilter(
     tableData,
     ['name', 'email', 'company'],
-    (item) => ({ ...item }),
   )
 
   const renderMobileCard = (client: ClientData) => (

@@ -123,7 +123,6 @@ export const DealsPage = () => {
   const { searchText, setSearchText, filteredData } = useSearchFilter(
     tableData,
     ['title', 'clientName'],
-    (item) => ({ ...item }),
   )
 
   return (

@@ -1,9 +1,8 @@
 import { useMemo, useState } from 'react'
 
-export function useSearchFilter<T, R extends { className?: string }>(
+export function useSearchFilter<T>(
   data: T[],
   searchKeys: (keyof T & string)[],
-  mapItem: (item: T) => R,
 ) {
   const [searchText, setSearchText] = useState('')
   const lowerSearch = searchText.toLowerCase()
@@ -18,9 +17,8 @@ export function useSearchFilter<T, R extends { className?: string }>(
               const value = item[key]
               return typeof value === 'string' && value.toLowerCase().includes(lowerSearch)
             }),
-        )
-        .map(mapItem),
-    [data, lowerSearch, searchKeys, mapItem],
+        ),
+    [data, lowerSearch, searchKeys],
   )
 
   return { searchText, setSearchText, filteredData } as const
