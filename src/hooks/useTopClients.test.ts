@@ -112,7 +112,7 @@ describe('useTopClients', () => {
 
     const { result } = renderHook(() => useTopClients())
 
-    expect(result.current.topClients.map((client: Client) => client.id)).toEqual(['c2', 'c1', 'c3'])
+    expect(result.current.topClients.map((client) => client.id)).toEqual(['c2', 'c1', 'c3'])
     expect(result.current.topClients[0].deals).toBe(3)
     expect(result.current.topClients[1].deals).toBe(2)
     expect(result.current.topClients[2].deals).toBe(1)
