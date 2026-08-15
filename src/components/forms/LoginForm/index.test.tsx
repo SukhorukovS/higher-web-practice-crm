@@ -31,7 +31,6 @@ afterEach(() => {
   cleanup()
 })
 
-// --- mocks ---
 const mockNavigate = vi.fn()
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom')
@@ -43,7 +42,6 @@ vi.mock('@/app/endpoints/users', () => ({
   useLazyLoginQuery: () => [mockTriggerLogin, { isLoading: false }],
 }))
 
-// --- helpers ---
 function createStore() {
   return configureStore({
     reducer: { auth: authReducer, [api.reducerPath]: api.reducer },
