@@ -6,6 +6,8 @@ import { renderHook } from '@testing-library/react'
 import type { Task } from '../types/task'
 import type { User } from '../types/user'
 
+import { task, user } from '../test/factories'
+
 const mocks = vi.hoisted(() => ({
   useGetTasksQuery: vi.fn(),
   useGetUsersQuery: vi.fn(),
@@ -22,25 +24,6 @@ vi.mock('../app/endpoints/users', () => ({
 import { useOverdueTasks } from './useOverdueTasks'
 
 const now = new Date('2026-08-14T12:00:00Z')
-
-const user = (overrides: Partial<User> = {}): User => ({
-  id: 'u1',
-  email: 'ivan@example.com',
-  name: 'Иван',
-  surname: 'Петров',
-  createdAt: '2026-01-01T00:00:00Z',
-  ...overrides,
-})
-
-const task = (overrides: Partial<Task> = {}): Task => ({
-  id: 't1',
-  title: 'Задача',
-  assigneeId: 'u1',
-  status: 'new',
-  createdAt: '2026-08-10T00:00:00Z',
-  createdBy: 'u1',
-  ...overrides,
-})
 
 const mockQueries = (opts: {
   tasks?: Task[]

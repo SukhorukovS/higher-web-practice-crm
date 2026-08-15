@@ -6,6 +6,8 @@ import type { Client } from '../types/client'
 import type { Deal } from '../types/deal'
 import type { Task } from '../types/task'
 
+import { client, deal, task } from '../test/factories'
+
 const mocks = vi.hoisted(() => ({
   useGetClientsQuery: vi.fn(),
   useGetDealsQuery: vi.fn(),
@@ -27,38 +29,6 @@ vi.mock('../app/endpoints/tasks', () => ({
 import { useClientActivity } from './useClientActivity'
 
 const now = new Date('2026-08-14T12:00:00Z')
-
-const client = (overrides: Partial<Client> = {}): Client => ({
-  id: 'c1',
-  name: 'Иван',
-  phone: '+70000000000',
-  email: 'ivan@example.com',
-  company: 'ООО Ромашка',
-  createdAt: '2026-01-01T00:00:00Z',
-  createdBy: 'u1',
-  ...overrides,
-})
-
-const deal = (overrides: Partial<Deal> = {}): Deal => ({
-  id: 'd1',
-  title: 'Сделка',
-  clientId: 'c1',
-  amount: 1000,
-  status: 'new',
-  createdAt: '2026-08-10T00:00:00Z',
-  createdBy: 'u1',
-  ...overrides,
-})
-
-const task = (overrides: Partial<Task> = {}): Task => ({
-  id: 't1',
-  title: 'Задача',
-  assigneeId: 'u1',
-  status: 'completed',
-  createdAt: '2026-08-10T00:00:00Z',
-  createdBy: 'u1',
-  ...overrides,
-})
 
 const mockQueries = (opts: {
   clients?: Client[]
@@ -104,8 +74,8 @@ describe('useClientActivity', () => {
     mockQueries({
       clients: [client()],
       deals: [
-        deal({ id: 'd1', clientId: 'c1' }),
-        deal({ id: 'd2', clientId: 'c1' }),
+        deal({ id: 'd1', clientId: 'c1', createdAt: '2026-08-10T00:00:00Z' }),
+        deal({ id: 'd2', clientId: 'c1', createdAt: '2026-08-11T00:00:00Z' }),
         deal({ id: 'd3', clientId: 'c1', createdAt: '2026-01-01T00:00:00Z' }),
       ],
       tasks: [],
@@ -121,7 +91,7 @@ describe('useClientActivity', () => {
   it('counts completed tasks linked to a client via dealId', () => {
     mockQueries({
       clients: [client()],
-      deals: [deal({ id: 'd1', clientId: 'c1' })],
+      deals: [deal({ id: 'd1', clientId: 'c1', createdAt: '2026-08-10T00:00:00Z' })],
       tasks: [
         task({ id: 't1', dealId: 'd1', status: 'completed' }),
         task({ id: 't2', dealId: 'd1', status: 'in_progress' }),
@@ -139,7 +109,7 @@ describe('useClientActivity', () => {
   it('ignores tasks without a dealId', () => {
     mockQueries({
       clients: [client()],
-      deals: [deal({ id: 'd1', clientId: 'c1' })],
+      deals: [deal({ id: 'd1', clientId: 'c1', createdAt: '2026-08-10T00:00:00Z' })],
       tasks: [task({ id: 't1', status: 'completed' })],
     })
 
@@ -153,7 +123,10 @@ describe('useClientActivity', () => {
   it('excludes deleted clients', () => {
     mockQueries({
       clients: [client({ id: 'c1', deleted: true }), client({ id: 'c2', name: 'Пётр' })],
-      deals: [deal({ id: 'd1', clientId: 'c1' }), deal({ id: 'd2', clientId: 'c2' })],
+      deals: [
+        deal({ id: 'd1', clientId: 'c1', createdAt: '2026-08-10T00:00:00Z' }),
+        deal({ id: 'd2', clientId: 'c2', createdAt: '2026-08-11T00:00:00Z' }),
+      ],
       tasks: [],
     })
 
@@ -172,10 +145,10 @@ describe('useClientActivity', () => {
         client({ id: 'c3', name: 'В' }),
       ],
       deals: [
-        deal({ id: 'd1', clientId: 'c1' }),
-        deal({ id: 'd2', clientId: 'c1' }),
-        deal({ id: 'd3', clientId: 'c2' }),
-        deal({ id: 'd4', clientId: 'c3' }),
+        deal({ id: 'd1', clientId: 'c1', createdAt: '2026-08-10T00:00:00Z' }),
+        deal({ id: 'd2', clientId: 'c1', createdAt: '2026-08-11T00:00:00Z' }),
+        deal({ id: 'd3', clientId: 'c2', createdAt: '2026-08-12T00:00:00Z' }),
+        deal({ id: 'd4', clientId: 'c3', createdAt: '2026-08-13T00:00:00Z' }),
       ],
       tasks: [
         task({ id: 't1', dealId: 'd3', status: 'completed' }),

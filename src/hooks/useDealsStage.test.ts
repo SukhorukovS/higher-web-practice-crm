@@ -4,6 +4,8 @@ import { renderHook } from '@testing-library/react'
 
 import type { Deal } from '../types/deal'
 
+import { deal } from '../test/factories'
+
 const mocks = vi.hoisted(() => ({
   useGetDealsQuery: vi.fn(),
 }))
@@ -15,17 +17,6 @@ vi.mock('../app/endpoints/deals', () => ({
 import { useDealsStage } from './useDealsStage'
 
 const now = new Date('2026-08-14T12:00:00Z')
-
-const deal = (overrides: Partial<Deal> = {}): Deal => ({
-  id: 'd1',
-  title: 'Сделка',
-  clientId: 'c1',
-  amount: 1000,
-  status: 'new',
-  createdAt: '2026-08-10T00:00:00Z',
-  createdBy: 'u1',
-  ...overrides,
-})
 
 const mockQueries = (opts: { deals?: Deal[]; loading?: boolean }) => {
   const { deals, loading = false } = opts
@@ -63,11 +54,11 @@ describe('useDealsStage', () => {
   it('groups deals by status within the period', () => {
     mockQueries({
       deals: [
-        deal({ id: 'd1', status: 'new', amount: 1000 }),
-        deal({ id: 'd2', status: 'new', amount: 2000 }),
-        deal({ id: 'd3', status: 'in_progress', amount: 500 }),
-        deal({ id: 'd4', status: 'completed', amount: 300 }),
-        deal({ id: 'd5', status: 'cancelled', amount: 100 }),
+        deal({ id: 'd1', status: 'new', amount: 1000, createdAt: '2026-08-10T00:00:00Z' }),
+        deal({ id: 'd2', status: 'new', amount: 2000, createdAt: '2026-08-11T00:00:00Z' }),
+        deal({ id: 'd3', status: 'in_progress', amount: 500, createdAt: '2026-08-12T00:00:00Z' }),
+        deal({ id: 'd4', status: 'completed', amount: 300, createdAt: '2026-08-13T00:00:00Z' }),
+        deal({ id: 'd5', status: 'cancelled', amount: 100, createdAt: '2026-08-09T00:00:00Z' }),
       ],
     })
 
@@ -84,7 +75,7 @@ describe('useDealsStage', () => {
   it('excludes deals outside the period', () => {
     mockQueries({
       deals: [
-        deal({ id: 'd1', status: 'new', amount: 1000 }),
+        deal({ id: 'd1', status: 'new', amount: 1000, createdAt: '2026-08-10T00:00:00Z' }),
         deal({ id: 'd2', status: 'new', amount: 2000, createdAt: '2026-01-01T00:00:00Z' }),
       ],
     })
@@ -99,8 +90,8 @@ describe('useDealsStage', () => {
   it('omits statuses with no deals and keeps the status order', () => {
     mockQueries({
       deals: [
-        deal({ id: 'd1', status: 'completed', amount: 300 }),
-        deal({ id: 'd2', status: 'cancelled', amount: 100 }),
+        deal({ id: 'd1', status: 'completed', amount: 300, createdAt: '2026-08-10T00:00:00Z' }),
+        deal({ id: 'd2', status: 'cancelled', amount: 100, createdAt: '2026-08-10T00:00:00Z' }),
       ],
     })
 

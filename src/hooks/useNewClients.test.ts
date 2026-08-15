@@ -4,6 +4,8 @@ import { renderHook } from '@testing-library/react'
 
 import type { Client } from '../types/client'
 
+import { client } from '../test/factories'
+
 const mocks = vi.hoisted(() => ({
   useGetClientsQuery: vi.fn(),
 }))
@@ -15,17 +17,6 @@ vi.mock('../app/endpoints/clients', () => ({
 import { useNewClients } from './useNewClients'
 
 const now = new Date('2026-08-14T12:00:00Z')
-
-const client = (overrides: Partial<Client> = {}): Client => ({
-  id: 'c1',
-  name: 'Иван',
-  phone: '+79990000000',
-  email: 'ivan@example.com',
-  company: 'ООО Ромашка',
-  createdAt: '2026-08-10T00:00:00Z',
-  createdBy: 'u1',
-  ...overrides,
-})
 
 const mockQueries = (opts: { clients?: Client[]; loading?: boolean }) => {
   const { clients, loading = false } = opts
