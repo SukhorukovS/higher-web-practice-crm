@@ -33,10 +33,11 @@ const clientsApi = api.injectEndpoints({
       }),
       invalidatesTags: (_result, _error, { id }) => [{ type: 'Client', id }],
     }),
-    deleteClient: builder.mutation<void, string>({
+    deleteClient: builder.mutation<Client, string>({
       query: (id) => ({
         url: `/clients/${id}`,
-        method: 'DELETE',
+        method: 'PATCH',
+        body: { deleted: true },
       }),
       invalidatesTags: (_result, _error, id) => [
         { type: 'Client', id },

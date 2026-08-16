@@ -28,7 +28,7 @@
   "clients": [
     {
       "id": "a1b2c3d4-e5f6-4a7b-8c9d-000000000001",
-      "name": "Дмитрий Кузнец",
+      "name": "Дмитрий Кузнецов",
       "phone": "+79990001122",
       "email": "kuznetsov@mail.ru",
       "company": "ООО ТехСервис",
@@ -70,7 +70,9 @@
       "company": "ООО Волк-Трейд",
       "createdAt": "2026-07-20T10:00:00Z",
       "deleted": false,
-      "createdBy": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001"
+      "createdBy": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001",
+      "website": "www.volk.ru",
+      "comment": ""
     },
     {
       "id": "a1b2c3d4-e5f6-4a7b-8c9d-000000000005",
@@ -101,7 +103,8 @@
       "comment": "",
       "createdBy": "7EeMjKV",
       "createdAt": "2026-08-16T08:26:32.515Z",
-      "id": "TQCGA0o"
+      "id": "TQCGA0o",
+      "deleted": true
     }
   ],
   "deals": [
@@ -121,7 +124,7 @@
       "description": "Корпоративный сайт",
       "clientId": "a1b2c3d4-e5f6-4a7b-8c9d-000000000002",
       "amount": 120000,
-      "status": "completed",
+      "status": "in_progress",
       "createdAt": "2026-02-15T10:00:00Z",
       "completedAt": "2026-03-05T16:00:00Z",
       "createdBy": "5b7a3c2d-9e4f-4a1c-b2d3-7f6e5c4b1002"
@@ -198,7 +201,7 @@
       "description": "Продвижение сайта в поисковиках",
       "clientId": "a1b2c3d4-e5f6-4a7b-8c9d-000000000003",
       "amount": 145000,
-      "status": "completed",
+      "status": "in_progress",
       "createdAt": "2026-05-05T10:00:00Z",
       "completedAt": "2026-05-28T17:00:00Z",
       "createdBy": "5b7a3c2d-9e4f-4a1c-b2d3-7f6e5c4b1002"

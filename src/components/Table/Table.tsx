@@ -141,8 +141,11 @@ export const Table = <T extends { key: Key; className?: string }>({
               <DownOutlined
                 className={clsx(
                   'text-[10px] transition-transform',
-                  sortOrder === 'desc' && 'rotate-180',
-                  sortField === col.key && 'text-blue-500',
+                  sortField === col.key &&
+                    clsx(
+                      sortOrder === 'desc' && 'rotate-180',
+                      sortOrder && 'text-blue-500',
+                    ),
                 )}
               />
             </Button>
