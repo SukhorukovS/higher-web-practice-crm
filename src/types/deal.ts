@@ -1,33 +1,34 @@
-export type DealStatus = 'new' | 'in_progress' | 'completed' | 'cancelled';
+export type DealStatus = 'new' | 'in_progress' | 'completed' | 'cancelled'
 
 export type Deal = {
-  id: string;
+  id: string
 
-  title: string;
-  description?: string;
+  title: string
+  description?: string
 
-  clientId: string;
-  amount: number;
+  clientId: string
+  amount: number
 
-  status: DealStatus;
+  status: DealStatus
 
-  createdAt: string;
-  completedAt?: string;
+  createdAt: string
+  completedAt?: string
 
-  createdBy: string; // userId
-};
+  createdBy: string // userId
+}
 
 export type CreateDealPayload = {
-  title: string;
-  description?: string;
-  clientId: string;
-  amount: number;
-};
+  title: string
+  description?: string
+  clientId: string
+  amount: number
+  createdBy: string
+}
 
 export type UpdateDealPayload = {
-  title?: string;
-  description?: string;
-  amount?: number;
-  status?: DealStatus;
-  completedAt?: string;
-};
+  title?: string
+  description?: string
+  amount?: number
+  status?: DealStatus
+  completedAt?: string
+}

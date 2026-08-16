@@ -4,15 +4,25 @@
       "id": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001",
       "email": "manager1@crm.ru",
       "password": "123456",
-      "name": "Алексей Иванов",
+      "name": "Алекс",
+      "surname": "Иванов",
       "createdAt": "2026-03-01T10:00:00Z"
     },
     {
       "id": "5b7a3c2d-9e4f-4a1c-b2d3-7f6e5c4b1002",
       "email": "manager2@crm.ru",
       "password": "123456",
-      "name": "Мария Соколова",
+      "name": "Мария",
+      "surname": "Соколова",
       "createdAt": "2026-03-02T10:00:00Z"
+    },
+    {
+      "name": "Сергей",
+      "surname": "Сухоруков",
+      "email": "sukhorukov1986@yandex.ru",
+      "password": "123a12",
+      "createdAt": "2026-08-16T08:20:37.535Z",
+      "id": "7EeMjKV"
     }
   ],
   "clients": [
@@ -51,6 +61,50 @@
       "createdAt": "2026-03-01T14:00:00Z",
       "deleted": false,
       "createdBy": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001"
+    },
+    {
+      "id": "a1b2c3d4-e5f6-4a7b-8c9d-000000000004",
+      "name": "Анна Волкова",
+      "phone": "+79994445566",
+      "email": "volkova@mail.ru",
+      "company": "ООО Волк-Трейд",
+      "createdAt": "2026-07-20T10:00:00Z",
+      "deleted": false,
+      "createdBy": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001",
+      "website": "www.volk.ru",
+      "comment": ""
+    },
+    {
+      "id": "a1b2c3d4-e5f6-4a7b-8c9d-000000000005",
+      "name": "Пётр Лебедев",
+      "phone": "+79995556677",
+      "email": "lebedev@mail.ru",
+      "company": "ИП Лебедев",
+      "createdAt": "2026-07-05T14:30:00Z",
+      "deleted": false,
+      "createdBy": "5b7a3c2d-9e4f-4a1c-b2d3-7f6e5c4b1002"
+    },
+    {
+      "id": "a1b2c3d4-e5f6-4a7b-8c9d-000000000006",
+      "name": "Ольга Новикова",
+      "phone": "+79996667788",
+      "email": "novikova@mail.ru",
+      "company": "ООО Новик",
+      "createdAt": "2026-05-30T09:00:00Z",
+      "deleted": false,
+      "createdBy": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001"
+    },
+    {
+      "name": "Добрыня",
+      "phone": "79111111111",
+      "company": "ООО ТехСервис",
+      "email": "ssukhorukov007@gmail.com",
+      "website": "https://techservice.ru",
+      "comment": "",
+      "createdBy": "7EeMjKV",
+      "createdAt": "2026-08-16T08:26:32.515Z",
+      "id": "TQCGA0o",
+      "deleted": true
     }
   ],
   "deals": [
@@ -70,7 +124,7 @@
       "description": "Корпоративный сайт",
       "clientId": "a1b2c3d4-e5f6-4a7b-8c9d-000000000002",
       "amount": 120000,
-      "status": "completed",
+      "status": "in_progress",
       "createdAt": "2026-02-15T10:00:00Z",
       "completedAt": "2026-03-05T16:00:00Z",
       "createdBy": "5b7a3c2d-9e4f-4a1c-b2d3-7f6e5c4b1002"
@@ -81,9 +135,140 @@
       "description": "Годовой контракт поддержки",
       "clientId": "a1b2c3d4-e5f6-4a7b-8c9d-000000000003",
       "amount": 80000,
-      "status": "new",
+      "status": "completed",
       "createdAt": "2026-03-10T09:30:00Z",
+      "createdBy": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001",
+      "completedAt": "2026-07-21T04:26:42.597Z"
+    },
+    {
+      "id": "d1000000-0000-4000-8000-000000000004",
+      "title": "Внедрение CRM-системы",
+      "description": "Настройка и внедрение для отдела продаж",
+      "clientId": "a1b2c3d4-e5f6-4a7b-8c9d-000000000001",
+      "amount": 350000,
+      "status": "completed",
+      "createdAt": "2026-07-14T09:00:00Z",
+      "completedAt": "2026-07-18T15:30:00Z",
       "createdBy": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001"
+    },
+    {
+      "id": "d1000000-0000-4000-8000-000000000005",
+      "title": "Лицензии на ПО",
+      "description": "Закупка офисных лицензий",
+      "clientId": "a1b2c3d4-e5f6-4a7b-8c9d-000000000002",
+      "amount": 95000,
+      "status": "completed",
+      "createdAt": "2026-07-10T11:00:00Z",
+      "completedAt": "2026-07-16T14:00:00Z",
+      "createdBy": "5b7a3c2d-9e4f-4a1c-b2d3-7f6e5c4b1002"
+    },
+    {
+      "id": "d1000000-0000-4000-8000-000000000006",
+      "title": "Ремонт серверной",
+      "description": "Косметический ремонт серверного помещения",
+      "clientId": "a1b2c3d4-e5f6-4a7b-8c9d-000000000003",
+      "amount": 210000,
+      "status": "completed",
+      "createdAt": "2026-07-01T08:00:00Z",
+      "completedAt": "2026-07-10T12:00:00Z",
+      "createdBy": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001"
+    },
+    {
+      "id": "d1000000-0000-4000-8000-000000000007",
+      "title": "Маркетинговая кампания",
+      "description": "Запуск рекламной кампании в соцсетях",
+      "clientId": "a1b2c3d4-e5f6-4a7b-8c9d-000000000002",
+      "amount": 180000,
+      "status": "completed",
+      "createdAt": "2026-06-01T10:00:00Z",
+      "completedAt": "2026-06-25T16:00:00Z",
+      "createdBy": "5b7a3c2d-9e4f-4a1c-b2d3-7f6e5c4b1002"
+    },
+    {
+      "id": "d1000000-0000-4000-8000-000000000008",
+      "title": "Обучение персонала",
+      "description": "Тренинг по новому ПО для сотрудников",
+      "clientId": "a1b2c3d4-e5f6-4a7b-8c9d-000000000001",
+      "amount": 65000,
+      "status": "completed",
+      "createdAt": "2026-06-10T09:00:00Z",
+      "completedAt": "2026-06-20T13:00:00Z",
+      "createdBy": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001"
+    },
+    {
+      "id": "d1000000-0000-4000-8000-000000000009",
+      "title": "SEO-оптимизация",
+      "description": "Продвижение сайта в поисковиках",
+      "clientId": "a1b2c3d4-e5f6-4a7b-8c9d-000000000003",
+      "amount": 145000,
+      "status": "in_progress",
+      "createdAt": "2026-05-05T10:00:00Z",
+      "completedAt": "2026-05-28T17:00:00Z",
+      "createdBy": "5b7a3c2d-9e4f-4a1c-b2d3-7f6e5c4b1002"
+    },
+    {
+      "id": "d1000000-0000-4000-8000-000000000010",
+      "title": "Поставка мебели",
+      "description": "Офисная мебель для нового этажа",
+      "clientId": "a1b2c3d4-e5f6-4a7b-8c9d-000000000001",
+      "amount": 520000,
+      "status": "completed",
+      "createdAt": "2026-04-01T08:00:00Z",
+      "completedAt": "2026-04-20T11:00:00Z",
+      "createdBy": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001"
+    },
+    {
+      "id": "d1000000-0000-4000-8000-000000000011",
+      "title": "Видеонаблюдение",
+      "description": "Монтаж системы видеонаблюдения",
+      "clientId": "a1b2c3d4-e5f6-4a7b-8c9d-000000000003",
+      "amount": 290000,
+      "status": "completed",
+      "createdAt": "2026-03-15T09:00:00Z",
+      "completedAt": "2026-04-10T14:00:00Z",
+      "createdBy": "5b7a3c2d-9e4f-4a1c-b2d3-7f6e5c4b1002"
+    },
+    {
+      "id": "d1000000-0000-4000-8000-000000000012",
+      "title": "Дизайн интерьера",
+      "description": "Проект дизайна нового офиса",
+      "clientId": "a1b2c3d4-e5f6-4a7b-8c9d-000000000002",
+      "amount": 175000,
+      "status": "completed",
+      "createdAt": "2026-03-20T10:00:00Z",
+      "completedAt": "2026-03-28T16:00:00Z",
+      "createdBy": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001"
+    },
+    {
+      "id": "d1000000-0000-4000-8000-000000000013",
+      "title": "Логистические услуги",
+      "description": "Организация доставки оборудования",
+      "clientId": "a1b2c3d4-e5f6-4a7b-8c9d-000000000001",
+      "amount": 88000,
+      "status": "completed",
+      "createdAt": "2026-07-07T09:00:00Z",
+      "completedAt": "2026-07-21T10:00:00Z",
+      "createdBy": "5b7a3c2d-9e4f-4a1c-b2d3-7f6e5c4b1002"
+    },
+    {
+      "id": "d1000000-0000-4000-8000-000000000014",
+      "title": "Консалтинг по безопасности",
+      "description": "Аудит информационной безопасности",
+      "clientId": "a1b2c3d4-e5f6-4a7b-8c9d-000000000003",
+      "amount": 195000,
+      "status": "in_progress",
+      "createdAt": "2026-07-10T08:00:00Z",
+      "createdBy": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001"
+    },
+    {
+      "title": "Заключение договора",
+      "description": "Прогнозируется",
+      "clientId": "a1b2c3d4-e5f6-4a7b-8c9d-000000000006",
+      "amount": 120000,
+      "status": "new",
+      "createdBy": "7EeMjKV",
+      "createdAt": "2026-08-16T08:31:55.820Z",
+      "id": "cEK96Wd"
     }
   ],
   "tasks": [
@@ -119,6 +304,72 @@
       "dueDate": "2026-03-05T15:00:00Z",
       "createdAt": "2026-02-20T11:00:00Z",
       "createdBy": "5b7a3c2d-9e4f-4a1c-b2d3-7f6e5c4b1002"
+    },
+    {
+      "id": "t2000000-0000-4000-8000-000000000004",
+      "title": "Согласовать договор",
+      "description": "Направить договор на подпись",
+      "dealId": "d1000000-0000-4000-8000-000000000014",
+      "assigneeId": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001",
+      "status": "new",
+      "dueDate": "2026-07-18T18:00:00Z",
+      "createdAt": "2026-07-15T10:00:00Z",
+      "createdBy": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001"
+    },
+    {
+      "id": "t2000000-0000-4000-8000-000000000005",
+      "title": "Отправить макет",
+      "description": "Дизайн-макет для согласования",
+      "dealId": "d1000000-0000-4000-8000-000000000014",
+      "assigneeId": "5b7a3c2d-9e4f-4a1c-b2d3-7f6e5c4b1002",
+      "status": "in_progress",
+      "dueDate": "2026-07-19T18:00:00Z",
+      "createdAt": "2026-07-16T12:00:00Z",
+      "createdBy": "5b7a3c2d-9e4f-4a1c-b2d3-7f6e5c4b1002"
+    },
+    {
+      "id": "t2000000-0000-4000-8000-000000000006",
+      "title": "Оплатить счет",
+      "description": "Перевод по реквизитам",
+      "dealId": "d1000000-0000-4000-8000-000000000014",
+      "assigneeId": "Z6-sXd-",
+      "status": "in_progress",
+      "dueDate": "2026-07-20T18:00:00Z",
+      "createdAt": "2026-07-17T09:00:00Z",
+      "createdBy": "Z6-sXd-"
+    },
+    {
+      "id": "t2000000-0000-4000-8000-000000000007",
+      "title": "Проверить отчёт",
+      "description": "Аудит выполненной работы",
+      "dealId": "d1000000-0000-4000-8000-000000000014",
+      "assigneeId": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001",
+      "status": "new",
+      "dueDate": "2026-07-10T18:00:00Z",
+      "createdAt": "2026-07-01T10:00:00Z",
+      "createdBy": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001"
+    },
+    {
+      "id": "t2000000-0000-4000-8000-000000000008",
+      "title": "Подготовить презентацию",
+      "description": "Слайды для встречи",
+      "dealId": "d1000000-0000-4000-8000-000000000014",
+      "assigneeId": "5b7a3c2d-9e4f-4a1c-b2d3-7f6e5c4b1002",
+      "status": "in_progress",
+      "dueDate": "2026-07-25T18:00:00Z",
+      "createdAt": "2026-07-18T14:00:00Z",
+      "createdBy": "5b7a3c2d-9e4f-4a1c-b2d3-7f6e5c4b1002"
+    },
+    {
+      "title": "Позвонить клиенту",
+      "description": "Обсудить детали сделки",
+      "dealId": "cEK96Wd",
+      "dueDate": "2026-08-17",
+      "status": "new",
+      "assigneeId": "7EeMjKV",
+      "createdBy": "7EeMjKV",
+      "createdAt": "2026-08-16T08:34:30.048Z",
+      "id": "KN3aX3r"
     }
   ]
 }

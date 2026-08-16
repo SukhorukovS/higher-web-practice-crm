@@ -1,0 +1,39 @@
+import { Button, Form, Input } from 'antd'
+import { Typography } from 'antd'
+
+const { Title, Paragraph } = Typography
+
+type FieldType = {
+  email?: string
+}
+
+export const ForgotPasswordForm = () => {
+  return (
+    <Form
+      layout="vertical"
+      className="auth-form"
+      classNames={{
+        label: 'auth-label',
+      }}
+    >
+      <Title level={1} className="text-2xl mb-6">
+        Восстановление пароля
+      </Title>
+      <Paragraph className="mb-6 text-base">
+        Укажите почту, на&nbsp;которую вы регистрировали аккаунт, и&nbsp;мы&nbsp;отправим вам
+        инструкцию по&nbsp;восстановлению пароля.
+      </Paragraph>
+      <Form.Item<FieldType>
+        label="Email"
+        name="email"
+        labelCol={{ style: { paddingBottom: '2px' } }}
+        className="mb-4"
+      >
+        <Input placeholder="ivanov@yandex.ru" />
+      </Form.Item>
+      <Button type="primary" size="large" className="w-full mt-10">
+        Восстановить
+      </Button>
+    </Form>
+  )
+}

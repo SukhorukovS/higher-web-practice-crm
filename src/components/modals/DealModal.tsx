@@ -1,0 +1,85 @@
+import { message } from 'antd'
+import type { FC } from 'react'
+
+import {
+  useCreateDealMutation,
+  useDeleteDealMutation,
+  useUpdateDealMutation,
+} from '@/app/endpoints/deals'
+import { useAppSelector } from '@/app/store'
+import { DealForm, type DealFormValues } from '@/components/forms/DealForm'
+import type { Deal, DealStatus } from '@/types/deal'
+
+import { BaseModal } from './BaseModal'
+
+type Props = {
+  isOpen: boolean
+  handleCancel: () => void
+  deal?: Deal
+}
+
+const DEAL_FORM_ID = 'deal-form'
+
+export const DealModal: FC<Props> = ({ isOpen, deal, handleCancel }) => {
+  const [createDeal] = useCreateDealMutation()
+  const [updateDeal] = useUpdateDealMutation()
+  const [deleteDeal] = useDeleteDealMutation()
+  const user = useAppSelector((state) => state.auth.user)
+
+  const onSubmit = async (data: DealFormValues) => {
+    const payload = {
+      title: data.title,
+      description: data.description,
+      clientId: data.client,
+      amount: Number(data.amount),
+      status: data.status as DealStatus,
+    }
+
+    try {
+      if (deal) {
+        const completedAt =
+          data.status === 'completed' && deal.status !== 'completed'
+            ? new Date().toISOString()
+            : deal.completedAt
+        await updateDeal({
+          id: deal.id,
+          ...payload,
+          completedAt,
+        }).unwrap()
+      } else {
+        await createDeal({ ...payload, createdBy: user!.id }).unwrap()
+      }
+      handleCancel()
+    } catch {
+      message.error('Ошибка при сохранении сделки')
+    }
+  }
+
+  const onDelete = async () => {
+    if (deal) {
+      try {
+        await deleteDeal(deal.id).unwrap()
+        handleCancel()
+      } catch {
+        message.error('Ошибка при удалении сделки')
+      }
+    }
+  }
+
+  return (
+    <BaseModal
+      isOpen={isOpen}
+      handleCancel={handleCancel}
+      entity={deal}
+      entityName="Карточка сделки"
+      newEntityName="Новая сделка"
+      deleteLabel="Удалить сделку"
+      datePrefix="Создана"
+      formId={DEAL_FORM_ID}
+      onDelete={onDelete}
+      form={
+        <DealForm key={deal?.id ?? 'new'} deal={deal} onSubmit={onSubmit} formId={DEAL_FORM_ID} />
+      }
+    />
+  )
+}

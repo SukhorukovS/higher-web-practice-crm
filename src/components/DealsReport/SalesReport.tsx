@@ -1,0 +1,59 @@
+import { Typography } from 'antd'
+import { useState } from 'react'
+
+import { type SaleRow, useSalesReport } from '@/hooks/useSalesReport'
+import type { PeriodFilter } from '@/utils/isWithinPeriod'
+
+import { type Filters, FilterSection } from '../FilterSection/FilterSection'
+import { type Column, Table } from '../Table'
+
+const { Title, Text } = Typography
+
+const salesColumns: Column<SaleRow>[] = [
+  { key: 'id', title: 'ID сделки', span: 4 },
+  { key: 'name', title: 'Название', span: 8 },
+  { key: 'client', title: 'Клиент', span: 5 },
+  { key: 'amount', title: 'Сумма', span: 4 },
+  { key: 'date', title: 'Дата завершения', span: 3 },
+]
+
+const renderMobileCard = (deal: SaleRow) => (
+  <div>
+    <div className="flex justify-between">
+      <div className="flex gap-4">
+        <Text className="text-blue-500">{deal.id}</Text>
+        <Text>{deal.client}</Text>
+      </div>
+      <Text>{deal.name}</Text>
+    </div>
+    <div className="flex justify-between">
+      <Text className="font-bold">{deal.amount}</Text>
+      <Text className="text-gray-500 text-xs">{deal.date}</Text>
+    </div>
+  </div>
+)
+
+export const SalesReport = () => {
+  const [period, setPeriod] = useState<PeriodFilter>('week')
+  const { salesRows, isLoading } = useSalesReport(period)
+
+  const handleFiltersChange = (filters: Filters) => {
+    setPeriod(filters.period)
+  }
+
+  return (
+    <div className="flex flex-col gap-3">
+      <Title level={5} className="font-bold">
+        Общий, продажи
+      </Title>
+      <FilterSection onChange={handleFiltersChange} />
+      <Table
+        columns={salesColumns}
+        data={salesRows}
+        pageSize={10}
+        isLoading={isLoading}
+        renderMobileCard={renderMobileCard}
+      />
+    </div>
+  )
+}
