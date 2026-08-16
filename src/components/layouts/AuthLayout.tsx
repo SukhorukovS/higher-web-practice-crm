@@ -16,7 +16,7 @@ export function AuthLayout({ formComponent, secondaryText, linkTo, linkText }: A
   return (
     <Layout>
       <main className="welcome-layout">
-        <Row gutter={20} align="middle" className="md:w-[1180px] m-auto">
+        <Row gutter={20} align="middle" className="md:w-[1180px] m-auto !mx-0">
           <Col span={12} className="hidden md:block">
             <img alt="logo" src={logo} className="h-10" />
             <Paragraph className="mt-4 mb-10">
