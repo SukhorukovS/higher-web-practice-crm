@@ -32,11 +32,12 @@ export const TaskModal: FC<Props> = ({ isOpen, task, handleCancel }) => {
       description: data.description,
       dealId: data.dealId,
       dueDate: data.dueDate,
+      status: data.status as TaskStatus,
     }
 
     try {
       if (task) {
-        await updateTask({ id: task.id, ...payload, status: data.status as TaskStatus }).unwrap()
+        await updateTask({ id: task.id, ...payload }).unwrap()
       } else {
         await createTask({ ...payload, assigneeId: user!.id, createdBy: user!.id }).unwrap()
       }

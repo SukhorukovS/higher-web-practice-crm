@@ -32,6 +32,7 @@ export const DealModal: FC<Props> = ({ isOpen, deal, handleCancel }) => {
       description: data.description,
       clientId: data.client,
       amount: Number(data.amount),
+      status: data.status as DealStatus,
     }
 
     try {
@@ -43,7 +44,6 @@ export const DealModal: FC<Props> = ({ isOpen, deal, handleCancel }) => {
         await updateDeal({
           id: deal.id,
           ...payload,
-          status: data.status as DealStatus,
           completedAt,
         }).unwrap()
       } else {

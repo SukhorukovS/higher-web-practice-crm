@@ -91,6 +91,17 @@
       "createdAt": "2026-05-30T09:00:00Z",
       "deleted": false,
       "createdBy": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001"
+    },
+    {
+      "name": "Добрыня",
+      "phone": "79111111111",
+      "company": "ООО ТехСервис",
+      "email": "ssukhorukov007@gmail.com",
+      "website": "https://techservice.ru",
+      "comment": "",
+      "createdBy": "7EeMjKV",
+      "createdAt": "2026-08-16T08:26:32.515Z",
+      "id": "TQCGA0o"
     }
   ],
   "deals": [
@@ -245,6 +256,16 @@
       "status": "in_progress",
       "createdAt": "2026-07-10T08:00:00Z",
       "createdBy": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001"
+    },
+    {
+      "title": "Заключение договора",
+      "description": "Прогнозируется",
+      "clientId": "a1b2c3d4-e5f6-4a7b-8c9d-000000000006",
+      "amount": 120000,
+      "status": "new",
+      "createdBy": "7EeMjKV",
+      "createdAt": "2026-08-16T08:31:55.820Z",
+      "id": "cEK96Wd"
     }
   ],
   "tasks": [
@@ -335,6 +356,17 @@
       "dueDate": "2026-07-25T18:00:00Z",
       "createdAt": "2026-07-18T14:00:00Z",
       "createdBy": "5b7a3c2d-9e4f-4a1c-b2d3-7f6e5c4b1002"
+    },
+    {
+      "title": "Позвонить клиенту",
+      "description": "Обсудить детали сделки",
+      "dealId": "cEK96Wd",
+      "dueDate": "2026-08-17",
+      "status": "new",
+      "assigneeId": "7EeMjKV",
+      "createdBy": "7EeMjKV",
+      "createdAt": "2026-08-16T08:34:30.048Z",
+      "id": "KN3aX3r"
     }
   ]
 }
