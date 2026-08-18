@@ -288,7 +288,7 @@
       "description": "Обсудить детали сделки",
       "dealId": "d1000000-0000-4000-8000-000000000001",
       "assigneeId": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001",
-      "status": "in_progress",
+      "status": "completed",
       "dueDate": "2026-03-15T18:00:00Z",
       "createdAt": "2026-03-10T10:00:00Z",
       "createdBy": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001"

@@ -1,10 +1,17 @@
 import type { DealStatus } from '@/types/deal'
+import type { TaskStatus } from '@/types/task'
 
 export const statusMap: Record<DealStatus, string> = {
   in_progress: 'В работе',
   new: 'Новая',
   completed: 'Завершена',
   cancelled: 'Отменена',
+}
+
+export const taskStatusMap: Record<TaskStatus, string> = {
+  in_progress: 'В работе',
+  new: 'Новая',
+  completed: 'Завершена',
 }
 
 export const statusBgMap: Record<string, string> = {

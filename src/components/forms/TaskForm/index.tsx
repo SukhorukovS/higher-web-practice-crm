@@ -6,7 +6,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { useGetDealsQuery } from '@/app/endpoints/deals'
-import { statusMap } from '@/constants/statusMaps'
+import { taskStatusMap } from '@/constants/statusMaps'
 import type { Task } from '@/types/task'
 
 const taskSchema = z.object({
@@ -127,7 +127,7 @@ export const TaskForm: FC<Props> = ({ task, onSubmit, formId }) => {
               <Select
                 {...field}
                 disabled={isNew}
-                options={Object.entries(statusMap).map(([value, label]) => ({ value, label }))}
+                options={Object.entries(taskStatusMap).map(([value, label]) => ({ value, label }))}
                 placeholder="Выберите статус"
               />
             </Form.Item>

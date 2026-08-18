@@ -58,7 +58,7 @@ export const TasksPage = () => {
 
   const tableData: TaskRow[] = useMemo(
     () =>
-      (tasks ?? []).map((t) => ({
+      (tasks ?? []).filter((t) => t.status !== 'completed').map((t) => ({
         ...t,
         key: t.id,
         className: statusBgMap[t.status],
