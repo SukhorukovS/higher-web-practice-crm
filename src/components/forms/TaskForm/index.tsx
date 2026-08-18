@@ -6,12 +6,14 @@ import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { useGetDealsQuery } from '@/app/endpoints/deals'
+import { useGetUsersQuery } from '@/app/endpoints/users'
 import { taskStatusMap } from '@/constants/statusMaps'
 import type { Task } from '@/types/task'
 
 const taskSchema = z.object({
   title: z.string().trim().min(1, 'Введите название'),
   dealId: z.string().optional(),
+  assigneeId: z.string().min(1, 'Выберите исполнителя'),
   dueDate: z.string().min(1, 'Выберите дату'),
   status: z.string().min(1, 'Выберите статус'),
   description: z.string().trim().optional(),
@@ -27,6 +29,7 @@ type Props = {
 
 export const TaskForm: FC<Props> = ({ task, onSubmit, formId }) => {
   const { data: deals } = useGetDealsQuery()
+  const { data: users } = useGetUsersQuery()
   const isNew = !task
   const dealOptions = [...(deals ?? []).map((d) => ({ label: d.title, value: d.id }))]
 
@@ -39,6 +42,7 @@ export const TaskForm: FC<Props> = ({ task, onSubmit, formId }) => {
     defaultValues: {
       title: task?.title ?? '',
       dealId: task?.dealId ?? undefined,
+      assigneeId: task?.assigneeId ?? '',
       dueDate: task?.dueDate ?? '',
       status: isNew ? 'new' : (task?.status ?? ''),
       description: task?.description ?? '',
@@ -87,6 +91,25 @@ export const TaskForm: FC<Props> = ({ task, onSubmit, formId }) => {
                 options={dealOptions}
                 placeholder="Выберите сделку"
                 allowClear
+              />
+            </Form.Item>
+          )}
+        />
+        <Controller
+          name="assigneeId"
+          control={control}
+          render={({ field }) => (
+            <Form.Item
+              label="Исполнитель *"
+              validateStatus={errors.assigneeId ? 'error' : ''}
+              help={errors.assigneeId?.message}
+              labelCol={{ style: { paddingBottom: '2px' } }}
+              className="mb-2"
+            >
+              <Select
+                {...field}
+                options={(users ?? []).map((u) => ({ label: `${u.name} ${u.surname}`, value: u.id }))}
+                placeholder="Выберите исполнителя"
               />
             </Form.Item>
           )}
