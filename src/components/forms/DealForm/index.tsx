@@ -80,7 +80,7 @@ export const DealForm: FC<Props> = ({ deal, onSubmit, formId }) => {
             >
               <Select
                 {...field}
-                options={(clients ?? []).map((c) => ({ label: c.name, value: c.id }))}
+                options={(clients ?? []).filter((c) => !c.deleted).map((c) => ({ label: c.name, value: c.id }))}
                 placeholder="Выберите клиента"
               />
             </Form.Item>
