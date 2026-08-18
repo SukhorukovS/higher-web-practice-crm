@@ -269,6 +269,16 @@
       "createdBy": "7EeMjKV",
       "createdAt": "2026-08-16T08:31:55.820Z",
       "id": "cEK96Wd"
+    },
+    {
+      "title": "Новая сделка",
+      "description": "",
+      "clientId": "a1b2c3d4-e5f6-4a7b-8c9d-000000000002",
+      "amount": 1000,
+      "status": "new",
+      "createdBy": "7EeMjKV",
+      "createdAt": "2026-08-18T05:30:29.382Z",
+      "id": "SE8ndk3"
     }
   ],
   "tasks": [

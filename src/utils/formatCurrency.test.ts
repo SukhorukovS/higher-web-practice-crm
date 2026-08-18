@@ -24,4 +24,16 @@ describe('formatCurrency', () => {
   it('rounds fractional amounts to whole rubles', () => {
     expect(formatCurrency(99.6)).toBe(`100${nbsp}₽`)
   })
+
+  it('returns "0 ₽" for null', () => {
+    expect(formatCurrency(null)).toBe(`0${nbsp}₽`)
+  })
+
+  it('returns "0 ₽" for undefined', () => {
+    expect(formatCurrency(undefined)).toBe(`0${nbsp}₽`)
+  })
+
+  it('returns "0 ₽" for NaN', () => {
+    expect(formatCurrency(NaN)).toBe(`0${nbsp}₽`)
+  })
 })

@@ -11,7 +11,11 @@ import type { Deal } from '@/types/deal'
 const dealSchema = z.object({
   title: z.string().trim().min(1, 'Введите название'),
   client: z.string().min(1, 'Выберите клиента'),
-  amount: z.string().trim().min(1, 'Введите сумму'),
+  amount: z
+    .string()
+    .trim()
+    .min(1, 'Введите сумму')
+    .refine((val) => !Number.isNaN(Number(val)) && Number(val) > 0, 'Введите корректную сумму'),
   status: z.string().min(1, 'Выберите статус'),
   description: z.string().trim().optional(),
 })
