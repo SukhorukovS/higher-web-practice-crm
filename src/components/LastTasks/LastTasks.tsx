@@ -5,7 +5,8 @@ import clsx from 'clsx'
 import dayjs from 'dayjs'
 import { useMemo, useState } from 'react'
 
-import { useGetTasksQuery } from '@/app/endpoints/tasks'
+import { useAppSelector } from '@/app/store'
+import { useGetUserTasksQuery } from '@/app/endpoints/tasks'
 import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
 
 import { TaskModal } from '../modals/TaskModal'
@@ -13,7 +14,10 @@ import { TaskModal } from '../modals/TaskModal'
 const { Title, Text, Paragraph } = Typography
 
 export const LastTasks = () => {
-  const { data: tasks, isLoading } = useGetTasksQuery()
+  const user = useAppSelector((state) => state.auth.user)
+  const { data: tasks, isLoading } = useGetUserTasksQuery(user?.id ?? '', {
+    skip: !user,
+  })
   const [isOpen, setIsOpen] = useState(false)
 
   const lastTasks = useMemo(() => {

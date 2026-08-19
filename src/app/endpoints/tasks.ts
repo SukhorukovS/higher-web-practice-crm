@@ -13,6 +13,18 @@ const tasksApi = api.injectEndpoints({
             ]
           : [{ type: 'Task', id: 'LIST' }],
     }),
+    getUserTasks: builder.query<Task[], string>({
+      query: () => '/tasks',
+      transformResponse: (tasks: Task[], _meta, userId: string) =>
+        tasks.filter((task) => task.assigneeId === userId || task.createdBy === userId),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: 'Task' as const, id })),
+              { type: 'Task', id: 'LIST' },
+            ]
+          : [{ type: 'Task', id: 'LIST' }],
+    }),
     getTaskById: builder.query<Task, string>({
       query: (id) => `/tasks/${id}`,
       providesTags: (_result, _error, id) => [{ type: 'Task', id }],
@@ -49,6 +61,7 @@ const tasksApi = api.injectEndpoints({
 
 export const {
   useGetTasksQuery,
+  useGetUserTasksQuery,
   useGetTaskByIdQuery,
   useCreateTaskMutation,
   useUpdateTaskMutation,
