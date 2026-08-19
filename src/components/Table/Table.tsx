@@ -2,7 +2,7 @@ import { DownOutlined } from '@ant-design/icons'
 import { Button, Card, Col, Pagination, Row, Spin } from 'antd'
 import clsx from 'clsx'
 import type { Key, ReactNode } from 'react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { useIsMobile } from '@/hooks/useIsMobile'
 import { LeftArrowIcon } from '@/icons/LeftArrowIcon'
@@ -61,6 +61,10 @@ export const Table = <T extends { key: Key; className?: string }>({
   const [sortField, setSortField] = useState<(keyof T & string) | null>(defaultSortKey)
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [data])
 
   const handleSort = (key: keyof T & string) => {
     if (sortField === key) {

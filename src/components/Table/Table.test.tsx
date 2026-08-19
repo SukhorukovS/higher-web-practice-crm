@@ -203,6 +203,26 @@ describe('Table', () => {
       expect(screen.getByText('Имя 5')).toBeInTheDocument()
       expect(screen.queryByText('Имя 0')).not.toBeInTheDocument()
     })
+
+    it('resets currentPage to 1 when data changes', async () => {
+      const user = userEvent.setup()
+      const { rerender } = renderTable({ data: makeRows(15), pageSize: 5 })
+
+      const nextBtn = document.querySelector('.ant-pagination-next')!
+      await user.click(nextBtn)
+      expect(screen.getByText('Имя 5')).toBeInTheDocument()
+
+      rerender(
+        <Table<Row>
+          columns={columns}
+          data={makeRows(3)}
+          pageSize={5}
+        />,
+      )
+
+      expect(screen.getByText('Имя 0')).toBeInTheDocument()
+      expect(screen.queryByText('Нет данных')).not.toBeInTheDocument()
+    })
   })
 
   describe('row click', () => {
