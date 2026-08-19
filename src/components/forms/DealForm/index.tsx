@@ -30,6 +30,7 @@ type Props = {
 
 export const DealForm: FC<Props> = ({ deal, onSubmit, formId }) => {
   const { data: clients } = useGetClientsQuery()
+  const isNew = !deal
 
   const {
     control,
@@ -41,7 +42,7 @@ export const DealForm: FC<Props> = ({ deal, onSubmit, formId }) => {
       title: deal?.title ?? '',
       client: deal?.clientId ?? '',
       amount: deal?.amount?.toString() ?? '',
-      status: deal?.status ?? '',
+      status: isNew ? 'new' : (deal?.status ?? ''),
       description: deal?.description ?? '',
     },
   })
@@ -120,6 +121,7 @@ export const DealForm: FC<Props> = ({ deal, onSubmit, formId }) => {
             >
               <Select
                 {...field}
+                disabled={isNew}
                 options={Object.entries(statusMap).map(([value, label]) => ({ value, label }))}
                 placeholder="Выберите статус"
               />
