@@ -1,11 +1,10 @@
 // @vitest-environment jsdom
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { renderHook } from '@testing-library/react'
-
-import type { Client } from '../types/client'
-import type { Deal } from '../types/deal'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { client, deal } from '../test/factories'
+import type { Client } from '../types/client'
+import type { Deal } from '../types/deal'
 
 const mocks = vi.hoisted(() => ({
   useGetClientsQuery: vi.fn(),
@@ -24,12 +23,7 @@ import { useSummaryStats } from './useSummaryStats'
 
 const now = new Date('2026-08-14T12:00:00Z')
 
-
-const mockQueries = (opts: {
-  clients?: Client[]
-  deals?: Deal[]
-  loading?: boolean
-}) => {
+const mockQueries = (opts: { clients?: Client[]; deals?: Deal[]; loading?: boolean }) => {
   const { clients, deals, loading = false } = opts
   mocks.useGetClientsQuery.mockReturnValue({ data: clients, isLoading: loading })
   mocks.useGetDealsQuery.mockReturnValue({ data: deals, isLoading: loading })
@@ -135,9 +129,24 @@ describe('useSummaryStats', () => {
     mockQueries({
       clients: [],
       deals: [
-        deal({ id: 'd1', status: 'completed', completedAt: today, createdAt: '2026-01-01T00:00:00Z' }),
-        deal({ id: 'd2', status: 'completed', completedAt: thisWeek, createdAt: '2026-01-01T00:00:00Z' }),
-        deal({ id: 'd3', status: 'completed', completedAt: '2026-01-01T00:00:00Z', createdAt: '2026-01-01T00:00:00Z' }),
+        deal({
+          id: 'd1',
+          status: 'completed',
+          completedAt: today,
+          createdAt: '2026-01-01T00:00:00Z',
+        }),
+        deal({
+          id: 'd2',
+          status: 'completed',
+          completedAt: thisWeek,
+          createdAt: '2026-01-01T00:00:00Z',
+        }),
+        deal({
+          id: 'd3',
+          status: 'completed',
+          completedAt: '2026-01-01T00:00:00Z',
+          createdAt: '2026-01-01T00:00:00Z',
+        }),
         deal({ id: 'd4', status: 'new' }),
       ],
     })

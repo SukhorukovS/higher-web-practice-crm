@@ -1,11 +1,12 @@
 // @vitest-environment jsdom
 import '@testing-library/jest-dom/vitest'
-import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, cleanup, within } from '@testing-library/react'
+
+import { cleanup, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { Key } from 'react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { Table, type Column } from './Table'
+import { type Column, Table } from './Table'
 
 interface Row {
   key: Key
@@ -32,13 +33,7 @@ function makeRows(count: number): Row[] {
 }
 
 function renderTable(props: Partial<React.ComponentProps<typeof Table<Row>>> = {}) {
-  return render(
-    <Table<Row>
-      columns={columns}
-      data={makeRows(3)}
-      {...props}
-    />,
-  )
+  return render(<Table<Row> columns={columns} data={makeRows(3)} {...props} />)
 }
 
 beforeEach(() => {
@@ -95,7 +90,9 @@ describe('Table', () => {
 
     it('uses renderCell when provided', () => {
       const renderCell = vi.fn((record: Row, key: keyof Row & string) => (
-        <span data-testid={`cell-${record.key}-${key}`}>custom-{String(record[key as keyof Row])}</span>
+        <span data-testid={`cell-${record.key}-${key}`}>
+          custom-{String(record[key as keyof Row])}
+        </span>
       ))
       renderTable({ renderCell })
 
@@ -212,13 +209,7 @@ describe('Table', () => {
       await user.click(nextBtn)
       expect(screen.getByText('Имя 5')).toBeInTheDocument()
 
-      rerender(
-        <Table<Row>
-          columns={columns}
-          data={makeRows(3)}
-          pageSize={5}
-        />,
-      )
+      rerender(<Table<Row> columns={columns} data={makeRows(3)} pageSize={5} />)
 
       expect(screen.getByText('Имя 0')).toBeInTheDocument()
       expect(screen.queryByText('Нет данных')).not.toBeInTheDocument()
@@ -234,9 +225,7 @@ describe('Table', () => {
       const cards = document.querySelectorAll('.dashboard-card-row')
       await user.click(cards[1])
 
-      expect(onRowClick).toHaveBeenCalledWith(
-        expect.objectContaining({ key: 'r1' }),
-      )
+      expect(onRowClick).toHaveBeenCalledWith(expect.objectContaining({ key: 'r1' }))
     })
 
     it('adds cursor-pointer class when onRowClick is provided', () => {
@@ -294,9 +283,7 @@ describe('Table', () => {
 
   describe('record className', () => {
     it('applies record className to the card', () => {
-      const data: Row[] = [
-        { key: 'r0', name: 'A', amount: '100 ₽', className: 'highlight-row' },
-      ]
+      const data: Row[] = [{ key: 'r0', name: 'A', amount: '100 ₽', className: 'highlight-row' }]
       renderTable({ data })
 
       const card = document.querySelector('.dashboard-card-row')

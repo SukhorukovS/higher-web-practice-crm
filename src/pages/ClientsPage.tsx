@@ -5,9 +5,9 @@ import dayjs from 'dayjs'
 import { useMemo, useState } from 'react'
 
 import { useGetUserClientsQuery } from '@/app/endpoints/clients'
+import { useAppSelector } from '@/app/store'
 import { ClientModal } from '@/components/modals/ClientModal'
 import { type Column, Table } from '@/components/Table'
-import { useAppSelector } from '@/app/store'
 import { useSearchFilter } from '@/hooks/useSearchFilter'
 import { SearchIcon } from '@/icons/SearchIcon'
 import type { Client } from '@/types/client'
@@ -79,10 +79,14 @@ export const ClientsPage = () => {
     [clients],
   )
 
-  const { searchText, setSearchText, filteredData } = useSearchFilter(
-    tableData,
-    ['name', 'email', 'company', 'website', 'phone', 'comment'],
-  )
+  const { searchText, setSearchText, filteredData } = useSearchFilter(tableData, [
+    'name',
+    'email',
+    'company',
+    'website',
+    'phone',
+    'comment',
+  ])
 
   const renderMobileCard = (client: ClientData) => (
     <div className="flex flex-col gap-3">

@@ -1,11 +1,10 @@
 // @vitest-environment jsdom
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { renderHook } from '@testing-library/react'
-
-import type { Client } from '../types/client'
-import type { Deal } from '../types/deal'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { client, deal } from '../test/factories'
+import type { Client } from '../types/client'
+import type { Deal } from '../types/deal'
 
 const mocks = vi.hoisted(() => ({
   useGetUserClientsQuery: vi.fn(),
@@ -22,11 +21,7 @@ vi.mock('../app/endpoints/deals', () => ({
 
 import { useTopClients } from './useTopClients'
 
-const mockQueries = (opts: {
-  clients?: Client[]
-  deals?: Deal[]
-  loading?: boolean
-}) => {
+const mockQueries = (opts: { clients?: Client[]; deals?: Deal[]; loading?: boolean }) => {
   const { clients, deals, loading = false } = opts
   mocks.useGetUserClientsQuery.mockReturnValue({ data: clients, isLoading: loading })
   mocks.useGetDealsQuery.mockReturnValue({ data: deals, isLoading: loading })
@@ -66,10 +61,7 @@ describe('useTopClients', () => {
         client({ id: 'c1', name: 'Активный' }),
         client({ id: 'c2', name: 'Удалённый', deleted: true }),
       ],
-      deals: [
-        deal({ id: 'd1', clientId: 'c1' }),
-        deal({ id: 'd2', clientId: 'c2' }),
-      ],
+      deals: [deal({ id: 'd1', clientId: 'c1' }), deal({ id: 'd2', clientId: 'c2' })],
     })
 
     const { result } = renderHook(() => useTopClients('user-1'))

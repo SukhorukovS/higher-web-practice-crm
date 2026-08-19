@@ -1,15 +1,17 @@
 // @vitest-environment jsdom
 import '@testing-library/jest-dom/vitest'
-import { describe, expect, it, vi, beforeEach, beforeAll, afterEach } from 'vitest'
-import { render, screen, waitFor, cleanup } from '@testing-library/react'
+
+import { configureStore } from '@reduxjs/toolkit'
+import { cleanup, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
-import { configureStore } from '@reduxjs/toolkit'
 import { MemoryRouter } from 'react-router-dom'
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+
+import { api } from '@/app/api'
+import { authReducer } from '@/app/authSlice'
 
 import { LoginForm } from './index'
-import { authReducer } from '@/app/authSlice'
-import { api } from '@/app/api'
 
 beforeAll(() => {
   Object.defineProperty(window, 'matchMedia', {
@@ -101,7 +103,13 @@ describe('LoginForm', () => {
 
   it('dispatches setCredentials and navigates on successful login', async () => {
     const user = userEvent.setup()
-    const mockUser = { id: 'u1', email: 'test@test.com', name: 'Test', surname: 'User', createdAt: '2026-01-01' }
+    const mockUser = {
+      id: 'u1',
+      email: 'test@test.com',
+      name: 'Test',
+      surname: 'User',
+      createdAt: '2026-01-01',
+    }
     mockTriggerLogin.mockReturnValueOnce({ unwrap: () => Promise.resolve(mockUser) })
 
     const { store } = renderLoginForm()
@@ -112,7 +120,10 @@ describe('LoginForm', () => {
     await user.click(screen.getByRole('button', { name: /войти/i }))
 
     await waitFor(() => {
-      expect(mockTriggerLogin).toHaveBeenCalledWith({ email: 'test@test.com', password: 'password' })
+      expect(mockTriggerLogin).toHaveBeenCalledWith({
+        email: 'test@test.com',
+        password: 'password',
+      })
     })
 
     await waitFor(() => {
@@ -142,7 +153,9 @@ describe('LoginForm', () => {
 
   it('shows error alert when login throws', async () => {
     const user = userEvent.setup()
-    mockTriggerLogin.mockReturnValueOnce({ unwrap: () => Promise.reject(new Error('Network error')) })
+    mockTriggerLogin.mockReturnValueOnce({
+      unwrap: () => Promise.reject(new Error('Network error')),
+    })
 
     renderLoginForm()
 

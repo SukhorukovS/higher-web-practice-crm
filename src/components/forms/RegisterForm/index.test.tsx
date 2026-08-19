@@ -1,15 +1,17 @@
 // @vitest-environment jsdom
 import '@testing-library/jest-dom/vitest'
-import { describe, expect, it, vi, beforeEach, beforeAll, afterEach } from 'vitest'
-import { render, screen, waitFor, cleanup } from '@testing-library/react'
+
+import { configureStore } from '@reduxjs/toolkit'
+import { cleanup, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
-import { configureStore } from '@reduxjs/toolkit'
 import { MemoryRouter } from 'react-router-dom'
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+
+import { api } from '@/app/api'
+import { authReducer } from '@/app/authSlice'
 
 import { RegisterForm } from './index'
-import { authReducer } from '@/app/authSlice'
-import { api } from '@/app/api'
 
 beforeAll(() => {
   Object.defineProperty(window, 'matchMedia', {
@@ -121,7 +123,13 @@ describe('RegisterForm', () => {
 
   it('dispatches setCredentials and navigates on successful registration', async () => {
     const user = userEvent.setup()
-    const mockUser = { id: 'u1', email: 'test@test.com', name: 'Иван', surname: 'Иванов', createdAt: '2026-01-01' }
+    const mockUser = {
+      id: 'u1',
+      email: 'test@test.com',
+      name: 'Иван',
+      surname: 'Иванов',
+      createdAt: '2026-01-01',
+    }
     mockTriggerRegister.mockReturnValueOnce({ unwrap: () => Promise.resolve(mockUser) })
 
     const { store } = renderRegisterForm()
@@ -153,7 +161,9 @@ describe('RegisterForm', () => {
 
   it('shows error when registration throws', async () => {
     const user = userEvent.setup()
-    mockTriggerRegister.mockReturnValueOnce({ unwrap: () => Promise.reject(new Error('Network error')) })
+    mockTriggerRegister.mockReturnValueOnce({
+      unwrap: () => Promise.reject(new Error('Network error')),
+    })
 
     renderRegisterForm()
 

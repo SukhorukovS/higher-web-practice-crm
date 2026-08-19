@@ -47,13 +47,12 @@ export const useClientActivity = (period: PeriodFilter = 'week') => {
         }
       })
 
-    return nonDeletedClients
-      .map((client) => ({
-        clientId: client.id,
-        clientName: client.name,
-        dealsCount: dealsByClient.get(client.id) ?? 0,
-        completedTasks: completedTasksByClient.get(client.id) ?? 0,
-      }))
+    return nonDeletedClients.map((client) => ({
+      clientId: client.id,
+      clientName: client.name,
+      dealsCount: dealsByClient.get(client.id) ?? 0,
+      completedTasks: completedTasksByClient.get(client.id) ?? 0,
+    }))
   }, [clients, deals, tasks, period])
 
   return { rows, isLoading }

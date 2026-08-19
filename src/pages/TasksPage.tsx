@@ -58,18 +58,20 @@ export const TasksPage = () => {
 
   const tableData: TaskRow[] = useMemo(
     () =>
-      (tasks ?? []).filter((t) => t.status !== 'completed').map((t) => ({
-        ...t,
-        key: t.id,
-        className: statusBgMap[t.status],
-      })),
+      (tasks ?? [])
+        .filter((t) => t.status !== 'completed')
+        .map((t) => ({
+          ...t,
+          key: t.id,
+          className: statusBgMap[t.status],
+        })),
     [tasks],
   )
 
-  const { searchText, setSearchText, filteredData } = useSearchFilter(
-    tableData,
-    ['title', 'description'],
-  )
+  const { searchText, setSearchText, filteredData } = useSearchFilter(tableData, [
+    'title',
+    'description',
+  ])
 
   const renderCellValue = (task: TaskRow, key: keyof TaskRow & string) => {
     const value = task[key]

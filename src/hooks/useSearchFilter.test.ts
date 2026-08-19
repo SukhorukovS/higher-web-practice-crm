@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
+import { act, renderHook } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { renderHook, act } from '@testing-library/react'
+
 import { useSearchFilter } from './useSearchFilter'
 
 type Row = { id: number; name: string; email: string; amount: number }

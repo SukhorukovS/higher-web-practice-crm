@@ -5,8 +5,8 @@ import clsx from 'clsx'
 import dayjs from 'dayjs'
 import { useMemo, useState } from 'react'
 
-import { useAppSelector } from '@/app/store'
 import { useGetUserTasksQuery } from '@/app/endpoints/tasks'
+import { useAppSelector } from '@/app/store'
 import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
 
 import { TaskModal } from '../modals/TaskModal'

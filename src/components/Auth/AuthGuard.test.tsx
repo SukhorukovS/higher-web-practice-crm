@@ -1,14 +1,16 @@
 // @vitest-environment jsdom
 import '@testing-library/jest-dom/vitest'
-import { describe, expect, it, vi, afterEach } from 'vitest'
-import { render, screen, cleanup } from '@testing-library/react'
-import { Provider } from 'react-redux'
-import { configureStore } from '@reduxjs/toolkit'
-import { MemoryRouter } from 'react-router-dom'
 
-import { AuthGuard } from './AuthGuard'
+import { configureStore } from '@reduxjs/toolkit'
+import { cleanup, render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+
 import { authReducer } from '@/app/authSlice'
 import { ROUTES } from '@/types/route'
+
+import { AuthGuard } from './AuthGuard'
 
 afterEach(() => {
   cleanup()

@@ -1,12 +1,12 @@
 // @vitest-environment jsdom
 import 'dayjs/locale/ru'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { renderHook } from '@testing-library/react'
 
-import type { Task } from '../types/task'
-import type { User } from '../types/user'
+import { renderHook } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { task, user } from '../test/factories'
+import type { Task } from '../types/task'
+import type { User } from '../types/user'
 
 const mocks = vi.hoisted(() => ({
   useGetTasksQuery: vi.fn(),
@@ -25,11 +25,7 @@ import { useOverdueTasks } from './useOverdueTasks'
 
 const now = new Date('2026-08-14T12:00:00Z')
 
-const mockQueries = (opts: {
-  tasks?: Task[]
-  users?: User[]
-  loading?: boolean
-}) => {
+const mockQueries = (opts: { tasks?: Task[]; users?: User[]; loading?: boolean }) => {
   const { tasks, users, loading = false } = opts
   mocks.useGetTasksQuery.mockReturnValue({ data: tasks, isLoading: loading })
   mocks.useGetUsersQuery.mockReturnValue({ data: users, isLoading: loading })
@@ -131,7 +127,9 @@ describe('useOverdueTasks', () => {
 
   it('excludes tasks created outside the period', () => {
     mockQueries({
-      tasks: [task({ id: 't1', dueDate: '2026-08-01T00:00:00Z', createdAt: '2026-01-01T00:00:00Z' })],
+      tasks: [
+        task({ id: 't1', dueDate: '2026-08-01T00:00:00Z', createdAt: '2026-01-01T00:00:00Z' }),
+      ],
       users: [],
     })
 

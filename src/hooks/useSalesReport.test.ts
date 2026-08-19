@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { renderHook } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { Client } from '../types/client'
 import type { Deal } from '../types/deal'
@@ -45,11 +45,7 @@ const deal = (overrides: Partial<Deal> = {}): Deal => ({
   ...overrides,
 })
 
-const mockQueries = (opts: {
-  clients?: Client[]
-  deals?: Deal[]
-  loading?: boolean
-}) => {
+const mockQueries = (opts: { clients?: Client[]; deals?: Deal[]; loading?: boolean }) => {
   const { clients, deals, loading = false } = opts
   mocks.useGetClientsQuery.mockReturnValue({ data: clients, isLoading: loading })
   mocks.useGetDealsQuery.mockReturnValue({ data: deals, isLoading: loading })

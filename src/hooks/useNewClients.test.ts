@@ -1,10 +1,9 @@
 // @vitest-environment jsdom
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { renderHook } from '@testing-library/react'
-
-import type { Client } from '../types/client'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { client } from '../test/factories'
+import type { Client } from '../types/client'
 
 const mocks = vi.hoisted(() => ({
   useGetClientsQuery: vi.fn(),
@@ -93,7 +92,14 @@ describe('useNewClients', () => {
 
   it('formats the row fields', () => {
     mockQueries({
-      clients: [client({ id: 'c1', name: 'Иван', company: 'ООО Ромашка', createdAt: '2026-08-10T00:00:00Z' })],
+      clients: [
+        client({
+          id: 'c1',
+          name: 'Иван',
+          company: 'ООО Ромашка',
+          createdAt: '2026-08-10T00:00:00Z',
+        }),
+      ],
     })
 
     const { result } = renderHook(() => useNewClients('week'))

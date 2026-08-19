@@ -108,7 +108,10 @@ export const TaskForm: FC<Props> = ({ task, onSubmit, formId }) => {
             >
               <Select
                 {...field}
-                options={(users ?? []).map((u) => ({ label: `${u.name} ${u.surname}`, value: u.id }))}
+                options={(users ?? []).map((u) => ({
+                  label: `${u.name} ${u.surname}`,
+                  value: u.id,
+                }))}
                 placeholder="Выберите исполнителя"
               />
             </Form.Item>

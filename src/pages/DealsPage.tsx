@@ -122,10 +122,13 @@ export const DealsPage = () => {
     [deals, clientNameMap],
   )
 
-  const { searchText, setSearchText, filteredData } = useSearchFilter(
-    tableData,
-    ['title', 'clientName', 'amount', 'description', 'statusName'],
-  )
+  const { searchText, setSearchText, filteredData } = useSearchFilter(tableData, [
+    'title',
+    'clientName',
+    'amount',
+    'description',
+    'statusName',
+  ])
 
   return (
     <>

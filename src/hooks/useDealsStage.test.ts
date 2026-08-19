@@ -1,10 +1,9 @@
 // @vitest-environment jsdom
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { renderHook } from '@testing-library/react'
-
-import type { Deal } from '../types/deal'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { deal } from '../test/factories'
+import type { Deal } from '../types/deal'
 
 const mocks = vi.hoisted(() => ({
   useGetDealsQuery: vi.fn(),
