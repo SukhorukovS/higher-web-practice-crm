@@ -174,7 +174,7 @@ export const TaskForm: FC<Props> = ({ task, onSubmit, formId }) => {
             <Input.TextArea
               {...field}
               placeholder="Обсудить детали сделки"
-              style={{ height: 80, resize: 'none' }}
+              className="h-20 resize-none"
             />
           </Form.Item>
         )}

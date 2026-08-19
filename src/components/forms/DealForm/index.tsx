@@ -143,7 +143,7 @@ export const DealForm: FC<Props> = ({ deal, onSubmit, formId }) => {
             <Input.TextArea
               {...field}
               placeholder="Прогнозируется рост активности."
-              style={{ height: 80, resize: 'none' }}
+              className="h-20 resize-none"
             />
           </Form.Item>
         )}
