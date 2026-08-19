@@ -13,6 +13,18 @@ const clientsApi = api.injectEndpoints({
             ]
           : [{ type: 'Client', id: 'LIST' }],
     }),
+    getUserClients: builder.query<Client[], string>({
+      query: () => '/clients',
+      transformResponse: (clients: Client[], _meta, userId: string) =>
+        clients.filter((client) => client.createdBy === userId),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: 'Client' as const, id })),
+              { type: 'Client' as const, id: 'LIST' },
+            ]
+          : [{ type: 'Client', id: 'LIST' }],
+    }),
     getClientById: builder.query<Client, string>({
       query: (id) => `/clients/${id}`,
       providesTags: (_result, _error, id) => [{ type: 'Client', id }],
@@ -50,6 +62,7 @@ const clientsApi = api.injectEndpoints({
 
 export const {
   useGetClientsQuery,
+  useGetUserClientsQuery,
   useGetClientByIdQuery,
   useCreateClientMutation,
   useUpdateClientMutation,

@@ -1,6 +1,7 @@
 import { Button, Card, Spin, Typography } from 'antd'
 import { useState } from 'react'
 
+import { useAppSelector } from '@/app/store'
 import { useTopClients } from '@/hooks/useTopClients'
 
 import { ClientModal } from '../modals/ClientModal'
@@ -9,7 +10,8 @@ const { Title, Text } = Typography
 
 export const TopClients = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const { topClients, isLoading } = useTopClients()
+  const user = useAppSelector((state) => state.auth.user)
+  const { topClients, isLoading } = useTopClients(user?.id ?? '')
 
   return (
     <>

@@ -1,8 +1,10 @@
-import { useGetClientsQuery } from '@/app/endpoints/clients'
+import { useGetUserClientsQuery } from '@/app/endpoints/clients'
 import { useGetDealsQuery } from '@/app/endpoints/deals'
 
-export const useTopClients = () => {
-  const { data: clients, isLoading: clientsLoading } = useGetClientsQuery()
+export const useTopClients = (userId: string) => {
+  const { data: clients, isLoading: clientsLoading } = useGetUserClientsQuery(userId, {
+    skip: !userId,
+  })
   const { data: deals, isLoading: dealsLoading } = useGetDealsQuery()
 
   const isLoading = clientsLoading || dealsLoading

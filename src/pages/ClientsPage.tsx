@@ -4,9 +4,10 @@ import { Button, Input, Typography } from 'antd'
 import dayjs from 'dayjs'
 import { useMemo, useState } from 'react'
 
-import { useGetClientsQuery } from '@/app/endpoints/clients'
+import { useGetUserClientsQuery } from '@/app/endpoints/clients'
 import { ClientModal } from '@/components/modals/ClientModal'
 import { type Column, Table } from '@/components/Table'
+import { useAppSelector } from '@/app/store'
 import { useSearchFilter } from '@/hooks/useSearchFilter'
 import { SearchIcon } from '@/icons/SearchIcon'
 import type { Client } from '@/types/client'
@@ -62,8 +63,11 @@ const renderCellValue = (client: ClientData, key: keyof ClientData & string) => 
 export const ClientsPage = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [selectedClient, setSelectedClient] = useState<Client | null>(null)
+  const user = useAppSelector((state) => state.auth.user)
 
-  const { data: clients, isLoading } = useGetClientsQuery()
+  const { data: clients, isLoading } = useGetUserClientsQuery(user?.id ?? '', {
+    skip: !user,
+  })
 
   const tableData: ClientData[] = useMemo(
     () =>
