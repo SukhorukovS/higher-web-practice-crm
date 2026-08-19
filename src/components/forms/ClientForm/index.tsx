@@ -7,16 +7,31 @@ import { z } from 'zod'
 import type { Client } from '@/types/client'
 
 const clientSchema = z.object({
-  name: z.string().trim().min(1, 'Введите имя'),
+  name: z.string().trim().min(1, { message: 'Введите имя' }),
   phone: z
     .string()
     .trim()
-    .min(1, 'Введите телефон')
-    .regex(/^\+?[\d\s\-()]+$/, 'Телефон может содержать только цифры, пробелы, дефисы, скобки и опциональный + в начале')
-    .refine((val) => val.replace(/\D/g, '').length >= 6, 'Телефон должен содержать минимум 6 цифр'),
-  company: z.string().trim().min(1, 'Введите компанию'),
-  site: z.string().trim().min(1, 'Введите сайт'),
-  email: z.string().trim().email('Некорректный email').or(z.literal('')).optional(),
+    .min(1, { message: 'Введите телефон' })
+    .regex(/^\+?[\d\s\-()]+$/, {
+      message: 'Телефон может содержать только цифры, пробелы, дефисы, скобки и опциональный + в начале',
+    })
+    .refine((val) => val.replace(/\D/g, '').length >= 6, {
+      message: 'Телефон должен содержать минимум 6 цифр',
+    }),
+  company: z.string().trim().min(1, { message: 'Введите компанию' }),
+  site: z
+    .string()
+    .trim()
+    .min(1, { message: 'Введите сайт' })
+    .regex(/^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/.*)?$/i, {
+      message: 'Введите корректный URL (например, example.com или https://example.com)',
+    }),
+  email: z
+    .string()
+    .trim()
+    .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { message: 'Некорректный email' })
+    .or(z.literal(''))
+    .optional(),
   comment: z.string().trim().optional(),
 })
 
