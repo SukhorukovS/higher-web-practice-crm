@@ -13,6 +13,18 @@ const dealsApi = api.injectEndpoints({
             ]
           : [{ type: 'Deal', id: 'LIST' }],
     }),
+    getUserDeals: builder.query<Deal[], string>({
+      query: () => '/deals',
+      transformResponse: (deals: Deal[], _meta, userId: string) =>
+        deals.filter((deal) => deal.createdBy === userId),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: 'Deal' as const, id })),
+              { type: 'Deal' as const, id: 'LIST' },
+            ]
+          : [{ type: 'Deal', id: 'LIST' }],
+    }),
     getDealById: builder.query<Deal, string>({
       query: (id) => `/deals/${id}`,
       providesTags: (_result, _error, id) => [{ type: 'Deal', id }],
@@ -49,6 +61,7 @@ const dealsApi = api.injectEndpoints({
 
 export const {
   useGetDealsQuery,
+  useGetUserDealsQuery,
   useGetDealByIdQuery,
   useCreateDealMutation,
   useUpdateDealMutation,

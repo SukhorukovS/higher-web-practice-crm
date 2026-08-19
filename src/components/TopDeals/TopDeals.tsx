@@ -5,6 +5,7 @@ import clsx from 'clsx'
 import dayjs from 'dayjs'
 import React, { useState } from 'react'
 
+import { useAppSelector } from '@/app/store'
 import { statusBgMap, statusColorMap, statusMap } from '@/constants/statusMaps'
 import { useTopDeals } from '@/hooks/useTopDeals'
 import { formatCurrency } from '@/utils/formatCurrency'
@@ -16,7 +17,8 @@ const { Title } = Typography
 export const ActiveDealsTable: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
 
-  const { topDeals, clientMap, isLoading } = useTopDeals()
+  const user = useAppSelector((state) => state.auth.user)
+  const { topDeals, clientMap, isLoading } = useTopDeals(user?.id ?? '')
 
   return (
     <>

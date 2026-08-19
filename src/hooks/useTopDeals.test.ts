@@ -9,7 +9,7 @@ import { client, deal } from '../test/factories'
 
 const mocks = vi.hoisted(() => ({
   useGetClientsQuery: vi.fn(),
-  useGetDealsQuery: vi.fn(),
+  useGetUserDealsQuery: vi.fn(),
 }))
 
 vi.mock('../app/endpoints/clients', () => ({
@@ -17,7 +17,7 @@ vi.mock('../app/endpoints/clients', () => ({
 }))
 
 vi.mock('../app/endpoints/deals', () => ({
-  useGetDealsQuery: mocks.useGetDealsQuery,
+  useGetUserDealsQuery: mocks.useGetUserDealsQuery,
 }))
 
 import { useTopDeals } from './useTopDeals'
@@ -29,7 +29,7 @@ const mockQueries = (opts: {
 }) => {
   const { clients, deals, loading = false } = opts
   mocks.useGetClientsQuery.mockReturnValue({ data: clients, isLoading: loading })
-  mocks.useGetDealsQuery.mockReturnValue({ data: deals, isLoading: loading })
+  mocks.useGetUserDealsQuery.mockReturnValue({ data: deals, isLoading: loading })
 }
 
 beforeEach(() => {
@@ -46,7 +46,7 @@ describe('useTopDeals', () => {
   it('returns empty array and loading=false when no data is loaded', () => {
     mockQueries({ clients: undefined, deals: undefined })
 
-    const { result } = renderHook(() => useTopDeals())
+    const { result } = renderHook(() => useTopDeals('u1'))
 
     expect(result.current.topDeals).toEqual([])
     expect(result.current.isLoading).toBe(false)
@@ -55,7 +55,7 @@ describe('useTopDeals', () => {
   it('returns isLoading=true while any query is loading', () => {
     mockQueries({ clients: [], deals: [], loading: true })
 
-    const { result } = renderHook(() => useTopDeals())
+    const { result } = renderHook(() => useTopDeals('u1'))
 
     expect(result.current.isLoading).toBe(true)
   })
@@ -71,7 +71,7 @@ describe('useTopDeals', () => {
       ],
     })
 
-    const { result } = renderHook(() => useTopDeals())
+    const { result } = renderHook(() => useTopDeals('u1'))
 
     expect(result.current.topDeals.map((d: Deal) => d.id)).toEqual(['d1', 'd2'])
   })
@@ -86,7 +86,7 @@ describe('useTopDeals', () => {
       ],
     })
 
-    const { result } = renderHook(() => useTopDeals())
+    const { result } = renderHook(() => useTopDeals('u1'))
 
     expect(result.current.topDeals.map((d: Deal) => d.id)).toEqual(['d2', 'd3', 'd1'])
   })
@@ -98,7 +98,7 @@ describe('useTopDeals', () => {
 
     mockQueries({ clients: [client({ id: 'c1' })], deals })
 
-    const { result } = renderHook(() => useTopDeals())
+    const { result } = renderHook(() => useTopDeals('u1'))
 
     expect(result.current.topDeals).toHaveLength(10)
   })
@@ -112,7 +112,7 @@ describe('useTopDeals', () => {
       deals: [deal({ clientId: 'c1' })],
     })
 
-    const { result } = renderHook(() => useTopDeals())
+    const { result } = renderHook(() => useTopDeals('u1'))
 
     expect(result.current.clientMap.get('c1')).toBe('Иван')
     expect(result.current.clientMap.get('c2')).toBe('Пётр')
@@ -121,7 +121,7 @@ describe('useTopDeals', () => {
   it('returns an empty client map when no clients are loaded', () => {
     mockQueries({ clients: undefined, deals: [] })
 
-    const { result } = renderHook(() => useTopDeals())
+    const { result } = renderHook(() => useTopDeals('u1'))
 
     expect(result.current.clientMap.size).toBe(0)
   })
