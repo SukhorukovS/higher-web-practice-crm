@@ -15,7 +15,8 @@ export function useSearchFilter<T>(
             !lowerSearch ||
             searchKeys.some((key) => {
               const value = item[key]
-              return typeof value === 'string' && value.toLowerCase().includes(lowerSearch)
+              if (value == null) return false
+              return String(value).toLowerCase().includes(lowerSearch)
             }),
         ),
     [data, lowerSearch, searchKeys],

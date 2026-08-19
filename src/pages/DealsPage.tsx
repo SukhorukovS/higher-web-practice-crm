@@ -21,6 +21,7 @@ interface DealRow extends Deal {
   key: string
   className?: string
   clientName: string
+  statusName: string
 }
 
 const columns = [
@@ -115,6 +116,7 @@ export const DealsPage = () => {
         ...d,
         key: d.id,
         clientName: clientNameMap[d.clientId] ?? d.clientId,
+        statusName: statusMap[d.status],
         className: statusBgMap[d.status],
       })),
     [deals, clientNameMap],
@@ -122,7 +124,7 @@ export const DealsPage = () => {
 
   const { searchText, setSearchText, filteredData } = useSearchFilter(
     tableData,
-    ['title', 'clientName', 'amount', 'description'],
+    ['title', 'clientName', 'amount', 'description', 'statusName'],
   )
 
   return (

@@ -28,10 +28,10 @@ describe('useSearchFilter', () => {
     expect(result.current.filteredData).toEqual([rows[1]])
   })
 
-  it('ignores non-string values', () => {
+  it('searches by numeric values converted to string', () => {
     const { result } = renderHook(() => useSearchFilter(rows, ['amount']))
     act(() => result.current.setSearchText('100'))
-    expect(result.current.filteredData).toEqual([])
+    expect(result.current.filteredData).toEqual([rows[0]])
   })
 
   it('returns empty array when nothing matches', () => {
